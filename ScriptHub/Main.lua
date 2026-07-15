@@ -222,6 +222,15 @@ MainGame.GAME_NAME     = "Blox Fruits"
 MainGame.GAME_PLACE_ID = 2753915549
 
 MainGame.Scripts = {
+    -- ── FEATURED ──────────────────────────────────────────────
+    {name="⭐  Hoho Hub",       description="Full-featured Blox Fruits hub — auto farm, raid, fruit notifier & more.",  category="Featured",
+     code=[[
+loadstring(game:HttpGet("https://raw.githubusercontent.com/acsu1/hoho/main/hoho",true))()
+]]},
+    {name="⭐  Zen Hub",        description="Auto quest, boss farm, fruit sniper & stat allocator.",                    category="Featured",
+     code=[[
+loadstring(game:HttpGet("https://raw.githubusercontent.com/ZzDefaultzZ/Zen-Hub/main/source",true))()
+]]},
     -- ── FARM ──────────────────────────────────────────────────
     {name="Auto Farm (Quest)",  description="Kills quest enemies automatically.",                 category="Farm",
      code=[[
