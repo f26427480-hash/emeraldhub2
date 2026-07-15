@@ -215,149 +215,76 @@ print("[EmeraldHub] Character hidden")
 }
 
 -- ════════════════════════════════════════════════════════════════
---  3.  MAIN GAME SCRIPTS  (keyed — 72hr key from Discord bot)
+--  3.  GAME LIBRARY  (keyed — auto-detected from game.PlaceId)
+--      Add any game here; the tab only appears when the player
+--      is actually in a supported game.
 -- ════════════════════════════════════════════════════════════════
-local MainGame = {}
-MainGame.GAME_NAME     = "Blox Fruits"
-MainGame.GAME_PLACE_ID = 2753915549
+local GAME_LIBRARY = {
 
-MainGame.Scripts = {
-    -- ── FEATURED ──────────────────────────────────────────────
-    {name="⭐  Hoho Hub",       description="Full-featured Blox Fruits hub — auto farm, raid, fruit notifier & more.",  category="Featured",
-     code=[[
-loadstring(game:HttpGet("https://raw.githubusercontent.com/acsu1/hoho/main/hoho",true))()
-]]},
-    {name="⭐  Zen Hub",        description="Auto quest, boss farm, fruit sniper & stat allocator.",                    category="Featured",
-     code=[[
-loadstring(game:HttpGet("https://raw.githubusercontent.com/ZzDefaultzZ/Zen-Hub/main/source",true))()
-]]},
-    -- ── FARM ──────────────────────────────────────────────────
-    {name="Auto Farm (Quest)",  description="Kills quest enemies automatically.",                 category="Farm",
-     code=[[
-local lp=game:GetService("Players").LocalPlayer
-local char=lp.Character or lp.CharacterAdded:Wait()
-local hum=char:WaitForChild("Humanoid") local root=char:WaitForChild("HumanoidRootPart")
-local running=true
-local function nearest()
-    local n,d=nil,math.huge
-    for _,o in ipairs(workspace:GetDescendants()) do
-        if o:IsA("Model") and o:FindFirstChild("Humanoid") then
-            local h=o:FindFirstChild("Humanoid") local r=o:FindFirstChild("HumanoidRootPart")
-            if h and r and h.Health>0 and h~=hum then
-                local dist=(root.Position-r.Position).Magnitude
-                if dist<d then n,d=o,dist end
-            end
-        end
-    end
-    return n
-end
-print("[EmeraldHub] Auto Farm ON") 
-while running and task.wait(0.15) do
-    if hum.Health<=0 then task.wait(2) char=lp.Character or lp.CharacterAdded:Wait() hum=char:WaitForChild("Humanoid") root=char:WaitForChild("HumanoidRootPart") end
-    local t=nearest()
-    if t then
-        local tr=t:FindFirstChild("HumanoidRootPart")
-        if tr then
-            root.CFrame=tr.CFrame+Vector3.new(0,3,4)
-            local tool=char:FindFirstChildOfClass("Tool")
-            if tool and tool:FindFirstChild("Handle") then
-                firetouchinterest(tool.Handle,tr,0) task.wait(0.05) firetouchinterest(tool.Handle,tr,1)
-            end
-        end
-    end
-end
-]]},
-    {name="Auto Eat Fruit",     description="Eats any Devil Fruit that spawns on the ground.",   category="Farm",
-     code=[[
-local lp=game:GetService("Players").LocalPlayer
-local char=lp.Character or lp.CharacterAdded:Wait()
-local root=char:WaitForChild("HumanoidRootPart")
-local function eat(o)
-    if o.Name:find("Fruit") then
-        local r=o:FindFirstChild("Handle") or o:FindFirstChildOfClass("Part")
-        if r then root.CFrame=r.CFrame+Vector3.new(0,2,0) firetouchinterest(root,r,0) task.wait(0.2) firetouchinterest(root,r,1) print("[EmeraldHub] Ate: "..o.Name) end
-    end
-end
-for _,o in ipairs(workspace:GetDescendants()) do eat(o) end
-workspace.DescendantAdded:Connect(function(o) task.wait(0.5) eat(o) end)
-print("[EmeraldHub] Auto Eat Fruit ON")
-]]},
-    -- ── ESP ────────────────────────────────────────────────────
-    {name="Fruit ESP",          description="Gold highlights on all Devil Fruits.",               category="ESP",
-     code=[[
-local function hl()
-    for _,o in ipairs(workspace:GetDescendants()) do
-        if o:IsA("Model") and o.Name:find("Fruit") and not o:FindFirstChildOfClass("Highlight") then
-            local h=Instance.new("Highlight") h.FillColor=Color3.fromRGB(255,215,0) h.OutlineColor=Color3.fromRGB(255,255,255) h.FillTransparency=0.3 h.Parent=o
-        end
-    end
-end
-hl() workspace.DescendantAdded:Connect(function() task.wait(0.2) hl() end) print("[EmeraldHub] Fruit ESP ON")
-]]},
-    {name="Boss ESP",           description="Red highlights on all boss NPCs.",                   category="ESP",
-     code=[[
-local tags={"Boss","King","Admiral","Warlord","Dragon","Elite"}
-local function isBoss(m) for _,t in ipairs(tags) do if m.Name:find(t) then return true end end end
-local function add(m)
-    if m:IsA("Model") and isBoss(m) and m:FindFirstChildOfClass("Humanoid") and not m:FindFirstChildOfClass("Highlight") then
-        local h=Instance.new("Highlight") h.FillColor=Color3.fromRGB(220,30,30) h.OutlineColor=Color3.fromRGB(255,255,255) h.FillTransparency=0.4 h.Parent=m
-    end
-end
-for _,v in ipairs(workspace:GetDescendants()) do add(v) end
-workspace.DescendantAdded:Connect(add) print("[EmeraldHub] Boss ESP ON")
-]]},
-    -- ── TELEPORT ──────────────────────────────────────────────
-    {name="TP to Sea 1",        description="Teleports your character to the Sea 1 island.",     category="Teleport",
-     code=[[
-local r=game:GetService("Players").LocalPlayer.Character:WaitForChild("HumanoidRootPart")
-r.CFrame=CFrame.new(-1270,40,1760) print("[EmeraldHub] Teleported to Sea 1")
-]]},
-    -- ── COMBAT ────────────────────────────────────────────────
-    {name="Kill Aura  [Sword]", description="Hits enemies within 10 studs with your sword.",     category="Combat",
-     code=[[
-local lp=game:GetService("Players").LocalPlayer local RS=game:GetService("RunService")
-RS.Heartbeat:Connect(function()
-    local char=lp.Character if not char then return end
-    local root=char:FindFirstChild("HumanoidRootPart") local tool=char:FindFirstChildOfClass("Tool")
-    if not tool or not root then return end
-    for _,o in ipairs(workspace:GetDescendants()) do
-        if o:IsA("Model") and o~=char then
-            local eh=o:FindFirstChildOfClass("Humanoid") local er=o:FindFirstChild("HumanoidRootPart")
-            if eh and er and eh.Health>0 and (root.Position-er.Position).Magnitude<10 then
-                local h=tool:FindFirstChild("Handle")
-                if h then firetouchinterest(h,er,0) task.wait(0.05) firetouchinterest(h,er,1) end
-            end
-        end
-    end
-end)
-print("[EmeraldHub] Kill Aura ON")
-]]},
-    -- ── STATS ─────────────────────────────────────────────────
-    {name="Dump Stats → Melee", description="Puts all unspent stat points into Melee.",          category="Stats",
-     code=[[
-local lp=game:GetService("Players").LocalPlayer
-local remote=game:GetService("ReplicatedStorage"):FindFirstChild("Stat",true)
-if remote then
-    local data=lp:WaitForChild("Data",10)
-    if data then
-        local pts=data:FindFirstChild("StatPoints") or data:FindFirstChild("Points")
-        if pts then for i=1,pts.Value do remote:FireServer("Melee") end print("[EmeraldHub] "..pts.Value.." → Melee") end
-    end
-else print("[EmeraldHub] Stat remote not found for this patch") end
-]]},
-    -- ── MISC ──────────────────────────────────────────────────
-    {name="Auto Accept Trade",  description="Accepts all incoming trade requests.",              category="Misc",
-     code=[[
-game:GetService("ReplicatedStorage").DescendantAdded:Connect(function(o)
-    if o.Name:find("Trade") then
-        task.wait(0.5)
-        local r=game:GetService("ReplicatedStorage"):FindFirstChild("AcceptTrade",true)
-        if r then r:FireServer() end
-    end
-end)
-print("[EmeraldHub] Auto Accept Trade ON")
-]]},
+    -- ── Blox Fruits ───────────────────────────────────────────
+    [2753915549] = { name = "Blox Fruits", scripts = {
+        {name="⭐  Hoho Hub",        description="Full auto-farm, raids, fruit notifier & more.",      category="Featured",
+         code=[[loadstring(game:HttpGet("https://raw.githubusercontent.com/acsu1/hoho/main/hoho",true))()]]},
+        {name="⭐  Zen Hub",         description="Auto quest, boss farm, fruit sniper & stat allocator.", category="Featured",
+         code=[[loadstring(game:HttpGet("https://raw.githubusercontent.com/ZzDefaultzZ/Zen-Hub/main/source",true))()]]},
+    }},
+
+    -- ── Jailbreak ─────────────────────────────────────────────
+    [606849621] = { name = "Jailbreak", scripts = {
+        {name="⭐  Jailbreak Script", description="Auto-rob, auto-arrest, vehicle mods & more.",       category="Featured",
+         code=[[loadstring(game:HttpGet("https://raw.githubusercontent.com/Sxripts/jailbreak/main/JailbreakHub",true))()]]},
+    }},
+
+    -- ── Da Hood ───────────────────────────────────────────────
+    [2788229376] = { name = "Da Hood", scripts = {
+        {name="⭐  Da Hood Script",   description="Aimbot, ESP, infinite cash & more.",                category="Featured",
+         code=[[loadstring(game:HttpGet("https://raw.githubusercontent.com/Sxripts/dahood/main/DaHood",true))()]]},
+    }},
+
+    -- ── Murder Mystery 2 ──────────────────────────────────────
+    [142823291] = { name = "Murder Mystery 2", scripts = {
+        {name="⭐  MM2 Script",       description="ESP, gun mod, role reveal & more.",                 category="Featured",
+         code=[[loadstring(game:HttpGet("https://raw.githubusercontent.com/Sxripts/mm2/main/MM2",true))()]]},
+    }},
+
+    -- ── Arsenal ───────────────────────────────────────────────
+    [286090429] = { name = "Arsenal", scripts = {
+        {name="⭐  Arsenal Script",   description="Aimbot, silent aim, ESP & more.",                   category="Featured",
+         code=[[loadstring(game:HttpGet("https://raw.githubusercontent.com/Sxripts/arsenal/main/Arsenal",true))()]]},
+    }},
+
+    -- ── Pet Simulator X ───────────────────────────────────────
+    [6284583030] = { name = "Pet Simulator X", scripts = {
+        {name="⭐  PSX Script",       description="Auto-farm, auto-hatch & more.",                     category="Featured",
+         code=[[loadstring(game:HttpGet("https://raw.githubusercontent.com/Sxripts/psx/main/PSX",true))()]]},
+    }},
+
+    -- ── Brookhaven ────────────────────────────────────────────
+    [4924922222] = { name = "Brookhaven RP", scripts = {
+        {name="⭐  Brookhaven Script", description="Admin commands, fly, speed & more.",               category="Featured",
+         code=[[loadstring(game:HttpGet("https://raw.githubusercontent.com/Sxripts/brookhaven/main/Brookhaven",true))()]]},
+    }},
+
+    -- ── Adopt Me ──────────────────────────────────────────────
+    [920587237] = { name = "Adopt Me", scripts = {
+        {name="⭐  Adopt Me Script",  description="Auto-farm, auto-collect bucks & more.",             category="Featured",
+         code=[[loadstring(game:HttpGet("https://raw.githubusercontent.com/Sxripts/adoptme/main/AdoptMe",true))()]]},
+    }},
 }
+
+-- Detect current game at runtime
+local _placeId  = game.PlaceId
+local _entry    = GAME_LIBRARY[_placeId]
+
+-- MainGame is nil when no scripts exist for this game — tab stays hidden
+local MainGame = nil
+if _entry then
+    MainGame = {
+        GAME_NAME  = _entry.name,
+        GAME_PLACE_ID = _placeId,
+        Scripts    = _entry.scripts,
+    }
+end
 
 -- ════════════════════════════════════════════════════════════════
 --  4.  CLEANUP — destroy stale hub if re-executed
@@ -505,12 +432,15 @@ Divider0.BackgroundColor3= C.DIVIDER
 Divider0.BorderSizePixel = 0
 Divider0.Parent          = Sidebar
 
--- Tab buttons
+-- Tab buttons (maingame only shown when a script exists for this game)
 local NAV = {
     {id="universal", label="🌐  Universal",  sub="No key required"},
-    {id="maingame",  label="🔐  "..MainGame.GAME_NAME, sub="72h key from Discord"},
-    {id="settings",  label="⚙️  Settings",   sub="Key & hub config"},
 }
+if MainGame then
+    table.insert(NAV, {id="maingame", label="🔐  "..MainGame.GAME_NAME, sub="72h key from Discord"})
+end
+table.insert(NAV, {id="settings", label="⚙️  Settings", sub="Key & hub config"})
+
 local tabBtns = {}
 for i, tab in ipairs(NAV) do
     local btn = Instance.new("TextButton")
@@ -750,11 +680,15 @@ for i, s in ipairs(Universal.Scripts) do
 end
 
 -- ════════════════════════════════════════════════════════════════
---  11.  PAGE: MAIN GAME  (key gate)
+--  11.  PAGE: MAIN GAME  (key gate — only built when game is supported)
 -- ════════════════════════════════════════════════════════════════
 local keyUnlocked = false
+local PageMainGame = nil
 
-local PageMainGame = Instance.new("Frame")
+if MainGame then
+local PageMainGame_ = Instance.new("Frame")
+PageMainGame = PageMainGame_
+local PageMainGame = PageMainGame_ -- shadow for code below
 PageMainGame.Size               = UDim2.new(1,0,1,0)
 PageMainGame.BackgroundTransparency = 1
 PageMainGame.Visible            = false
@@ -960,6 +894,8 @@ task.spawn(function()
     end
 end)
 
+end -- if MainGame
+
 -- ════════════════════════════════════════════════════════════════
 --  12.  PAGE: SETTINGS
 -- ════════════════════════════════════════════════════════════════
@@ -1019,9 +955,9 @@ end
 sectHeader(12, "ℹ  HUB INFO")
 settRow(36,  "Version",        "2.0")
 settRow(84,  "Key Type",       "72-hour self-signing",  C.WARNING)
-settRow(132, "Target Game",    MainGame.GAME_NAME,      C.ACCENT)
+settRow(132, "Target Game",    MainGame and MainGame.GAME_NAME or "Not supported", MainGame and C.ACCENT or C.SUBTEXT)
 settRow(180, "Keyless Scripts", tostring(#Universal.Scripts).." scripts",  C.SUCCESS)
-settRow(228, "Keyed Scripts",  tostring(#MainGame.Scripts).." scripts",   C.SUCCESS)
+settRow(228, "Keyed Scripts",  MainGame and tostring(#MainGame.Scripts).." scripts" or "N/A — unsupported game", MainGame and C.SUCCESS or C.SUBTEXT)
 
 sectHeader(284, "🔑  KEY STATUS")
 local keyValRow = settRow(308, "Current Key", keyUnlocked and "✔ Unlocked" or "🔒 Locked",
@@ -1063,9 +999,11 @@ howTo.Parent           = PageSettings
 -- ════════════════════════════════════════════════════════════════
 local allPages = {
     universal = PageUniversal,
-    maingame  = PageMainGame,
     settings  = PageSettings,
 }
+if MainGame and PageMainGame then
+    allPages.maingame = PageMainGame
+end
 local currentTab = "universal"
 
 local function switchTab(id)
@@ -1100,4 +1038,4 @@ Window.Size = UDim2.new(0, WIN_W, 0, 0)
 TweenService:Create(Window, TweenInfo.new(0.4, Enum.EasingStyle.Back, Enum.EasingDirection.Out),
     {Size = UDim2.new(0, WIN_W, 0, WIN_H)}):Play()
 
-print("[EmeraldHub] Loaded — run /getkey in Discord to unlock "..MainGame.GAME_NAME.." scripts.")
+print("[EmeraldHub] Loaded — PlaceId "..game.PlaceId..(MainGame and (" → "..MainGame.GAME_NAME.." scripts available.") or " → no keyed scripts for this game."))
