@@ -1,26 +1,11 @@
 /**
  * EmeraldHub Discord Bot
  * Generates self-signing 72-hour keys for the EmeraldHub Roblox script hub.
- *
- * Setup:
- *   1. cp .env.example .env   — fill in DISCORD_TOKEN and HUB_SECRET
- *   2. npm install
- *   3. node bot.js
- *
- * How keys work (no web server needed):
- *   Key = EMERALD-{BASE36_EXPIRY}-{7DIGIT_HASH}
- *   The expiry Unix timestamp is encoded in the key itself.
- *   The hash is derived from (expiry + HUB_SECRET) so keys can't be forged.
- *   The Lua hub decodes and verifies everything locally — zero HTTP calls.
- *
- * User flow:
- *   • User runs /getkey in your Discord server (or the configured channel).
- *   • Bot DMs them a fresh 72-hour key.
- *   • User pastes the key into the EmeraldHub GUI.
- *   • After 72 hours the key stops working; they run /getkey again.
+ * One key per user per 72 hours — cooldown is enforced server-side.
  */
 
 require("dotenv").config();
+const fs = require("fs");
 const { Client, GatewayIntentBits, SlashCommandBuilder, REST, Routes, EmbedBuilder } = require("discord.js");
 
 // ─── CONFIG (read from .env) ──────────────────────────────────────────────────
@@ -31,12 +16,51 @@ const REQUIRED_ROLE_ID  = process.env.REQUIRED_ROLE_ID  || null;
 const GUILD_ID          = process.env.GUILD_ID          || null;
 const KEY_DURATION_SECS = 72 * 60 * 60; // 72 hours
 
+// Cooldown storage — persists across bot restarts
+const COOLDOWNS_FILE = "./cooldowns.json";
+
 if (!TOKEN || TOKEN === "your_bot_token_here") {
     console.error("[EmeraldBot] ERROR: Set DISCORD_TOKEN in your .env file.");
     process.exit(1);
 }
 if (HUB_SECRET === "CHANGE_THIS_TO_YOUR_OWN_SECRET") {
     console.warn("[EmeraldBot] WARNING: HUB_SECRET is still the default. Change it in .env and update Main.lua.");
+}
+
+// ─── COOLDOWN STORAGE ─────────────────────────────────────────────────────────
+
+/** Load the cooldown map from disk. Returns { userId: issuedAtUnixSecs } */
+function loadCooldowns() {
+    try {
+        return JSON.parse(fs.readFileSync(COOLDOWNS_FILE, "utf8"));
+    } catch {
+        return {};
+    }
+}
+
+/** Persist the cooldown map to disk. */
+function saveCooldowns(map) {
+    fs.writeFileSync(COOLDOWNS_FILE, JSON.stringify(map, null, 2));
+}
+
+/**
+ * Check whether a user is still within their 72-hour cooldown.
+ * Returns { onCooldown: bool, secondsLeft: number }
+ */
+function checkCooldown(userId) {
+    const map = loadCooldowns();
+    const issuedAt = map[userId];
+    if (!issuedAt) return { onCooldown: false, secondsLeft: 0 };
+    const secondsLeft = issuedAt + KEY_DURATION_SECS - Math.floor(Date.now() / 1000);
+    if (secondsLeft <= 0) return { onCooldown: false, secondsLeft: 0 };
+    return { onCooldown: true, secondsLeft };
+}
+
+/** Record that a user just received a key. */
+function recordCooldown(userId) {
+    const map = loadCooldowns();
+    map[userId] = Math.floor(Date.now() / 1000);
+    saveCooldowns(map);
 }
 
 // ─── KEY GENERATION ───────────────────────────────────────────────────────────
@@ -151,27 +175,52 @@ client.on("interactionCreate", async (interaction) => {
             }
         }
 
+        // Cooldown gate — one key per 72 hours
+        const { onCooldown, secondsLeft } = checkCooldown(interaction.user.id);
+        if (onCooldown) {
+            const hrs  = Math.floor(secondsLeft / 3600);
+            const mins = Math.floor((secondsLeft % 3600) / 60);
+            const secs = secondsLeft % 60;
+
+            const cooldownEmbed = new EmbedBuilder()
+                .setColor(0xEF4444)
+                .setTitle("⏳  You already have an active key")
+                .setDescription("You can only get one key every **72 hours**.\nYour current key is still valid — paste it into EmeraldHub.")
+                .addFields({
+                    name: "⏱️ Next key available in",
+                    value: `**${hrs}h ${mins}m ${secs}s**`,
+                    inline: false,
+                })
+                .setFooter({ text: "EmeraldHub • Run /keyinfo to check your key" })
+                .setTimestamp();
+
+            return interaction.editReply({ embeds: [cooldownEmbed] });
+        }
+
         const key    = generateKey();
         const expiry = expiryString();
 
         // DM the key
         try {
             const dmEmbed = new EmbedBuilder()
-                .setColor(0x10B981)   // emerald green
+                .setColor(0x10B981)
                 .setTitle("🔑  Your EmeraldHub Key")
                 .setDescription(`\`\`\`\n${key}\n\`\`\``)
                 .addFields(
-                    { name: "⏳ Expires",      value: expiry,     inline: false },
-                    { name: "⏱️ Valid for",    value: "72 hours", inline: true  },
-                    { name: "🎮 How to use",   value: "Open EmeraldHub → Main Game tab → paste the key above → click Unlock.", inline: false },
+                    { name: "⏳ Expires",    value: expiry,     inline: false },
+                    { name: "⏱️ Valid for",  value: "72 hours", inline: true  },
+                    { name: "🎮 How to use", value: "Open EmeraldHub → Main Game tab → paste the key above → click Unlock.", inline: false },
                 )
-                .setFooter({ text: "EmeraldHub • Do not share your key" })
+                .setFooter({ text: "EmeraldHub • Do not share your key — one per 72 hours" })
                 .setTimestamp();
 
             await interaction.user.send({ embeds: [dmEmbed] });
 
+            // Record cooldown only after the DM succeeds
+            recordCooldown(interaction.user.id);
+
             await interaction.editReply({
-                content: "✅ **Your key has been sent via DM!**\nCheck your DMs — it expires in **72 hours**.",
+                content: "✅ **Your key has been sent via DM!**\nCheck your DMs — it expires in **72 hours**. You won't be able to get another key until this one expires.",
             });
 
             console.log(`[EmeraldBot] Key issued to ${interaction.user.tag} (${interaction.user.id}) — expires ${expiry}`);
