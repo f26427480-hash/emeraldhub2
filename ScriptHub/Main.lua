@@ -221,54 +221,34 @@ print("[EmeraldHub] Character hidden")
 -- ════════════════════════════════════════════════════════════════
 local GAME_LIBRARY = {
 
-    -- ── Blox Fruits ───────────────────────────────────────────
-    [2753915549] = { name = "Blox Fruits", scripts = {
-        {name="⭐  Hoho Hub",        description="Full auto-farm, raids, fruit notifier & more.",      category="Featured",
-         code=[[loadstring(game:HttpGet("https://raw.githubusercontent.com/acsu1/hoho/main/hoho",true))()]]},
-        {name="⭐  Zen Hub",         description="Auto quest, boss farm, fruit sniper & stat allocator.", category="Featured",
-         code=[[loadstring(game:HttpGet("https://raw.githubusercontent.com/ZzDefaultzZ/Zen-Hub/main/source",true))()]]},
-    }},
-
-    -- ── Jailbreak ─────────────────────────────────────────────
-    [606849621] = { name = "Jailbreak", scripts = {
-        {name="⭐  Jailbreak Script", description="Auto-rob, auto-arrest, vehicle mods & more.",       category="Featured",
-         code=[[loadstring(game:HttpGet("https://raw.githubusercontent.com/Sxripts/jailbreak/main/JailbreakHub",true))()]]},
-    }},
-
-    -- ── Da Hood ───────────────────────────────────────────────
-    [2788229376] = { name = "Da Hood", scripts = {
-        {name="⭐  Da Hood Script",   description="Aimbot, ESP, infinite cash & more.",                category="Featured",
-         code=[[loadstring(game:HttpGet("https://raw.githubusercontent.com/Sxripts/dahood/main/DaHood",true))()]]},
-    }},
-
     -- ── Murder Mystery 2 ──────────────────────────────────────
     [142823291] = { name = "Murder Mystery 2", scripts = {
-        {name="⭐  MM2 Script",       description="ESP, gun mod, role reveal & more.",                 category="Featured",
-         code=[[loadstring(game:HttpGet("https://raw.githubusercontent.com/Sxripts/mm2/main/MM2",true))()]]},
+        {name="⭐  MM2 Script",       description="ESP, role reveal, gun mods & more.",                category="Featured",
+         code=[[loadstring(game:HttpGet("https://raw.githubusercontent.com/Joystickplays/psychic-octo-invention/main/yarhm.lua", false))()]]},
     }},
 
-    -- ── Arsenal ───────────────────────────────────────────────
-    [286090429] = { name = "Arsenal", scripts = {
-        {name="⭐  Arsenal Script",   description="Aimbot, silent aim, ESP & more.",                   category="Featured",
-         code=[[loadstring(game:HttpGet("https://raw.githubusercontent.com/Sxripts/arsenal/main/Arsenal",true))()]]},
+    -- ── Speed / Keyboard Escape ───────────────────────────────
+    [95082159892680] = { name = "Speed / Keyboard Escape", scripts = {
+        {name="⭐  LuxyHub",          description="Multi-feature hub for Speed / Keyboard Escape.",    category="Featured",
+         code=[[loadstring(game:HttpGet("https://www.luxyhub.space/api/loader/luxyhub"))()]]},
     }},
 
-    -- ── Pet Simulator X ───────────────────────────────────────
-    [6284583030] = { name = "Pet Simulator X", scripts = {
-        {name="⭐  PSX Script",       description="Auto-farm, auto-hatch & more.",                     category="Featured",
-         code=[[loadstring(game:HttpGet("https://raw.githubusercontent.com/Sxripts/psx/main/PSX",true))()]]},
+    -- ── Jjs ───────────────────────────────────────────────────
+    [9391468976] = { name = "Jjs", scripts = {
+        {name="⭐  Jjs Script",       description="Main script for Jjs.",                              category="Featured",
+         code=[[loadstring(game:HttpGet("https://raw.githubusercontent.com/NeziaReal/jjs/refs/heads/main/main.lua"))()]]},
     }},
 
-    -- ── Brookhaven ────────────────────────────────────────────
-    [4924922222] = { name = "Brookhaven RP", scripts = {
-        {name="⭐  Brookhaven Script", description="Admin commands, fly, speed & more.",               category="Featured",
-         code=[[loadstring(game:HttpGet("https://raw.githubusercontent.com/Sxripts/brookhaven/main/Brookhaven",true))()]]},
+    -- ── Animal Hospital ───────────────────────────────────────
+    [78515283254292] = { name = "Animal Hospital", scripts = {
+        {name="⭐  Animal Hospital",  description="Auto-play script for Animal Hospital.",             category="Featured",
+         code=[[loadstring(game:HttpGet("https://raw.githubusercontent.com/caomod2077/Script/refs/heads/main/FN_AnimalHospital.lua"))()]]},
     }},
 
-    -- ── Adopt Me ──────────────────────────────────────────────
-    [920587237] = { name = "Adopt Me", scripts = {
-        {name="⭐  Adopt Me Script",  description="Auto-farm, auto-collect bucks & more.",             category="Featured",
-         code=[[loadstring(game:HttpGet("https://raw.githubusercontent.com/Sxripts/adoptme/main/AdoptMe",true))()]]},
+    -- ── Ink Game ──────────────────────────────────────────────
+    [99567941238278] = { name = "Ink Game", scripts = {
+        {name="⭐  Ink Game Script",  description="Main script for Ink Game.",                         category="Featured",
+         code=[[loadstring(game:HttpGet("https://raw.githubusercontent.com/wefwef127382/inkgames.github.io/refs/heads/main/ringta.lua"))()]]},
     }},
 }
 
