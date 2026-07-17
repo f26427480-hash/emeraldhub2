@@ -77,7 +77,9 @@ function hubHash(s) {
     for (let i = 0; i < s.length; i++) {
         h = (h * 31n + BigInt(s.charCodeAt(i))) % MOD;
     }
-    return h.toString().padStart(7, "0");
+    // Clamp to exactly 7 digits — MOD can produce up to 10 digits
+    // which breaks the EMERALD-...-\d{7} regex on both sides.
+    return (h % 10_000_000n).toString().padStart(7, "0");
 }
 
 /**

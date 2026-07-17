@@ -40,7 +40,9 @@ local KeySystem = (function()
         for i = 1, #s do
             h = (h * 31 + s:byte(i)) % MOD
         end
-        return string.format("%07d", h)
+        -- Clamp to exactly 7 digits — MOD can produce up to 10 digits
+        -- which breaks the EMERALD-...-\d{7} regex match.
+        return string.format("%07d", h % 10000000)
     end
 
     local function b36decode(s)
