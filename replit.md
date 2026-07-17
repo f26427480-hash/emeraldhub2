@@ -1,45 +1,43 @@
-# [Project name]
+# EmeraldHub Discord Bot
 
-_Replace the heading above with the project's name, and this line with one sentence describing what this app does for users._
+A Discord bot that generates self-signing 72-hour keys for the EmeraldHub Roblox script hub. No database or web server required — keys are signed with a shared secret and verified locally in Lua.
 
-## Run & Operate
+## How to Run
 
-- `pnpm --filter @workspace/api-server run dev` — run the API server (port 5000)
-- `pnpm run typecheck` — full typecheck across all packages
-- `pnpm run build` — typecheck + build all packages
-- `pnpm --filter @workspace/api-spec run codegen` — regenerate API hooks and Zod schemas from the OpenAPI spec
-- `pnpm --filter @workspace/db run push` — push DB schema changes (dev only)
-- Required env: `DATABASE_URL` — Postgres connection string
+The workflow **EmeraldHub Discord Bot** runs the bot automatically:
+```
+cd EmeraldBot && node bot.js
+```
 
-## Stack
+## Required Secrets
 
-- pnpm workspaces, Node.js 24, TypeScript 5.9
-- API: Express 5
-- DB: PostgreSQL + Drizzle ORM
-- Validation: Zod (`zod/v4`), `drizzle-zod`
-- API codegen: Orval (from OpenAPI spec)
-- Build: esbuild (CJS bundle)
+Set these in Replit Secrets (already configured):
 
-## Where things live
+| Secret | Description |
+|--------|-------------|
+| `DISCORD_TOKEN` | Bot token from the Discord Developer Portal |
+| `HUB_SECRET` | Shared secret — must exactly match `HUB_SECRET` in `Main.lua` |
 
-_Populate as you build — short repo map plus pointers to the source-of-truth file for DB schema, API contracts, theme files, etc._
+## Optional Environment Variables
 
-## Architecture decisions
+Set these as Replit Secrets if needed:
 
-_Populate as you build — non-obvious choices a reader couldn't infer from the code (3-5 bullets)._
+| Variable | Description |
+|----------|-------------|
+| `KEYGEN_CHANNEL_ID` | Restrict `/getkey` to a specific Discord channel |
+| `REQUIRED_ROLE_ID` | Require a specific role before users can get a key |
+| `GUILD_ID` | Your server ID — makes slash commands register instantly |
 
-## Product
+## Bot Commands
 
-_Describe the high-level user-facing capabilities of this app once they exist._
+| Command | Description |
+|---------|-------------|
+| `/getkey` | DMs the user a fresh 72-hour key |
+| `/keyinfo <key>` | Shows how long a key is still valid |
+| `/hubinfo` | Shows EmeraldHub info and instructions |
 
-## User preferences
+## Revoking All Keys
 
-_Populate as you build — explicit user instructions worth remembering across sessions._
+Change `HUB_SECRET` in Replit Secrets **and** in `Main.lua` to a new random value. All existing keys become invalid immediately.
 
-## Gotchas
-
-_Populate as you build — sharp edges, "always run X before Y" rules._
-
-## Pointers
-
-- See the `pnpm-workspace` skill for workspace structure, TypeScript setup, and package details
+## User Preferences
