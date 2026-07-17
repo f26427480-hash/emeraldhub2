@@ -285,8 +285,8 @@ local LOGO_TS    = isMobile and 14     or 15
 -- ════════════════════════════════════════════════════════════════
 local MUSIC_PLAYLIST = {
     { name = "Kutmueziek",  id = 0 },   -- ← paste Roblox audio asset ID here
-    { name = "Misery",      id = 0 },   -- ← paste Roblox audio asset ID here
-    { name = "Meant to Be", id = 0 },   -- ← paste Roblox audio asset ID here
+    { name = "Misery",      id = 1838776351 },   -- ← paste Roblox audio asset ID here
+    { name = "Meant to Be", id = 138323881451411 },   -- ← paste Roblox audio asset ID here
 }
 local _musicIdx = 1
 
