@@ -1,6 +1,6 @@
 --[[
 ╔══════════════════════════════════════════════════════════════╗
-║              E M E R A L D   H U B   v2.0                   ║
+║              E M E R A L D   H U B   v2.1                   ║
 ║         Universal (Keyless) + Main Game (Keyed)              ║
 ║                                                              ║
 ║  SETUP — change these two values to match your bot:          ║
@@ -34,7 +34,6 @@ local KeySystem = (function()
     local M = {}
     M.KEY_FILE = "EmeraldHub_Key.txt"
 
-    -- Same polynomial hash used in bot.js (mod 1_000_000_007 = safe in both Lua doubles and JS)
     local MOD = 1000000007
     local function hubHash(s)
         local h = 0
@@ -44,60 +43,38 @@ local KeySystem = (function()
         return string.format("%07d", h)
     end
 
-    -- Decode a base-36 string to a Lua integer
     local function b36decode(s)
         local n = 0
         for i = 1, #s do
             local c = s:sub(i, i):upper()
-            local v = tonumber(c) or (c:byte() - 55) -- A=10..Z=35
+            local v = tonumber(c) or (c:byte() - 55)
             n = n * 36 + v
         end
         return n
     end
 
-    -- Returns ok (bool), message (string), secondsRemaining (number or nil)
     function M.Validate(input)
-        if not input or input == "" then
-            return false, "No key entered.", nil
-        end
+        if not input or input == "" then return false, "No key entered.", nil end
         local key = input:gsub("%s+", ""):upper()
-        -- Expected format: EMERALD-{BASE36}-{7DIGITS}
         local expB36, hash = key:match("^EMERALD%-([A-Z0-9]+)%-(%d%d%d%d%d%d%d)$")
-        if not expB36 then
-            return false, "Invalid format. Keys look like:\nEMERALD-XXXXX-0000000", nil
-        end
-        -- Verify signature first
+        if not expB36 then return false, "Invalid format. Keys look like:\nEMERALD-XXXXX-0000000", nil end
         local expected = hubHash(expB36 .. HUB_SECRET)
-        if hash ~= expected then
-            return false, "Invalid key — not issued by EmeraldHub.", nil
-        end
-        -- Check expiry
+        if hash ~= expected then return false, "Invalid key — not issued by EmeraldHub.", nil end
         local expiry = b36decode(expB36)
         local remaining = expiry - os.time()
-        if remaining <= 0 then
-            return false, "Key expired. Run /getkey in Discord for a new one.", nil
-        end
+        if remaining <= 0 then return false, "Key expired. Run /getkey in Discord for a new one.", nil end
         local hrs  = math.floor(remaining / 3600)
         local mins = math.floor((remaining % 3600) / 60)
         return true, string.format("Key valid — %dh %dm remaining.", hrs, mins), remaining
     end
 
-    -- Save raw key text locally so user doesn't retype every session
-    function M.Save(key)
-        pcall(writefile, M.KEY_FILE, key:upper():gsub("%s+", ""))
-    end
-
-    -- Load saved key or nil
+    function M.Save(key)  pcall(writefile, M.KEY_FILE, key:upper():gsub("%s+", "")) end
     function M.Load()
         local ok, data = pcall(readfile, M.KEY_FILE)
         if ok and data and data ~= "" then return data end
         return nil
     end
-
-    function M.Clear()
-        pcall(delfile, M.KEY_FILE)
-    end
-
+    function M.Clear() pcall(delfile, M.KEY_FILE) end
     return M
 end)()
 
@@ -106,7 +83,6 @@ end)()
 -- ════════════════════════════════════════════════════════════════
 local Universal = {}
 Universal.Scripts = {
-    -- ── MOVEMENT ──────────────────────────────────────────────
     {name="Infinite Jump",     description="Jump again in mid-air.",                              category="Movement",
      code=[[
 local UIS=game:GetService("UserInputService")
@@ -166,7 +142,6 @@ local lp=game:GetService("Players").LocalPlayer local nc=false
 UIS.InputBegan:Connect(function(i,g) if g then return end if i.KeyCode==Enum.KeyCode.N then nc=not nc print("[EmeraldHub] Noclip "..(nc and "ON" or "OFF")) end end)
 RS.Stepped:Connect(function() if nc and lp.Character then for _,p in ipairs(lp.Character:GetDescendants()) do if p:IsA("BasePart") then p.CanCollide=false end end end end)
 ]]},
-    -- ── VISUAL ────────────────────────────────────────────────
     {name="Player ESP",        description="Highlights all players in red.",                      category="Visual",
      code=[[
 local Players=game:GetService("Players") local lp=Players.LocalPlayer local store={}
@@ -189,7 +164,6 @@ print("[EmeraldHub] Fullbright ON")
 ]]},
     {name="FOV → 90",          description="Sets camera field of view to 90.",                   category="Visual",
      code=[[workspace.CurrentCamera.FieldOfView=90 print("[EmeraldHub] FOV → 90")]]},
-    -- ── UTILITY ───────────────────────────────────────────────
     {name="Anti-AFK",          description="Prevents the idle kick.",                            category="Utility",
      code=[[
 local VU=game:GetService("VirtualUser")
@@ -216,54 +190,35 @@ print("[EmeraldHub] Character hidden")
 
 -- ════════════════════════════════════════════════════════════════
 --  3.  GAME LIBRARY  (keyed — auto-detected from game.PlaceId)
---      Add any game here; the tab only appears when the player
---      is actually in a supported game.
 -- ════════════════════════════════════════════════════════════════
 local GAME_LIBRARY = {
-
-    -- ── Murder Mystery 2 ──────────────────────────────────────
     [142823291] = { name = "Murder Mystery 2", scripts = {
         {name="⭐  MM2 Script",       description="ESP, role reveal, gun mods & more.",                category="Featured",
          code=[[loadstring(game:HttpGet("https://raw.githubusercontent.com/Joystickplays/psychic-octo-invention/main/yarhm.lua", false))()]]},
     }},
-
-    -- ── Speed / Keyboard Escape ───────────────────────────────
     [95082159892680] = { name = "Speed / Keyboard Escape", scripts = {
         {name="⭐  LuxyHub",          description="Multi-feature hub for Speed / Keyboard Escape.",    category="Featured",
          code=[[loadstring(game:HttpGet("https://www.luxyhub.space/api/loader/luxyhub"))()]]},
     }},
-
-    -- ── Jjs ───────────────────────────────────────────────────
     [9391468976] = { name = "Jjs", scripts = {
         {name="⭐  Jjs Script",       description="Main script for Jjs.",                              category="Featured",
          code=[[loadstring(game:HttpGet("https://raw.githubusercontent.com/NeziaReal/jjs/refs/heads/main/main.lua"))()]]},
     }},
-
-    -- ── Animal Hospital ───────────────────────────────────────
     [78515283254292] = { name = "Animal Hospital", scripts = {
         {name="⭐  Animal Hospital",  description="Auto-play script for Animal Hospital.",             category="Featured",
          code=[[loadstring(game:HttpGet("https://raw.githubusercontent.com/caomod2077/Script/refs/heads/main/FN_AnimalHospital.lua"))()]]},
     }},
-
-    -- ── Ink Game ──────────────────────────────────────────────
     [99567941238278] = { name = "Ink Game", scripts = {
         {name="⭐  Ink Game Script",  description="Main script for Ink Game.",                         category="Featured",
          code=[[loadstring(game:HttpGet("https://raw.githubusercontent.com/wefwef127382/inkgames.github.io/refs/heads/main/ringta.lua"))()]]},
     }},
 }
 
--- Detect current game at runtime
-local _placeId  = game.PlaceId
-local _entry    = GAME_LIBRARY[_placeId]
-
--- MainGame is nil when no scripts exist for this game — tab stays hidden
+local _placeId = game.PlaceId
+local _entry   = GAME_LIBRARY[_placeId]
 local MainGame = nil
 if _entry then
-    MainGame = {
-        GAME_NAME  = _entry.name,
-        GAME_PLACE_ID = _placeId,
-        Scripts    = _entry.scripts,
-    }
+    MainGame = { GAME_NAME = _entry.name, GAME_PLACE_ID = _placeId, Scripts = _entry.scripts }
 end
 
 -- ════════════════════════════════════════════════════════════════
@@ -284,8 +239,8 @@ local C = {
     SIDEBAR  = Color3.fromRGB(14,  20,  28),
     CARD     = Color3.fromRGB(18,  26,  36),
     CARDH    = Color3.fromRGB(22,  34,  46),
-    ACCENT   = Color3.fromRGB(16,  185, 129),   -- emerald
-    ACCENT2  = Color3.fromRGB(5,   150, 105),   -- darker emerald
+    ACCENT   = Color3.fromRGB(16,  185, 129),
+    ACCENT2  = Color3.fromRGB(5,   150, 105),
     DANGER   = Color3.fromRGB(239, 68,  68),
     SUCCESS  = Color3.fromRGB(16,  185, 129),
     WARNING  = Color3.fromRGB(234, 179, 8),
@@ -300,15 +255,73 @@ local FONT_SEMI = Enum.Font.GothamSemibold
 local FONT_BODY = Enum.Font.Gotham
 
 -- ════════════════════════════════════════════════════════════════
+--  5b. SERVICES & MOBILE DETECTION
+-- ════════════════════════════════════════════════════════════════
+local TweenService = game:GetService("TweenService")
+local UIS          = game:GetService("UserInputService")
+
+local PLATFORM  = UIS:GetPlatform()
+local isMobile  = PLATFORM == Enum.Platform.IOS
+               or PLATFORM == Enum.Platform.Android
+               or PLATFORM == Enum.Platform.UWP
+
+-- Layout constants — adapt per platform
+local CAM        = workspace.CurrentCamera
+local VPS        = CAM.ViewportSize
+local WIN_W      = isMobile and VPS.X  or 820
+local WIN_H      = isMobile and VPS.Y  or 520
+local SIDEBAR_W  = isMobile and 0      or 176  -- sidebar hidden on mobile
+local BOTTOM_H   = isMobile and 54     or 0    -- bottom nav on mobile
+local CARD_H     = isMobile and 82     or 72   -- taller touch targets
+local BTN_H      = isMobile and 34     or 26
+local BTN_TS     = isMobile and 14     or 12
+local LOGO_TS    = isMobile and 14     or 15
+
+-- ════════════════════════════════════════════════════════════════
+--  5c. MUSIC SYSTEM
+--      Replace the 0 IDs below with your actual Roblox audio IDs.
+--      Find them on the audio page: roblox.com/catalog?Category=Audio
+--      Example: if the URL is /catalog/1234567890/Song-Name use 1234567890
+-- ════════════════════════════════════════════════════════════════
+local MUSIC_PLAYLIST = {
+    { name = "Kutmueziek",  id = 0 },   -- ← paste Roblox audio asset ID here
+    { name = "Misery",      id = 0 },   -- ← paste Roblox audio asset ID here
+    { name = "Meant to Be", id = 0 },   -- ← paste Roblox audio asset ID here
+}
+local _musicIdx = 1
+
+task.spawn(function()
+    local SS  = game:GetService("SoundService")
+    -- Remove any stale music from a previous execution
+    local old = SS:FindFirstChild("EmeraldHub_Music")
+    if old then old:Destroy() end
+
+    local snd = Instance.new("Sound")
+    snd.Name   = "EmeraldHub_Music"
+    snd.Volume = 0.35
+    snd.RollOffMaxDistance = 1e6
+    snd.Parent = SS
+
+    local function playNext()
+        local track = MUSIC_PLAYLIST[_musicIdx]
+        _musicIdx = (_musicIdx % #MUSIC_PLAYLIST) + 1
+        if track and track.id ~= 0 then
+            snd.SoundId = "rbxassetid://" .. track.id
+            snd:Play()
+        end
+    end
+
+    playNext()
+    snd.Ended:Connect(function() task.wait(0.3) playNext() end)
+end)
+
+-- ════════════════════════════════════════════════════════════════
 --  6.  SCREEN GUI
 -- ════════════════════════════════════════════════════════════════
 local function guiParent()
     local ok, cg = pcall(function() return game:GetService("CoreGui") end)
     return (ok and cg) or game:GetService("Players").LocalPlayer:WaitForChild("PlayerGui")
 end
-
-local TweenService = game:GetService("TweenService")
-local UIS          = game:GetService("UserInputService")
 
 local ScreenGui = Instance.new("ScreenGui")
 ScreenGui.Name           = "EmeraldHub_GUI"
@@ -318,34 +331,41 @@ ScreenGui.DisplayOrder   = 99
 ScreenGui.IgnoreGuiInset = true
 ScreenGui.Parent         = guiParent()
 
-local WIN_W, WIN_H = 820, 520
+-- ── Window frame ──────────────────────────────────────────────
 local Window = Instance.new("Frame")
 Window.Name             = "Window"
 Window.Size             = UDim2.new(0, WIN_W, 0, WIN_H)
-Window.Position         = UDim2.new(0.5, -WIN_W/2, 0.5, -WIN_H/2)
 Window.BackgroundColor3 = C.BG
 Window.BorderSizePixel  = 0
 Window.ClipsDescendants = true
 Window.Parent           = ScreenGui
-Instance.new("UICorner", Window).CornerRadius = UDim.new(0, 12)
 
--- Subtle outer glow
-local Glow = Instance.new("Frame")
-Glow.Size                   = UDim2.new(1, 24, 1, 24)
-Glow.Position               = UDim2.new(0, -12, 0, -4)
-Glow.BackgroundColor3       = C.ACCENT
-Glow.BackgroundTransparency = 0.82
-Glow.BorderSizePixel        = 0
-Glow.ZIndex                 = 0
-Glow.Parent                 = Window
-Instance.new("UICorner", Glow).CornerRadius = UDim.new(0, 16)
+if isMobile then
+    -- Full screen, anchored top-left
+    Window.Position = UDim2.new(0, 0, 0, 0)
+    Instance.new("UICorner", Window).CornerRadius = UDim.new(0, 0)
+else
+    -- Centered floating window with rounded corners
+    Window.Position = UDim2.new(0.5, -WIN_W/2, 0.5, -WIN_H/2)
+    Instance.new("UICorner", Window).CornerRadius = UDim.new(0, 12)
 
--- Drag
-do
+    -- Subtle outer glow (desktop only)
+    local Glow = Instance.new("Frame")
+    Glow.Size                   = UDim2.new(1, 24, 1, 24)
+    Glow.Position               = UDim2.new(0, -12, 0, -4)
+    Glow.BackgroundColor3       = C.ACCENT
+    Glow.BackgroundTransparency = 0.82
+    Glow.BorderSizePixel        = 0
+    Glow.ZIndex                 = 0
+    Glow.Parent                 = Window
+    Instance.new("UICorner", Glow).CornerRadius = UDim.new(0, 16)
+end
+
+-- ── Drag (desktop only) ───────────────────────────────────────
+if not isMobile then
     local dragging, dragStart, startPos = false
     Window.InputBegan:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseButton1 or
-           input.UserInputType == Enum.UserInputType.Touch then
+        if input.UserInputType == Enum.UserInputType.MouseButton1 then
             dragging  = true
             dragStart = input.Position
             startPos  = Window.Position
@@ -355,8 +375,7 @@ do
         end
     end)
     UIS.InputChanged:Connect(function(input)
-        if dragging and (input.UserInputType == Enum.UserInputType.MouseMovement or
-                         input.UserInputType == Enum.UserInputType.Touch) then
+        if dragging and input.UserInputType == Enum.UserInputType.MouseMovement then
             local d = input.Position - dragStart
             Window.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + d.X,
                                          startPos.Y.Scale, startPos.Y.Offset + d.Y)
@@ -365,131 +384,318 @@ do
 end
 
 -- ════════════════════════════════════════════════════════════════
---  7.  SIDEBAR
+--  6b. LOADING SCREEN
 -- ════════════════════════════════════════════════════════════════
-local Sidebar = Instance.new("Frame")
-Sidebar.Size             = UDim2.new(0, 176, 1, 0)
-Sidebar.BackgroundColor3 = C.SIDEBAR
-Sidebar.BorderSizePixel  = 0
-Sidebar.Parent           = Window
-Instance.new("UICorner", Sidebar).CornerRadius = UDim.new(0, 12)
+local LoadScreen = Instance.new("Frame")
+LoadScreen.Name              = "LoadScreen"
+LoadScreen.Size              = UDim2.new(1, 0, 1, 0)
+LoadScreen.BackgroundColor3  = C.BG
+LoadScreen.BorderSizePixel   = 0
+LoadScreen.ZIndex            = 200
+LoadScreen.Parent            = Window
 
--- Right-edge square filler so sidebar flush-connects to content area
-local SBFill = Instance.new("Frame")
-SBFill.Size             = UDim2.new(0, 12, 1, 0)
-SBFill.Position         = UDim2.new(1, -12, 0, 0)
-SBFill.BackgroundColor3 = C.SIDEBAR
-SBFill.BorderSizePixel  = 0
-SBFill.Parent           = Sidebar
+-- Emerald diamond / logo
+local LLogo = Instance.new("TextLabel")
+LLogo.Size                  = UDim2.new(0.8, 0, 0, 44)
+LLogo.Position              = UDim2.new(0.1, 0, 0.38, 0)
+LLogo.BackgroundTransparency = 1
+LLogo.Text                  = "💎  EMERALD HUB"
+LLogo.TextColor3            = C.ACCENT
+LLogo.Font                  = FONT
+LLogo.TextSize              = isMobile and 30 or 26
+LLogo.ZIndex                = 201
+LLogo.Parent                = LoadScreen
 
--- Logo
-local LogoLabel = Instance.new("TextLabel")
-LogoLabel.Size           = UDim2.new(1, -16, 0, 26)
-LogoLabel.Position       = UDim2.new(0, 10, 0, 16)
-LogoLabel.BackgroundTransparency = 1
-LogoLabel.Text           = "💎  EMERALD HUB"
-LogoLabel.TextColor3     = C.ACCENT
-LogoLabel.Font           = FONT
-LogoLabel.TextSize       = 15
-LogoLabel.TextXAlignment = Enum.TextXAlignment.Left
-LogoLabel.Parent         = Sidebar
+local LVer = Instance.new("TextLabel")
+LVer.Size                   = UDim2.new(0.8, 0, 0, 20)
+LVer.Position               = UDim2.new(0.1, 0, 0.38, 50)
+LVer.BackgroundTransparency = 1
+LVer.Text                   = "v2.1  •  72hr Keyed"
+LVer.TextColor3             = C.SUBTEXT
+LVer.Font                   = FONT_BODY
+LVer.TextSize               = 13
+LVer.ZIndex                 = 201
+LVer.Parent                 = LoadScreen
 
-local VerLabel = Instance.new("TextLabel")
-VerLabel.Size            = UDim2.new(1, -16, 0, 14)
-VerLabel.Position        = UDim2.new(0, 10, 0, 44)
-VerLabel.BackgroundTransparency = 1
-VerLabel.Text            = "v2.0  •  72hr Keyed"
-VerLabel.TextColor3      = C.SUBTEXT
-VerLabel.Font            = FONT_BODY
-VerLabel.TextSize        = 11
-VerLabel.TextXAlignment  = Enum.TextXAlignment.Left
-VerLabel.Parent          = Sidebar
+local LSub = Instance.new("TextLabel")
+LSub.Size                   = UDim2.new(0.8, 0, 0, 18)
+LSub.Position               = UDim2.new(0.1, 0, 0.38, 80)
+LSub.BackgroundTransparency = 1
+LSub.Text                   = "Loading scripts…"
+LSub.TextColor3             = C.SUBTEXT
+LSub.Font                   = FONT_BODY
+LSub.TextSize               = 12
+LSub.ZIndex                 = 201
+LSub.Parent                 = LoadScreen
 
-local Divider0 = Instance.new("Frame")
-Divider0.Size            = UDim2.new(1, -20, 0, 1)
-Divider0.Position        = UDim2.new(0, 10, 0, 68)
-Divider0.BackgroundColor3= C.DIVIDER
-Divider0.BorderSizePixel = 0
-Divider0.Parent          = Sidebar
+-- Progress bar
+local LBarW  = isMobile and 240 or 200
+local LBarBG = Instance.new("Frame")
+LBarBG.Size             = UDim2.new(0, LBarW, 0, 4)
+LBarBG.Position         = UDim2.new(0.5, -LBarW/2, 0.38, 108)
+LBarBG.BackgroundColor3 = C.DIVIDER
+LBarBG.BorderSizePixel  = 0
+LBarBG.ZIndex           = 201
+LBarBG.Parent           = LoadScreen
+Instance.new("UICorner", LBarBG).CornerRadius = UDim.new(0, 2)
 
--- Tab buttons (maingame only shown when a script exists for this game)
+local LBar = Instance.new("Frame")
+LBar.Size             = UDim2.new(0, 0, 1, 0)
+LBar.BackgroundColor3 = C.ACCENT
+LBar.BorderSizePixel  = 0
+LBar.ZIndex           = 202
+LBar.Parent           = LBarBG
+Instance.new("UICorner", LBar).CornerRadius = UDim.new(0, 2)
+
+-- Animate and dismiss
+task.spawn(function()
+    TweenService:Create(LBar, TweenInfo.new(1.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
+        {Size = UDim2.new(1, 0, 1, 0)}):Play()
+    task.wait(1.4)
+    LSub.Text = "Ready! 💎"
+    task.wait(0.3)
+    -- Fade children first
+    for _, ch in ipairs(LoadScreen:GetChildren()) do
+        if ch:IsA("TextLabel") then
+            TweenService:Create(ch, TweenInfo.new(0.35), {TextTransparency = 1}):Play()
+        elseif ch:IsA("Frame") then
+            TweenService:Create(ch, TweenInfo.new(0.35), {BackgroundTransparency = 1}):Play()
+        end
+    end
+    TweenService:Create(LoadScreen, TweenInfo.new(0.4, Enum.EasingStyle.Quad),
+        {BackgroundTransparency = 1}):Play()
+    task.wait(0.45)
+    LoadScreen:Destroy()
+end)
+
+-- ════════════════════════════════════════════════════════════════
+--  7.  NAVIGATION
+--      Desktop → left sidebar   |   Mobile → bottom nav bar
+-- ════════════════════════════════════════════════════════════════
 local NAV = {
-    {id="universal", label="🌐  Universal",  sub="No key required"},
+    {id="universal", label="🌐  Universal",  icon="🌐", short="Universal",  sub="No key required"},
 }
 if MainGame then
-    table.insert(NAV, {id="maingame", label="🔐  "..MainGame.GAME_NAME, sub="72h key from Discord"})
+    table.insert(NAV, {id="maingame", label="🔐  "..MainGame.GAME_NAME, icon="🔐", short=MainGame.GAME_NAME:sub(1,10), sub="72h key from Discord"})
 end
-table.insert(NAV, {id="settings", label="⚙️  Settings", sub="Key & hub config"})
+table.insert(NAV, {id="settings", label="⚙️  Settings", icon="⚙️", short="Settings", sub="Key & hub config"})
 
 local tabBtns = {}
-for i, tab in ipairs(NAV) do
-    local btn = Instance.new("TextButton")
-    btn.Name             = "Tab_"..tab.id
-    btn.Size             = UDim2.new(1, -14, 0, 52)
-    btn.Position         = UDim2.new(0, 7, 0, 76 + (i-1)*58)
-    btn.BackgroundColor3 = C.SIDEBAR
-    btn.BorderSizePixel  = 0
-    btn.Text             = ""
-    btn.AutoButtonColor  = false
-    btn.Parent           = Sidebar
-    Instance.new("UICorner", btn).CornerRadius = UDim.new(0, 8)
 
-    local lbl = Instance.new("TextLabel")
-    lbl.Size             = UDim2.new(1, -14, 0, 20)
-    lbl.Position         = UDim2.new(0, 12, 0, 8)
-    lbl.BackgroundTransparency = 1
-    lbl.Text             = tab.label
-    lbl.TextColor3       = C.SUBTEXT
-    lbl.Font             = FONT_SEMI
-    lbl.TextSize         = 13
-    lbl.TextXAlignment   = Enum.TextXAlignment.Left
-    lbl.Parent           = btn
+if isMobile then
+    -- ── MOBILE: Bottom navigation bar ────────────────────────────
+    local BottomNav = Instance.new("Frame")
+    BottomNav.Name             = "BottomNav"
+    BottomNav.Size             = UDim2.new(1, 0, 0, BOTTOM_H)
+    BottomNav.Position         = UDim2.new(0, 0, 1, -BOTTOM_H)
+    BottomNav.BackgroundColor3 = C.SIDEBAR
+    BottomNav.BorderSizePixel  = 0
+    BottomNav.ZIndex           = 10
+    BottomNav.Parent           = Window
 
-    local sub = Instance.new("TextLabel")
-    sub.Size             = UDim2.new(1, -14, 0, 14)
-    sub.Position         = UDim2.new(0, 12, 0, 30)
-    sub.BackgroundTransparency = 1
-    sub.Text             = tab.sub
-    sub.TextColor3       = C.SUBTEXT
-    sub.Font             = FONT_BODY
-    sub.TextSize         = 10
-    sub.TextXAlignment   = Enum.TextXAlignment.Left
-    sub.Parent           = btn
+    -- Top divider line
+    local NavDivider = Instance.new("Frame")
+    NavDivider.Size             = UDim2.new(1, 0, 0, 1)
+    NavDivider.BackgroundColor3 = C.ACCENT
+    NavDivider.BackgroundTransparency = 0.6
+    NavDivider.BorderSizePixel  = 0
+    NavDivider.ZIndex           = 11
+    NavDivider.Parent           = BottomNav
 
-    tabBtns[tab.id] = {btn=btn, lbl=lbl, sub=sub}
+    local btnW = math.floor(WIN_W / #NAV)
+    for i, tab in ipairs(NAV) do
+        local btn = Instance.new("TextButton")
+        btn.Name             = "Tab_"..tab.id
+        btn.Size             = UDim2.new(0, btnW, 1, -1)
+        btn.Position         = UDim2.new(0, (i-1)*btnW, 0, 1)
+        btn.BackgroundColor3 = C.SIDEBAR
+        btn.BorderSizePixel  = 0
+        btn.Text             = ""
+        btn.AutoButtonColor  = false
+        btn.ZIndex           = 11
+        btn.Parent           = BottomNav
+
+        local ico = Instance.new("TextLabel")
+        ico.Size             = UDim2.new(1, 0, 0, 22)
+        ico.Position         = UDim2.new(0, 0, 0, 5)
+        ico.BackgroundTransparency = 1
+        ico.Text             = tab.icon
+        ico.TextColor3       = C.SUBTEXT
+        ico.Font             = FONT_SEMI
+        ico.TextSize         = 16
+        ico.ZIndex           = 12
+        ico.Parent           = btn
+
+        local lbl = Instance.new("TextLabel")
+        lbl.Size             = UDim2.new(1, 0, 0, 14)
+        lbl.Position         = UDim2.new(0, 0, 0, 28)
+        lbl.BackgroundTransparency = 1
+        lbl.Text             = tab.short
+        lbl.TextColor3       = C.SUBTEXT
+        lbl.Font             = FONT_SEMI
+        lbl.TextSize         = 10
+        lbl.ZIndex           = 12
+        lbl.Parent           = btn
+
+        -- Active indicator stripe
+        local stripe = Instance.new("Frame")
+        stripe.Name             = "Stripe"
+        stripe.Size             = UDim2.new(0.6, 0, 0, 2)
+        stripe.Position         = UDim2.new(0.2, 0, 0, 1)
+        stripe.BackgroundColor3 = C.ACCENT
+        stripe.BorderSizePixel  = 0
+        stripe.BackgroundTransparency = 1  -- hidden until active
+        stripe.ZIndex           = 12
+        stripe.Parent           = btn
+        Instance.new("UICorner", stripe).CornerRadius = UDim.new(0, 1)
+
+        tabBtns[tab.id] = {btn=btn, lbl=lbl, ico=ico, stripe=stripe}
+    end
+
+else
+    -- ── DESKTOP: Left sidebar ─────────────────────────────────────
+    local Sidebar = Instance.new("Frame")
+    Sidebar.Size             = UDim2.new(0, SIDEBAR_W, 1, 0)
+    Sidebar.BackgroundColor3 = C.SIDEBAR
+    Sidebar.BorderSizePixel  = 0
+    Sidebar.Parent           = Window
+    Instance.new("UICorner", Sidebar).CornerRadius = UDim.new(0, 12)
+
+    local SBFill = Instance.new("Frame")
+    SBFill.Size             = UDim2.new(0, 12, 1, 0)
+    SBFill.Position         = UDim2.new(1, -12, 0, 0)
+    SBFill.BackgroundColor3 = C.SIDEBAR
+    SBFill.BorderSizePixel  = 0
+    SBFill.Parent           = Sidebar
+
+    local LogoLabel = Instance.new("TextLabel")
+    LogoLabel.Size           = UDim2.new(1, -16, 0, 26)
+    LogoLabel.Position       = UDim2.new(0, 10, 0, 16)
+    LogoLabel.BackgroundTransparency = 1
+    LogoLabel.Text           = "💎  EMERALD HUB"
+    LogoLabel.TextColor3     = C.ACCENT
+    LogoLabel.Font           = FONT
+    LogoLabel.TextSize       = LOGO_TS
+    LogoLabel.TextXAlignment = Enum.TextXAlignment.Left
+    LogoLabel.Parent         = Sidebar
+
+    local VerLabel = Instance.new("TextLabel")
+    VerLabel.Size            = UDim2.new(1, -16, 0, 14)
+    VerLabel.Position        = UDim2.new(0, 10, 0, 44)
+    VerLabel.BackgroundTransparency = 1
+    VerLabel.Text            = "v2.1  •  72hr Keyed"
+    VerLabel.TextColor3      = C.SUBTEXT
+    VerLabel.Font            = FONT_BODY
+    VerLabel.TextSize        = 11
+    VerLabel.TextXAlignment  = Enum.TextXAlignment.Left
+    VerLabel.Parent          = Sidebar
+
+    local Divider0 = Instance.new("Frame")
+    Divider0.Size            = UDim2.new(1, -20, 0, 1)
+    Divider0.Position        = UDim2.new(0, 10, 0, 68)
+    Divider0.BackgroundColor3= C.DIVIDER
+    Divider0.BorderSizePixel = 0
+    Divider0.Parent          = Sidebar
+
+    for i, tab in ipairs(NAV) do
+        local btn = Instance.new("TextButton")
+        btn.Name             = "Tab_"..tab.id
+        btn.Size             = UDim2.new(1, -14, 0, 52)
+        btn.Position         = UDim2.new(0, 7, 0, 76 + (i-1)*58)
+        btn.BackgroundColor3 = C.SIDEBAR
+        btn.BorderSizePixel  = 0
+        btn.Text             = ""
+        btn.AutoButtonColor  = false
+        btn.Parent           = Sidebar
+        Instance.new("UICorner", btn).CornerRadius = UDim.new(0, 8)
+
+        local lbl = Instance.new("TextLabel")
+        lbl.Size             = UDim2.new(1, -14, 0, 20)
+        lbl.Position         = UDim2.new(0, 12, 0, 8)
+        lbl.BackgroundTransparency = 1
+        lbl.Text             = tab.label
+        lbl.TextColor3       = C.SUBTEXT
+        lbl.Font             = FONT_SEMI
+        lbl.TextSize         = 13
+        lbl.TextXAlignment   = Enum.TextXAlignment.Left
+        lbl.Parent           = btn
+
+        local sub = Instance.new("TextLabel")
+        sub.Size             = UDim2.new(1, -14, 0, 14)
+        sub.Position         = UDim2.new(0, 12, 0, 30)
+        sub.BackgroundTransparency = 1
+        sub.Text             = tab.sub
+        sub.TextColor3       = C.SUBTEXT
+        sub.Font             = FONT_BODY
+        sub.TextSize         = 10
+        sub.TextXAlignment   = Enum.TextXAlignment.Left
+        sub.Parent           = btn
+
+        tabBtns[tab.id] = {btn=btn, lbl=lbl, sub=sub}
+    end
+
+    -- Close button (desktop only)
+    local CloseBtn = Instance.new("TextButton")
+    CloseBtn.Size            = UDim2.new(1, -14, 0, 36)
+    CloseBtn.Position        = UDim2.new(0, 7, 1, -48)
+    CloseBtn.BackgroundColor3= Color3.fromRGB(30,14,14)
+    CloseBtn.BorderSizePixel = 0
+    CloseBtn.Text            = "✕  Close Hub"
+    CloseBtn.TextColor3      = C.DANGER
+    CloseBtn.Font            = FONT_SEMI
+    CloseBtn.TextSize        = 12
+    CloseBtn.AutoButtonColor = false
+    CloseBtn.Parent          = Sidebar
+    Instance.new("UICorner", CloseBtn).CornerRadius = UDim.new(0, 8)
+    local cpd = Instance.new("UIPadding") cpd.PaddingLeft=UDim.new(0,12) cpd.Parent=CloseBtn
+    CloseBtn.MouseButton1Click:Connect(function()
+        TweenService:Create(Window,TweenInfo.new(0.25,Enum.EasingStyle.Quad),{Size=UDim2.new(0,WIN_W,0,0)}):Play()
+        task.wait(0.3) ScreenGui:Destroy()
+    end)
 end
-
--- Close button
-local CloseBtn = Instance.new("TextButton")
-CloseBtn.Size            = UDim2.new(1, -14, 0, 36)
-CloseBtn.Position        = UDim2.new(0, 7, 1, -48)
-CloseBtn.BackgroundColor3= Color3.fromRGB(30,14,14)
-CloseBtn.BorderSizePixel = 0
-CloseBtn.Text            = "✕  Close Hub"
-CloseBtn.TextColor3      = C.DANGER
-CloseBtn.Font            = FONT_SEMI
-CloseBtn.TextSize        = 12
-CloseBtn.AutoButtonColor = false
-CloseBtn.Parent          = Sidebar
-Instance.new("UICorner", CloseBtn).CornerRadius = UDim.new(0, 8)
-local cpd = Instance.new("UIPadding") cpd.PaddingLeft=UDim.new(0,12) cpd.Parent=CloseBtn
-CloseBtn.MouseButton1Click:Connect(function()
-    TweenService:Create(Window,TweenInfo.new(0.25,Enum.EasingStyle.Quad),{Size=UDim2.new(0,WIN_W,0,0)}):Play()
-    task.wait(0.3) ScreenGui:Destroy()
-end)
 
 -- ════════════════════════════════════════════════════════════════
 --  8.  CONTENT AREA + TOAST
 -- ════════════════════════════════════════════════════════════════
 local Content = Instance.new("Frame")
 Content.Name             = "Content"
-Content.Size             = UDim2.new(1, -176, 1, 0)
-Content.Position         = UDim2.new(0, 176, 0, 0)
 Content.BackgroundTransparency = 1
 Content.ClipsDescendants = true
 Content.Parent           = Window
 
+if isMobile then
+    -- Full width, but leave BOTTOM_H for the nav bar
+    Content.Size     = UDim2.new(1, 0, 1, -BOTTOM_H)
+    Content.Position = UDim2.new(0, 0, 0, 0)
+else
+    -- Leave left SIDEBAR_W for sidebar
+    Content.Size     = UDim2.new(1, -SIDEBAR_W, 1, 0)
+    Content.Position = UDim2.new(0, SIDEBAR_W, 0, 0)
+end
+
+-- Mobile close button (top-right X) 
+if isMobile then
+    local MCloseBtn = Instance.new("TextButton")
+    MCloseBtn.Size            = UDim2.new(0, 44, 0, 44)
+    MCloseBtn.Position        = UDim2.new(1, -48, 0, 4)
+    MCloseBtn.BackgroundColor3= Color3.fromRGB(22, 10, 10)
+    MCloseBtn.BorderSizePixel = 0
+    MCloseBtn.Text            = "✕"
+    MCloseBtn.TextColor3      = C.DANGER
+    MCloseBtn.Font            = FONT
+    MCloseBtn.TextSize        = 18
+    MCloseBtn.AutoButtonColor = false
+    MCloseBtn.ZIndex          = 5
+    MCloseBtn.Parent          = Content
+    Instance.new("UICorner", MCloseBtn).CornerRadius = UDim.new(0, 10)
+    MCloseBtn.MouseButton1Click:Connect(function()
+        TweenService:Create(ScreenGui,TweenInfo.new(0.2,Enum.EasingStyle.Quad),{}):Play()
+        ScreenGui:Destroy()
+    end)
+end
+
 -- Toast notification
+local toastOffset = isMobile and -58 or -50
 local Toast = Instance.new("Frame")
 Toast.Size               = UDim2.new(1, -32, 0, 36)
 Toast.Position           = UDim2.new(0, 16, 1, 10)
@@ -514,7 +720,7 @@ local function showToast(msg, col, dur)
     toastBusy = true
     Toast.BackgroundColor3 = col or C.SUCCESS
     ToastLbl.Text = msg
-    TweenService:Create(Toast,TweenInfo.new(0.3,Enum.EasingStyle.Back),{Position=UDim2.new(0,16,1,-50)}):Play()
+    TweenService:Create(Toast,TweenInfo.new(0.3,Enum.EasingStyle.Back),{Position=UDim2.new(0,16,1,toastOffset)}):Play()
     task.wait(dur or 2.5)
     TweenService:Create(Toast,TweenInfo.new(0.25),{Position=UDim2.new(0,16,1,10)}):Play()
     task.wait(0.3) toastBusy = false
@@ -536,22 +742,22 @@ local function makeScroll(parent)
     sf.Size                  = UDim2.new(1, 0, 1, 0)
     sf.BackgroundTransparency= 1
     sf.BorderSizePixel       = 0
-    sf.ScrollBarThickness    = 4
+    sf.ScrollBarThickness    = isMobile and 2 or 4
     sf.ScrollBarImageColor3  = C.ACCENT
     sf.CanvasSize            = UDim2.new(0,0,0,0)
     sf.AutomaticCanvasSize   = Enum.AutomaticSize.Y
     sf.Parent                = parent
 
     local layout = Instance.new("UIListLayout")
-    layout.Padding   = UDim.new(0,8)
+    layout.Padding   = UDim.new(0, isMobile and 10 or 8)
     layout.SortOrder = Enum.SortOrder.LayoutOrder
     layout.Parent    = sf
 
     local pad = Instance.new("UIPadding")
-    pad.PaddingLeft   = UDim.new(0,16)
-    pad.PaddingRight  = UDim.new(0,16)
-    pad.PaddingTop    = UDim.new(0,12)
-    pad.PaddingBottom = UDim.new(0,12)
+    pad.PaddingLeft   = UDim.new(0, isMobile and 12 or 16)
+    pad.PaddingRight  = UDim.new(0, isMobile and 12 or 16)
+    pad.PaddingTop    = UDim.new(0, isMobile and 10 or 12)
+    pad.PaddingBottom = UDim.new(0, 12)
     pad.Parent        = sf
 
     return sf
@@ -559,7 +765,7 @@ end
 
 local function makeCard(script, parent, locked)
     local card = Instance.new("Frame")
-    card.Size             = UDim2.new(1, 0, 0, 72)
+    card.Size             = UDim2.new(1, 0, 0, CARD_H)
     card.BackgroundColor3 = C.CARD
     card.BorderSizePixel  = 0
     card.Parent           = parent
@@ -595,7 +801,7 @@ local function makeCard(script, parent, locked)
     nameL.Text            = script.name
     nameL.TextColor3      = C.TEXT
     nameL.Font            = FONT
-    nameL.TextSize        = 14
+    nameL.TextSize        = isMobile and 15 or 14
     nameL.TextXAlignment  = Enum.TextXAlignment.Left
     nameL.Parent          = card
 
@@ -607,31 +813,35 @@ local function makeCard(script, parent, locked)
     descL.Text            = script.description
     descL.TextColor3      = C.SUBTEXT
     descL.Font            = FONT_BODY
-    descL.TextSize        = 11
+    descL.TextSize        = isMobile and 12 or 11
     descL.TextXAlignment  = Enum.TextXAlignment.Left
     descL.TextTruncate    = Enum.TextTruncate.AtEnd
     descL.Parent          = card
 
     -- Execute button
     local execBtn = Instance.new("TextButton")
-    execBtn.Size            = UDim2.new(0, 88, 0, 26)
-    execBtn.Position        = UDim2.new(0, 16, 1, -36)
+    execBtn.Size            = UDim2.new(0, isMobile and 100 or 88, 0, BTN_H)
+    execBtn.Position        = UDim2.new(0, 16, 1, -(BTN_H + 10))
     execBtn.BackgroundColor3= locked and Color3.fromRGB(36,28,6) or C.ACCENT
     execBtn.BorderSizePixel = 0
     execBtn.Text            = locked and "🔒 Locked" or "▶  Execute"
     execBtn.TextColor3      = locked and C.WARNING or Color3.fromRGB(255,255,255)
     execBtn.Font            = FONT_SEMI
-    execBtn.TextSize        = 12
+    execBtn.TextSize        = BTN_TS
     execBtn.AutoButtonColor = false
     execBtn.Parent          = card
     Instance.new("UICorner", execBtn).CornerRadius = UDim.new(0, 7)
 
-    card.MouseEnter:Connect(function() card.BackgroundColor3 = C.CARDH end)
-    card.MouseLeave:Connect(function() card.BackgroundColor3 = C.CARD  end)
+    if not isMobile then
+        card.MouseEnter:Connect(function() card.BackgroundColor3 = C.CARDH end)
+        card.MouseLeave:Connect(function() card.BackgroundColor3 = C.CARD  end)
+    end
 
     if not locked then
-        execBtn.MouseEnter:Connect(function() TweenService:Create(execBtn,TweenInfo.new(0.12),{BackgroundColor3=C.ACCENT2}):Play() end)
-        execBtn.MouseLeave:Connect(function() TweenService:Create(execBtn,TweenInfo.new(0.12),{BackgroundColor3=C.ACCENT}):Play() end)
+        if not isMobile then
+            execBtn.MouseEnter:Connect(function() TweenService:Create(execBtn,TweenInfo.new(0.12),{BackgroundColor3=C.ACCENT2}):Play() end)
+            execBtn.MouseLeave:Connect(function() TweenService:Create(execBtn,TweenInfo.new(0.12),{BackgroundColor3=C.ACCENT}):Play() end)
+        end
     end
 
     return card, execBtn
@@ -645,7 +855,25 @@ PageUniversal.Size               = UDim2.new(1,0,1,0)
 PageUniversal.BackgroundTransparency = 1
 PageUniversal.Parent             = Pages
 
+-- Page header (mobile only)
+if isMobile then
+    local PHeader = Instance.new("TextLabel")
+    PHeader.Size             = UDim2.new(1, -60, 0, 40)
+    PHeader.Position         = UDim2.new(0, 14, 0, 0)
+    PHeader.BackgroundTransparency = 1
+    PHeader.Text             = "🌐  Universal Scripts"
+    PHeader.TextColor3       = C.ACCENT
+    PHeader.Font             = FONT
+    PHeader.TextSize         = 16
+    PHeader.TextXAlignment   = Enum.TextXAlignment.Left
+    PHeader.Parent           = PageUniversal
+end
+
 local uScroll = makeScroll(PageUniversal)
+if isMobile then
+    uScroll.Size     = UDim2.new(1, 0, 1, -40)
+    uScroll.Position = UDim2.new(0, 0, 0, 40)
+end
 
 for i, s in ipairs(Universal.Scripts) do
     local card, execBtn = makeCard(s, uScroll, false)
@@ -660,7 +888,7 @@ for i, s in ipairs(Universal.Scripts) do
 end
 
 -- ════════════════════════════════════════════════════════════════
---  11.  PAGE: MAIN GAME  (key gate — only built when game is supported)
+--  11.  PAGE: MAIN GAME
 -- ════════════════════════════════════════════════════════════════
 local keyUnlocked = false
 local PageMainGame = nil
@@ -668,31 +896,47 @@ local PageMainGame = nil
 if MainGame then
 local PageMainGame_ = Instance.new("Frame")
 PageMainGame = PageMainGame_
-local PageMainGame = PageMainGame_ -- shadow for code below
+local PageMainGame = PageMainGame_
 PageMainGame.Size               = UDim2.new(1,0,1,0)
 PageMainGame.BackgroundTransparency = 1
 PageMainGame.Visible            = false
 PageMainGame.Parent             = Pages
 
+-- Mobile header
+if isMobile then
+    local MGH = Instance.new("TextLabel")
+    MGH.Size             = UDim2.new(1, -60, 0, 40)
+    MGH.Position         = UDim2.new(0, 14, 0, 0)
+    MGH.BackgroundTransparency = 1
+    MGH.Text             = "🔐  "..MainGame.GAME_NAME
+    MGH.TextColor3       = C.ACCENT
+    MGH.Font             = FONT
+    MGH.TextSize         = 16
+    MGH.TextXAlignment   = Enum.TextXAlignment.Left
+    MGH.Parent           = PageMainGame
+end
+
 -- ── Key Gate ─────────────────────────────────────────────────────
+local keyGateOffset = isMobile and 40 or 0
 local KeyGate = Instance.new("Frame")
-KeyGate.Size             = UDim2.new(1,0,1,0)
+KeyGate.Size             = UDim2.new(1,0,1,-keyGateOffset)
+KeyGate.Position         = UDim2.new(0,0,0,keyGateOffset)
 KeyGate.BackgroundColor3 = C.BG
 KeyGate.BorderSizePixel  = 0
 KeyGate.ZIndex           = 10
 KeyGate.Parent           = PageMainGame
 Instance.new("UICorner", KeyGate).CornerRadius = UDim.new(0,12)
 
+local cardW = isMobile and math.min(WIN_W - 40, 380) or 380
 local KeyCard = Instance.new("Frame")
-KeyCard.Size             = UDim2.new(0,380,0,270)
-KeyCard.Position         = UDim2.new(0.5,-190,0.5,-135)
+KeyCard.Size             = UDim2.new(0, cardW, 0, 270)
+KeyCard.Position         = UDim2.new(0.5, -cardW/2, 0.5, -135)
 KeyCard.BackgroundColor3 = C.CARD
 KeyCard.BorderSizePixel  = 0
 KeyCard.ZIndex           = 11
 KeyCard.Parent           = KeyGate
 Instance.new("UICorner", KeyCard).CornerRadius = UDim.new(0,12)
 
--- Emerald top stripe on card
 local CardStripe = Instance.new("Frame")
 CardStripe.Size             = UDim2.new(1,0,0,3)
 CardStripe.BackgroundColor3 = C.ACCENT
@@ -708,8 +952,9 @@ KTitle.BackgroundTransparency = 1
 KTitle.Text              = "🔐  "..MainGame.GAME_NAME.." — Key Required"
 KTitle.TextColor3        = C.TEXT
 KTitle.Font              = FONT
-KTitle.TextSize          = 16
+KTitle.TextSize          = isMobile and 14 or 16
 KTitle.TextXAlignment    = Enum.TextXAlignment.Left
+KTitle.TextWrapped       = true
 KTitle.ZIndex            = 12
 KTitle.Parent            = KeyCard
 
@@ -726,7 +971,6 @@ KSub.TextWrapped         = true
 KSub.ZIndex              = 12
 KSub.Parent              = KeyCard
 
--- Input box
 local KInputFrame = Instance.new("Frame")
 KInputFrame.Size             = UDim2.new(1,-32,0,42)
 KInputFrame.Position         = UDim2.new(0,16,0,100)
@@ -746,7 +990,7 @@ KInput.PlaceholderColor3 = C.SUBTEXT
 KInput.Text              = ""
 KInput.TextColor3        = C.ACCENT
 KInput.Font              = Enum.Font.Code
-KInput.TextSize          = 13
+KInput.TextSize          = isMobile and 12 or 13
 KInput.TextXAlignment    = Enum.TextXAlignment.Left
 KInput.ZIndex            = 13
 KInput.Parent            = KInputFrame
@@ -763,7 +1007,6 @@ KStatus.TextXAlignment   = Enum.TextXAlignment.Left
 KStatus.ZIndex           = 12
 KStatus.Parent           = KeyCard
 
--- Unlock button
 local KBtn = Instance.new("TextButton")
 KBtn.Size                = UDim2.new(1,-32,0,42)
 KBtn.Position            = UDim2.new(0,16,0,182)
@@ -772,15 +1015,16 @@ KBtn.BorderSizePixel     = 0
 KBtn.Text                = "Unlock  "..MainGame.GAME_NAME.."  Scripts"
 KBtn.TextColor3          = Color3.fromRGB(255,255,255)
 KBtn.Font                = FONT
-KBtn.TextSize            = 14
+KBtn.TextSize            = isMobile and 13 or 14
 KBtn.AutoButtonColor     = false
 KBtn.ZIndex              = 12
 KBtn.Parent              = KeyCard
 Instance.new("UICorner", KBtn).CornerRadius = UDim.new(0,8)
-KBtn.MouseEnter:Connect(function() TweenService:Create(KBtn,TweenInfo.new(0.12),{BackgroundColor3=C.ACCENT2}):Play() end)
-KBtn.MouseLeave:Connect(function() TweenService:Create(KBtn,TweenInfo.new(0.12),{BackgroundColor3=C.ACCENT}):Play() end)
+if not isMobile then
+    KBtn.MouseEnter:Connect(function() TweenService:Create(KBtn,TweenInfo.new(0.12),{BackgroundColor3=C.ACCENT2}):Play() end)
+    KBtn.MouseLeave:Connect(function() TweenService:Create(KBtn,TweenInfo.new(0.12),{BackgroundColor3=C.ACCENT}):Play() end)
+end
 
--- Expiry label under button (shown after unlock)
 local ExpiryLabel = Instance.new("TextLabel")
 ExpiryLabel.Size             = UDim2.new(1,-32,0,16)
 ExpiryLabel.Position         = UDim2.new(0,16,0,236)
@@ -793,9 +1037,12 @@ ExpiryLabel.TextXAlignment   = Enum.TextXAlignment.Left
 ExpiryLabel.ZIndex           = 12
 ExpiryLabel.Parent           = KeyCard
 
--- Script scroll (revealed after key unlock)
 local mgScroll = makeScroll(PageMainGame)
 mgScroll.Visible = false
+if isMobile then
+    mgScroll.Size     = UDim2.new(1, 0, 1, -40)
+    mgScroll.Position = UDim2.new(0, 0, 0, 40)
+end
 
 local mgCards = {}
 for i, s in ipairs(MainGame.Scripts) do
@@ -804,7 +1051,6 @@ for i, s in ipairs(MainGame.Scripts) do
     table.insert(mgCards, {script=s, card=card, execBtn=execBtn})
 end
 
--- ── Key validation & unlock logic ────────────────────────────────
 local function unlock(remaining)
     keyUnlocked = true
     local hrs  = math.floor(remaining / 3600)
@@ -822,8 +1068,10 @@ local function unlock(remaining)
         entry.execBtn.BackgroundColor3 = C.ACCENT
         entry.execBtn.Text             = "▶  Execute"
         entry.execBtn.TextColor3       = Color3.fromRGB(255,255,255)
-        entry.execBtn.MouseEnter:Connect(function() TweenService:Create(entry.execBtn,TweenInfo.new(0.12),{BackgroundColor3=C.ACCENT2}):Play() end)
-        entry.execBtn.MouseLeave:Connect(function() TweenService:Create(entry.execBtn,TweenInfo.new(0.12),{BackgroundColor3=C.ACCENT}):Play() end)
+        if not isMobile then
+            entry.execBtn.MouseEnter:Connect(function() TweenService:Create(entry.execBtn,TweenInfo.new(0.12),{BackgroundColor3=C.ACCENT2}):Play() end)
+            entry.execBtn.MouseLeave:Connect(function() TweenService:Create(entry.execBtn,TweenInfo.new(0.12),{BackgroundColor3=C.ACCENT}):Play() end)
+        end
         entry.execBtn.MouseButton1Click:Connect(function()
             local s = entry.script
             local ok, err = pcall(loadstring(s.code))
@@ -840,7 +1088,6 @@ local function tryKey(raw)
     KStatus.TextColor3 = C.SUBTEXT
     KStatus.Text       = "Verifying…"
     task.wait(0.35)
-
     local ok, msg, remaining = KeySystem.Validate(raw)
     if ok then
         KeySystem.Save(raw)
@@ -851,7 +1098,6 @@ local function tryKey(raw)
     else
         KStatus.TextColor3 = C.DANGER
         KStatus.Text       = "✘  " .. msg
-        -- shake
         for _ = 1, 3 do
             TweenService:Create(KInputFrame,TweenInfo.new(0.05),{Position=UDim2.new(0,22,0,100)}):Play() task.wait(0.05)
             TweenService:Create(KInputFrame,TweenInfo.new(0.05),{Position=UDim2.new(0,10,0,100)}):Play() task.wait(0.05)
@@ -863,13 +1109,12 @@ end
 KBtn.MouseButton1Click:Connect(function() tryKey(KInput.Text) end)
 KInput.FocusLost:Connect(function(enter) if enter then tryKey(KInput.Text) end end)
 
--- Auto-load saved key
 task.spawn(function()
     local saved = KeySystem.Load()
     if saved then
         KInput.Text = saved
         KStatus.Text = "Found saved key — verifying…"
-        task.wait(1) -- let GUI appear first
+        task.wait(1)
         tryKey(saved)
     end
 end)
@@ -885,10 +1130,26 @@ PageSettings.BackgroundTransparency = 1
 PageSettings.Visible            = false
 PageSettings.Parent             = Pages
 
+-- Mobile header
+if isMobile then
+    local SH = Instance.new("TextLabel")
+    SH.Size             = UDim2.new(1, -60, 0, 40)
+    SH.Position         = UDim2.new(0, 14, 0, 0)
+    SH.BackgroundTransparency = 1
+    SH.Text             = "⚙️  Settings"
+    SH.TextColor3       = C.ACCENT
+    SH.Font             = FONT
+    SH.TextSize         = 16
+    SH.TextXAlignment   = Enum.TextXAlignment.Left
+    SH.Parent           = PageSettings
+end
+
+local settY0 = isMobile and 48 or 0
+
 local function settRow(y, label, value, valueColor)
     local row = Instance.new("Frame")
     row.Size             = UDim2.new(1,-32,0,40)
-    row.Position         = UDim2.new(0,16,0,y)
+    row.Position         = UDim2.new(0,16,0,settY0 + y)
     row.BackgroundColor3 = C.CARD
     row.BorderSizePixel  = 0
     row.Parent           = PageSettings
@@ -922,7 +1183,7 @@ end
 local function sectHeader(y, text)
     local h = Instance.new("TextLabel")
     h.Size             = UDim2.new(1,-32,0,22)
-    h.Position         = UDim2.new(0,16,0,y)
+    h.Position         = UDim2.new(0,16,0,settY0 + y)
     h.BackgroundTransparency = 1
     h.Text             = text
     h.TextColor3       = C.ACCENT
@@ -932,21 +1193,20 @@ local function sectHeader(y, text)
     h.Parent           = PageSettings
 end
 
-sectHeader(12, "ℹ  HUB INFO")
-settRow(36,  "Version",        "2.0")
-settRow(84,  "Key Type",       "72-hour self-signing",  C.WARNING)
-settRow(132, "Target Game",    MainGame and MainGame.GAME_NAME or "Not supported", MainGame and C.ACCENT or C.SUBTEXT)
+sectHeader(12,  "ℹ  HUB INFO")
+settRow(36,  "Version",         "2.1")
+settRow(84,  "Key Type",        "72-hour self-signing",  C.WARNING)
+settRow(132, "Target Game",     MainGame and MainGame.GAME_NAME or "Not supported", MainGame and C.ACCENT or C.SUBTEXT)
 settRow(180, "Keyless Scripts", tostring(#Universal.Scripts).." scripts",  C.SUCCESS)
-settRow(228, "Keyed Scripts",  MainGame and tostring(#MainGame.Scripts).." scripts" or "N/A — unsupported game", MainGame and C.SUCCESS or C.SUBTEXT)
+settRow(228, "Keyed Scripts",   MainGame and tostring(#MainGame.Scripts).." scripts" or "N/A — unsupported game", MainGame and C.SUCCESS or C.SUBTEXT)
 
 sectHeader(284, "🔑  KEY STATUS")
 local keyValRow = settRow(308, "Current Key", keyUnlocked and "✔ Unlocked" or "🔒 Locked",
                            keyUnlocked and C.SUCCESS or C.DANGER)
 
--- Clear saved key
 local ClearBtn = Instance.new("TextButton")
 ClearBtn.Size            = UDim2.new(1,-32,0,40)
-ClearBtn.Position        = UDim2.new(0,16,0,356)
+ClearBtn.Position        = UDim2.new(0,16,0,settY0 + 356)
 ClearBtn.BackgroundColor3= Color3.fromRGB(30,12,12)
 ClearBtn.BorderSizePixel = 0
 ClearBtn.Text            = "🗑  Clear Saved Key"
@@ -964,7 +1224,7 @@ end)
 sectHeader(412, "💬  HOW TO GET A KEY")
 local howTo = Instance.new("TextLabel")
 howTo.Size             = UDim2.new(1,-32,0,60)
-howTo.Position         = UDim2.new(0,16,0,434)
+howTo.Position         = UDim2.new(0,16,0,settY0 + 434)
 howTo.BackgroundTransparency = 1
 howTo.Text             = "1. Join the Discord server\n2. Run  /getkey  in the key channel\n3. The bot DMs you a key  (valid 72 hours)\n4. Paste it in the Main Game tab → Unlock"
 howTo.TextColor3       = C.SUBTEXT
@@ -981,28 +1241,34 @@ local allPages = {
     universal = PageUniversal,
     settings  = PageSettings,
 }
-if MainGame and PageMainGame then
-    allPages.maingame = PageMainGame
-end
+if MainGame and PageMainGame then allPages.maingame = PageMainGame end
 local currentTab = "universal"
 
 local function switchTab(id)
     currentTab = id
-    for tid, page in pairs(allPages) do
-        page.Visible = (tid == id)
+    for tid, page in pairs(allPages) do page.Visible = (tid == id) end
+
+    if isMobile then
+        for tid, t in pairs(tabBtns) do
+            local active = (tid == id)
+            t.ico.TextColor3    = active and C.ACCENT  or C.SUBTEXT
+            t.lbl.TextColor3    = active and C.ACCENT  or C.SUBTEXT
+            TweenService:Create(t.stripe, TweenInfo.new(0.15),
+                {BackgroundTransparency = active and 0 or 1}):Play()
+        end
+    else
+        for tid, t in pairs(tabBtns) do
+            local active = (tid == id)
+            TweenService:Create(t.btn, TweenInfo.new(0.15),
+                {BackgroundColor3 = active and C.CARD or C.SIDEBAR}):Play()
+            t.lbl.TextColor3 = active and C.TEXT   or C.SUBTEXT
+            t.sub.TextColor3 = active and C.ACCENT or C.SUBTEXT
+        end
     end
-    for tid, t in pairs(tabBtns) do
-        local active = (tid == id)
-        TweenService:Create(t.btn, TweenInfo.new(0.15), {
-            BackgroundColor3 = active and C.CARD or C.SIDEBAR
-        }):Play()
-        t.lbl.TextColor3 = active and C.TEXT   or C.SUBTEXT
-        t.sub.TextColor3 = active and C.ACCENT or C.SUBTEXT
-    end
-    -- Refresh settings key status whenever settings tab is opened
+
     if id == "settings" then
-        keyValRow.Text      = keyUnlocked and "✔ Unlocked" or "🔒 Locked"
-        keyValRow.TextColor3= keyUnlocked and C.SUCCESS or C.DANGER
+        keyValRow.Text       = keyUnlocked and "✔ Unlocked" or "🔒 Locked"
+        keyValRow.TextColor3 = keyUnlocked and C.SUCCESS or C.DANGER
     end
 end
 
@@ -1014,8 +1280,15 @@ end
 --  14.  OPEN ANIMATION
 -- ════════════════════════════════════════════════════════════════
 switchTab("universal")
-Window.Size = UDim2.new(0, WIN_W, 0, 0)
-TweenService:Create(Window, TweenInfo.new(0.4, Enum.EasingStyle.Back, Enum.EasingDirection.Out),
-    {Size = UDim2.new(0, WIN_W, 0, WIN_H)}):Play()
 
-print("[EmeraldHub] Loaded — PlaceId "..game.PlaceId..(MainGame and (" → "..MainGame.GAME_NAME.." scripts available.") or " → no keyed scripts for this game."))
+if isMobile then
+    -- No expand animation on mobile — loading screen handles the reveal
+    Window.Size = UDim2.new(0, WIN_W, 0, WIN_H)
+else
+    -- Expand from centre, hidden behind the loading screen
+    Window.Size = UDim2.new(0, WIN_W, 0, 0)
+    TweenService:Create(Window, TweenInfo.new(0.35, Enum.EasingStyle.Back, Enum.EasingDirection.Out),
+        {Size = UDim2.new(0, WIN_W, 0, WIN_H)}):Play()
+end
+
+print("[EmeraldHub] Loaded v2.1 — PlaceId "..game.PlaceId..(MainGame and (" → "..MainGame.GAME_NAME.." scripts available.") or " → no keyed scripts for this game.")..(isMobile and " [Mobile layout]" or " [Desktop layout]"))

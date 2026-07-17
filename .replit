@@ -2,7 +2,8 @@ modules = ["nodejs-20", "lua-5.2", "web"]
 
 [deployment]
 router = "application"
-deploymentTarget = "autoscale"
+deploymentTarget = "vm"
+run = ["sh", "-c", "cd EmeraldBot && node bot.js"]
 
 [deployment.postBuild]
 args = ["pnpm", "store", "prune"]
