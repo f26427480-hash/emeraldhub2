@@ -25,7 +25,7 @@
 --      ▸ Must EXACTLY match HUB_SECRET in your EmeraldBot .env
 --      ▸ Change this before distributing your hub
 -- ════════════════════════════════════════════════════════════════
-local HUB_SECRET = "vsynclandemily"
+local HUB_SECRET = "69acbf5c&hGA"
 
 -- ════════════════════════════════════════════════════════════════
 --  1.  KEY SYSTEM
