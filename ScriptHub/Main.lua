@@ -294,30 +294,29 @@ local MUSIC_PLAYLIST = {
     { name = "Meant to Be", id = 138323881451411 },
 }
 local _musicIdx = 1
+local _emeraldSound = nil
+local function _playNext()
+    if not _emeraldSound then return end
+    local track = MUSIC_PLAYLIST[_musicIdx]
+    _musicIdx = (_musicIdx % #MUSIC_PLAYLIST) + 1
+    if track and track.id ~= 0 then
+        _emeraldSound.SoundId = "rbxassetid://" .. track.id
+        _emeraldSound:Play()
+    end
+end
 
+-- Set up the Sound object now; playback starts after the loading screen.
 task.spawn(function()
     local SS  = game:GetService("SoundService")
-    -- Remove any stale music from a previous execution
     local old = SS:FindFirstChild("EmeraldHub_Music")
     if old then old:Destroy() end
-
     local snd = Instance.new("Sound")
     snd.Name   = "EmeraldHub_Music"
     snd.Volume = 0.35
     snd.RollOffMaxDistance = 1e6
     snd.Parent = SS
-
-    local function playNext()
-        local track = MUSIC_PLAYLIST[_musicIdx]
-        _musicIdx = (_musicIdx % #MUSIC_PLAYLIST) + 1
-        if track and track.id ~= 0 then
-            snd.SoundId = "rbxassetid://" .. track.id
-            snd:Play()
-        end
-    end
-
-    playNext()
-    snd.Ended:Connect(function() task.wait(0.3) playNext() end)
+    _emeraldSound = snd
+    snd.Ended:Connect(function() task.wait(0.3) _playNext() end)
 end)
 
 -- ════════════════════════════════════════════════════════════════
@@ -471,6 +470,8 @@ task.spawn(function()
         {BackgroundTransparency = 1}):Play()
     task.wait(0.45)
     LoadScreen:Destroy()
+    -- Start Misery (first track) now that the hub is fully loaded
+    _playNext()
 end)
 
 -- ════════════════════════════════════════════════════════════════
