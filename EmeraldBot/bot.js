@@ -1,305 +1,594 @@
 /**
- * EmeraldHub Discord Bot
- * Generates self-signing 72-hour keys for the EmeraldHub Roblox script hub.
- * One key per user per 72 hours — cooldown is enforced server-side.
+ * EmeraldHub Discord Bot v2.0
+ * Features: key system, keydrop, killswitch, HWID reset, blacklist, whitelist,
+ * testkey, 6-hour status updates, update logs, buy panel, loadstring in DM.
  */
 
 require("dotenv").config();
 const fs = require("fs");
-const { Client, GatewayIntentBits, SlashCommandBuilder, REST, Routes, EmbedBuilder } = require("discord.js");
+const {
+    Client, GatewayIntentBits, SlashCommandBuilder, REST, Routes,
+    EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle,
+    PermissionFlagsBits, ChannelType,
+} = require("discord.js");
 
-// ─── CONFIG (read from .env) ──────────────────────────────────────────────────
+// ─── CONFIG ───────────────────────────────────────────────────────────────────
 const TOKEN             = process.env.DISCORD_TOKEN;
-const HUB_SECRET        = process.env.HUB_SECRET        || "CHANGE_THIS_TO_YOUR_OWN_SECRET";
-const KEYGEN_CHANNEL_ID = process.env.KEYGEN_CHANNEL_ID || null;
-const REQUIRED_ROLE_ID  = process.env.REQUIRED_ROLE_ID  || null;
-const GUILD_ID          = process.env.GUILD_ID          || null;
-const KEY_DURATION_SECS = 72 * 60 * 60; // 72 hours
+const HUB_SECRET        = process.env.HUB_SECRET || "CHANGE_THIS_TO_YOUR_OWN_SECRET";
+const GUILD_ID          = process.env.GUILD_ID   || null;
+const KEY_DURATION_SECS = 72 * 60 * 60;
+const LOADSTRING_URL    =
+    "https://raw.githubusercontent.com/f26427480-hash/emeraldhub2/main/ScriptHub/Main.lua";
 
-// Cooldown storage — persists across bot restarts
-const COOLDOWNS_FILE = "./cooldowns.json";
-
-if (!TOKEN || TOKEN === "your_bot_token_here") {
-    console.error("[EmeraldBot] ERROR: Set DISCORD_TOKEN in your .env file.");
-    process.exit(1);
-}
+if (!TOKEN) { console.error("[EmeraldBot] ERROR: Set DISCORD_TOKEN."); process.exit(1); }
 if (HUB_SECRET === "CHANGE_THIS_TO_YOUR_OWN_SECRET") {
-    console.warn("[EmeraldBot] WARNING: HUB_SECRET is still the default. Change it in .env and update Main.lua.");
+    console.warn("[EmeraldBot] WARNING: HUB_SECRET is still the default.");
 }
 
-// ─── COOLDOWN STORAGE ─────────────────────────────────────────────────────────
+// ─── PERSISTENT STORAGE ───────────────────────────────────────────────────────
+const FILES = {
+    cooldowns:  "./cooldowns.json",
+    config:     "./config.json",
+    blacklist:  "./blacklist.json",
+    whitelist:  "./whitelist.json",
+};
 
-/** Load the cooldown map from disk. Returns { userId: issuedAtUnixSecs } */
-function loadCooldowns() {
-    try {
-        return JSON.parse(fs.readFileSync(COOLDOWNS_FILE, "utf8"));
-    } catch {
-        return {};
-    }
+function load(file, def) {
+    try { return JSON.parse(fs.readFileSync(file, "utf8")); }
+    catch { return typeof def === "function" ? def() : def; }
+}
+function save(file, data) {
+    fs.writeFileSync(file, JSON.stringify(data, null, 2));
 }
 
-/** Persist the cooldown map to disk. */
-function saveCooldowns(map) {
-    fs.writeFileSync(COOLDOWNS_FILE, JSON.stringify(map, null, 2));
-}
+const loadConfig    = () => load(FILES.config,    { killswitch: false, statusChannel: null, updateLogChannel: null });
+const saveConfig    = (c) => save(FILES.config, c);
+const loadBlacklist = () => load(FILES.blacklist, { discord: [], roblox: [] });
+const saveBlacklist = (b) => save(FILES.blacklist, b);
+const loadWhitelist = () => load(FILES.whitelist, []);
+const saveWhitelist = (w) => save(FILES.whitelist, w);
+const loadCooldowns = () => load(FILES.cooldowns, {});
+const saveCooldowns = (m) => save(FILES.cooldowns, m);
 
-/**
- * Check whether a user is still within their 72-hour cooldown.
- * Returns { onCooldown: bool, secondsLeft: number }
- */
-function checkCooldown(userId) {
-    const map = loadCooldowns();
-    const issuedAt = map[userId];
-    if (!issuedAt) return { onCooldown: false, secondsLeft: 0 };
-    const secondsLeft = issuedAt + KEY_DURATION_SECS - Math.floor(Date.now() / 1000);
-    if (secondsLeft <= 0) return { onCooldown: false, secondsLeft: 0 };
-    return { onCooldown: true, secondsLeft };
-}
-
-/** Record that a user just received a key. */
-function recordCooldown(userId) {
-    const map = loadCooldowns();
-    map[userId] = Math.floor(Date.now() / 1000);
-    saveCooldowns(map);
-}
-
-// ─── KEY GENERATION ───────────────────────────────────────────────────────────
-
-/**
- * Simple polynomial hash that produces the same output as the Lua version
- * in Main.lua. Uses modulo 1_000_000_007 to stay within JS safe-integer range.
- * @param {string} s
- * @returns {string} zero-padded 7-digit decimal string
- */
+// ─── KEY SYSTEM ───────────────────────────────────────────────────────────────
 function hubHash(s) {
     const MOD = 1_000_000_007n;
     let h = 0n;
     for (let i = 0; i < s.length; i++) {
         h = (h * 31n + BigInt(s.charCodeAt(i))) % MOD;
     }
-    // Clamp to exactly 7 digits — MOD can produce up to 10 digits
-    // which breaks the EMERALD-...-\d{7} regex on both sides.
     return (h % 10_000_000n).toString().padStart(7, "0");
 }
 
-/**
- * Generate a self-signing EmeraldHub key valid for KEY_DURATION_SECS seconds.
- * Format: EMERALD-{BASE36_EXPIRY_UPPER}-{7DIGIT_HASH}
- */
 function generateKey() {
-    const expiry  = Math.floor(Date.now() / 1000) + KEY_DURATION_SECS;
-    const expB36  = expiry.toString(36).toUpperCase();
-    const hash    = hubHash(expB36 + HUB_SECRET);
-    return `EMERALD-${expB36}-${hash}`;
+    const expiry = Math.floor(Date.now() / 1000) + KEY_DURATION_SECS;
+    const expB36 = expiry.toString(36).toUpperCase();
+    return `EMERALD-${expB36}-${hubHash(expB36 + HUB_SECRET)}`;
 }
 
-/** Return human-readable expiry string (UTC). */
-function expiryString() {
-    const ms = Date.now() + KEY_DURATION_SECS * 1000;
-    return new Date(ms).toUTCString();
+function validateKey(raw) {
+    const key   = raw.trim().toUpperCase();
+    const match = key.match(/^EMERALD-([A-Z0-9]+)-(\d{7})$/);
+    if (!match) return { ok: false, reason: "Invalid format. Keys look like: `EMERALD-XXXXX-0000000`" };
+    const [, expB36, hash] = match;
+    if (hash !== hubHash(expB36 + HUB_SECRET)) return { ok: false, reason: "Invalid signature — key not issued by EmeraldHub." };
+    const expiry    = parseInt(expB36, 36);
+    const remaining = expiry - Math.floor(Date.now() / 1000);
+    if (remaining <= 0) return { ok: false, reason: "Key has expired. Run `/getkey` for a fresh one." };
+    return { ok: true, remaining, expiry };
 }
 
-// ─── DISCORD CLIENT ───────────────────────────────────────────────────────────
+function fmtExpiry(offsetSecs = KEY_DURATION_SECS) {
+    return new Date((Math.floor(Date.now() / 1000) + offsetSecs) * 1000).toUTCString();
+}
+function fmtTime(secs) {
+    return `${Math.floor(secs / 3600)}h ${Math.floor((secs % 3600) / 60)}m`;
+}
 
-const client = new Client({
-    intents: [GatewayIntentBits.Guilds],
-});
+// ─── COOLDOWN HELPERS ─────────────────────────────────────────────────────────
+function checkCooldown(userId) {
+    const map      = loadCooldowns();
+    const issuedAt = map[userId];
+    if (!issuedAt) return { onCooldown: false, secondsLeft: 0 };
+    const left = issuedAt + KEY_DURATION_SECS - Math.floor(Date.now() / 1000);
+    return left > 0 ? { onCooldown: true, secondsLeft: left } : { onCooldown: false, secondsLeft: 0 };
+}
+function recordCooldown(userId) {
+    const map = loadCooldowns(); map[userId] = Math.floor(Date.now() / 1000); saveCooldowns(map);
+}
+function resetCooldown(userId) {
+    const map = loadCooldowns(); delete map[userId]; saveCooldowns(map);
+}
 
-// Register /getkey slash command
+// ─── ADMIN CHECK ──────────────────────────────────────────────────────────────
+function isAdmin(interaction) {
+    return interaction.member?.permissions?.has(PermissionFlagsBits.Administrator)
+        || interaction.guild?.ownerId === interaction.user.id;
+}
+
+// ─── CLIENT ───────────────────────────────────────────────────────────────────
+const client = new Client({ intents: [GatewayIntentBits.Guilds] });
+
+// ─── COMMAND DEFINITIONS ──────────────────────────────────────────────────────
 async function registerCommands() {
-    const commands = [
+    const cmds = [
+        // ── User commands ──────────────────────────────────────────────────────
         new SlashCommandBuilder()
             .setName("getkey")
-            .setDescription("Get a 72-hour EmeraldHub key (sent via DM).")
-            .toJSON(),
+            .setDescription("Get a free 72-hour EmeraldHub key (sent via DM)."),
+
         new SlashCommandBuilder()
             .setName("keyinfo")
-            .setDescription("Check how long your current key is valid for.")
-            .addStringOption(opt =>
-                opt.setName("key")
-                   .setDescription("Your EMERALD-... key")
-                   .setRequired(true)
-            )
-            .toJSON(),
+            .setDescription("Check how long a key is valid.")
+            .addStringOption(o =>
+                o.setName("key").setDescription("Your EMERALD-... key").setRequired(true)),
+
         new SlashCommandBuilder()
             .setName("hubinfo")
-            .setDescription("Show EmeraldHub information and links.")
-            .toJSON(),
-    ];
+            .setDescription("Show EmeraldHub info and links."),
+
+        // ── Admin commands ─────────────────────────────────────────────────────
+        new SlashCommandBuilder()
+            .setName("keydrop")
+            .setDescription("[Admin] Drop a free key publicly in this channel."),
+
+        new SlashCommandBuilder()
+            .setName("killswitch")
+            .setDescription("[Admin] Enable or disable the hub globally.")
+            .addStringOption(o =>
+                o.setName("state").setDescription("on or off").setRequired(true)
+                 .addChoices({ name: "on (disable hub)", value: "on" }, { name: "off (re-enable hub)", value: "off" })),
+
+        new SlashCommandBuilder()
+            .setName("resethwid")
+            .setDescription("[Admin] Reset a user's HWID/cooldown so they can get a new key.")
+            .addUserOption(o =>
+                o.setName("user").setDescription("User to reset").setRequired(true)),
+
+        new SlashCommandBuilder()
+            .setName("blacklist")
+            .setDescription("[Admin] Add or remove a Discord/Roblox ID from the blacklist.")
+            .addStringOption(o =>
+                o.setName("action").setDescription("add or remove").setRequired(true)
+                 .addChoices({ name: "add", value: "add" }, { name: "remove", value: "remove" }))
+            .addStringOption(o =>
+                o.setName("type").setDescription("discord or roblox").setRequired(true)
+                 .addChoices({ name: "discord", value: "discord" }, { name: "roblox", value: "roblox" }))
+            .addStringOption(o =>
+                o.setName("id").setDescription("ID to add or remove").setRequired(true)),
+
+        new SlashCommandBuilder()
+            .setName("whitelist")
+            .setDescription("[Admin] Add or remove a user from the whitelist (bypasses cooldown).")
+            .addStringOption(o =>
+                o.setName("action").setDescription("add or remove").setRequired(true)
+                 .addChoices({ name: "add", value: "add" }, { name: "remove", value: "remove" }))
+            .addUserOption(o =>
+                o.setName("user").setDescription("User to whitelist").setRequired(true)),
+
+        new SlashCommandBuilder()
+            .setName("testkey")
+            .setDescription("[Admin] Validate and inspect any EmeraldHub key.")
+            .addStringOption(o =>
+                o.setName("key").setDescription("Key to test").setRequired(true)),
+
+        new SlashCommandBuilder()
+            .setName("setstatus")
+            .setDescription("[Admin] Set the channel for automatic 6-hour status updates.")
+            .addChannelOption(o =>
+                o.setName("channel").setDescription("Channel to post status in").setRequired(true)
+                 .addChannelTypes(ChannelType.GuildText)),
+
+        new SlashCommandBuilder()
+            .setName("setupdatelogs")
+            .setDescription("[Admin] Set the channel for event/update logs.")
+            .addChannelOption(o =>
+                o.setName("channel").setDescription("Channel for logs").setRequired(true)
+                 .addChannelTypes(ChannelType.GuildText)),
+
+        new SlashCommandBuilder()
+            .setName("buypanel")
+            .setDescription("[Admin] Post the EmeraldHub key panel in this channel."),
+    ].map(c => c.toJSON());
 
     const rest = new REST({ version: "10" }).setToken(TOKEN);
-    try {
-        if (GUILD_ID) {
-            // Guild commands update instantly — great for testing
-            await rest.put(Routes.applicationGuildCommands(client.user.id, GUILD_ID), { body: commands });
-            console.log(`[EmeraldBot] Slash commands registered to guild ${GUILD_ID}`);
-        } else {
-            // Global commands take up to 1 hour to propagate
-            await rest.put(Routes.applicationCommands(client.user.id), { body: commands });
-            console.log("[EmeraldBot] Slash commands registered globally");
-        }
-    } catch (err) {
-        console.error("[EmeraldBot] Failed to register commands:", err);
+    if (GUILD_ID) {
+        await rest.put(Routes.applicationGuildCommands(client.user.id, GUILD_ID), { body: cmds });
+        console.log(`[EmeraldBot] Commands registered to guild ${GUILD_ID}`);
+    } else {
+        await rest.put(Routes.applicationCommands(client.user.id), { body: cmds });
+        console.log("[EmeraldBot] Commands registered globally");
     }
 }
 
+// ─── LOG HELPER ───────────────────────────────────────────────────────────────
+async function logEvent(msg) {
+    const cfg = loadConfig();
+    if (!cfg.updateLogChannel) return;
+    try {
+        const ch = await client.channels.fetch(cfg.updateLogChannel);
+        if (ch) await ch.send(`\`[${new Date().toUTCString()}]\` ${msg}`);
+    } catch {}
+}
+
+// ─── STATUS EMBED ─────────────────────────────────────────────────────────────
+function buildStatusEmbed() {
+    const cfg       = loadConfig();
+    const bl        = loadBlacklist();
+    const wl        = loadWhitelist();
+    const cooldowns = loadCooldowns();
+    const now       = Math.floor(Date.now() / 1000);
+    const active    = Object.values(cooldowns).filter(t => t + KEY_DURATION_SECS > now).length;
+
+    return new EmbedBuilder()
+        .setColor(cfg.killswitch ? 0xEF4444 : 0x10B981)
+        .setTitle(cfg.killswitch ? "🔴  EmeraldHub — OFFLINE" : "🟢  EmeraldHub — ONLINE")
+        .setDescription(cfg.killswitch
+            ? "The hub has been disabled by an administrator."
+            : "The hub is online and accepting keys.")
+        .addFields(
+            { name: "🔑 Active Keys",    value: String(active),                         inline: true },
+            { name: "🚫 Blacklisted",    value: `${bl.discord.length + bl.roblox.length} IDs`, inline: true },
+            { name: "⭐ Whitelisted",    value: `${wl.length} users`,                   inline: true },
+            { name: "⏱️ Key Duration",  value: "72 hours",                             inline: true },
+            { name: "🔒 Killswitch",     value: cfg.killswitch ? "ON 🔴" : "OFF 🟢",   inline: true },
+        )
+        .setFooter({ text: "EmeraldHub Status • Auto-updated every 6h" })
+        .setTimestamp();
+}
+
+// ─── KEY DM ───────────────────────────────────────────────────────────────────
+async function sendKeyDM(user, key) {
+    const embed = new EmbedBuilder()
+        .setColor(0x10B981)
+        .setTitle("🔑  Your EmeraldHub Key")
+        .setDescription(`\`\`\`\n${key}\n\`\`\``)
+        .addFields(
+            { name: "⏳ Expires",       value: fmtExpiry(),                  inline: false },
+            { name: "⏱️ Valid for",    value: "72 hours",                   inline: true  },
+            { name: "📋 Loadstring",   value: `\`\`\`lua\nloadstring(game:HttpGet("${LOADSTRING_URL}"))()\`\`\``, inline: false },
+            { name: "🎮 How to use",   value: "1. Run the loadstring above in your executor.\n2. Go to the **Main Game** tab → paste your key → click **Unlock**.", inline: false },
+        )
+        .setFooter({ text: "EmeraldHub • Do not share your key — one per 72 hours" })
+        .setTimestamp();
+    await user.send({ embeds: [embed] });
+}
+
+// ─── READY ────────────────────────────────────────────────────────────────────
 client.once("ready", async () => {
     console.log(`[EmeraldBot] Logged in as ${client.user.tag}`);
-    client.user.setActivity("🟢 EmeraldHub | /getkey", { type: 3 /* Watching */ });
+    client.user.setActivity("🟢 EmeraldHub | /getkey", { type: 3 });
     await registerCommands();
+
+    // 6-hour status update loop
+    setInterval(async () => {
+        const cfg = loadConfig();
+        if (!cfg.statusChannel) return;
+        try {
+            const ch = await client.channels.fetch(cfg.statusChannel);
+            if (ch) await ch.send({ embeds: [buildStatusEmbed()] });
+        } catch {}
+    }, 6 * 60 * 60 * 1000);
 });
 
-// ─── COMMAND HANDLERS ─────────────────────────────────────────────────────────
-
+// ─── INTERACTIONS ─────────────────────────────────────────────────────────────
 client.on("interactionCreate", async (interaction) => {
+    // Button: "Get Free Key" from buy panel
+    if (interaction.isButton() && interaction.customId === "emerald_getkey") {
+        await interaction.deferReply({ ephemeral: true });
+        return handleGetKey(interaction);
+    }
+
     if (!interaction.isChatInputCommand()) return;
 
-    // ── /getkey ──────────────────────────────────────────────────────────────
-    if (interaction.commandName === "getkey") {
+    const handlers = {
+        getkey:        handleGetKey,
+        keyinfo:       handleKeyInfo,
+        hubinfo:       handleHubInfo,
+        keydrop:       handleKeyDrop,
+        killswitch:    handleKillswitch,
+        resethwid:     handleResetHwid,
+        blacklist:     handleBlacklist,
+        whitelist:     handleWhitelist,
+        testkey:       handleTestKey,
+        setstatus:     handleSetStatus,
+        setupdatelogs: handleSetUpdateLogs,
+        buypanel:      handleBuyPanel,
+    };
+    const fn = handlers[interaction.commandName];
+    if (fn) fn(interaction);
+});
+
+// ─── /getkey ──────────────────────────────────────────────────────────────────
+async function handleGetKey(interaction) {
+    if (!interaction.deferred && !interaction.replied) {
         await interaction.deferReply({ ephemeral: true });
+    }
 
-        // Channel gate
-        if (KEYGEN_CHANNEL_ID && interaction.channelId !== KEYGEN_CHANNEL_ID) {
-            return interaction.editReply({
-                content: `❌ Key generation is only available in <#${KEYGEN_CHANNEL_ID}>.`,
-            });
-        }
+    const userId = interaction.user.id;
+    const cfg    = loadConfig();
 
-        // Role gate
-        if (REQUIRED_ROLE_ID) {
-            const member = interaction.guild
-                ? await interaction.guild.members.fetch(interaction.user.id).catch(() => null)
-                : null;
-            if (!member || !member.roles.cache.has(REQUIRED_ROLE_ID)) {
-                return interaction.editReply({
-                    content: `❌ You need the <@&${REQUIRED_ROLE_ID}> role to get a key.`,
-                });
-            }
-        }
+    if (cfg.killswitch) {
+        return interaction.editReply({ content: "🔴 **EmeraldHub is currently offline.** Check back later." });
+    }
 
-        // Cooldown gate — one key per 72 hours
-        const { onCooldown, secondsLeft } = checkCooldown(interaction.user.id);
+    const bl = loadBlacklist();
+    if (bl.discord.includes(userId)) {
+        return interaction.editReply({ content: "🚫 You are blacklisted from EmeraldHub." });
+    }
+
+    const whitelisted = loadWhitelist().includes(userId);
+
+    if (!whitelisted) {
+        const { onCooldown, secondsLeft } = checkCooldown(userId);
         if (onCooldown) {
             const hrs  = Math.floor(secondsLeft / 3600);
             const mins = Math.floor((secondsLeft % 3600) / 60);
             const secs = secondsLeft % 60;
-
-            const cooldownEmbed = new EmbedBuilder()
-                .setColor(0xEF4444)
-                .setTitle("⏳  You already have an active key")
-                .setDescription("You can only get one key every **72 hours**.\nYour current key is still valid — paste it into EmeraldHub.")
-                .addFields({
-                    name: "⏱️ Next key available in",
-                    value: `**${hrs}h ${mins}m ${secs}s**`,
-                    inline: false,
-                })
-                .setFooter({ text: "EmeraldHub • Run /keyinfo to check your key" })
-                .setTimestamp();
-
-            return interaction.editReply({ embeds: [cooldownEmbed] });
-        }
-
-        const key    = generateKey();
-        const expiry = expiryString();
-
-        // DM the key
-        try {
-            const dmEmbed = new EmbedBuilder()
-                .setColor(0x10B981)
-                .setTitle("🔑  Your EmeraldHub Key")
-                .setDescription(`\`\`\`\n${key}\n\`\`\``)
-                .addFields(
-                    { name: "⏳ Expires",    value: expiry,     inline: false },
-                    { name: "⏱️ Valid for",  value: "72 hours", inline: true  },
-                    { name: "🎮 How to use", value: "Open EmeraldHub → Main Game tab → paste the key above → click Unlock.", inline: false },
-                )
-                .setFooter({ text: "EmeraldHub • Do not share your key — one per 72 hours" })
-                .setTimestamp();
-
-            await interaction.user.send({ embeds: [dmEmbed] });
-
-            // Record cooldown only after the DM succeeds
-            recordCooldown(interaction.user.id);
-
-            await interaction.editReply({
-                content: "✅ **Your key has been sent via DM!**\nCheck your DMs — it expires in **72 hours**. You won't be able to get another key until this one expires.",
-            });
-
-            console.log(`[EmeraldBot] Key issued to ${interaction.user.tag} (${interaction.user.id}) — expires ${expiry}`);
-        } catch {
-            await interaction.editReply({
-                content: "❌ I couldn't DM you — please enable DMs from server members and try again.",
+            return interaction.editReply({
+                embeds: [new EmbedBuilder()
+                    .setColor(0xEF4444)
+                    .setTitle("⏳  You already have an active key")
+                    .setDescription("You can only get one key every **72 hours**.\nYour current key is still valid — paste it into EmeraldHub.")
+                    .addFields({ name: "⏱️ Next key available in", value: `**${hrs}h ${mins}m ${secs}s**` })
+                    .setFooter({ text: "EmeraldHub • Run /keyinfo to check your key" })
+                    .setTimestamp()],
             });
         }
     }
 
-    // ── /keyinfo ─────────────────────────────────────────────────────────────
-    if (interaction.commandName === "keyinfo") {
-        await interaction.deferReply({ ephemeral: true });
+    const key = generateKey();
+    try {
+        await sendKeyDM(interaction.user, key);
+        if (!whitelisted) recordCooldown(userId);
 
-        const raw = interaction.options.getString("key", true).trim().toUpperCase();
-        const match = raw.match(/^EMERALD-([A-Z0-9]+)-(\d{7})$/);
+        await interaction.editReply({
+            content: `✅ **Key sent via DM!** Check your DMs — valid for **72 hours**.${whitelisted ? "\n⭐ *Whitelisted — cooldown bypassed.*" : ""}`,
+        });
 
-        if (!match) {
-            return interaction.editReply({
-                content: "❌ Invalid key format. Keys look like: `EMERALD-XXXXX-0000000`",
-            });
-        }
+        await logEvent(`🔑 Key issued to **${interaction.user.tag}** (\`${userId}\`) — expires ${fmtExpiry()}`);
+        console.log(`[EmeraldBot] Key issued to ${interaction.user.tag} (${userId})`);
+    } catch {
+        await interaction.editReply({ content: "❌ Couldn't DM you — please enable DMs from server members and try again." });
+    }
+}
 
-        const [, expB36, hash] = match;
-        const expectedHash = hubHash(expB36 + HUB_SECRET);
+// ─── /keyinfo ─────────────────────────────────────────────────────────────────
+async function handleKeyInfo(interaction) {
+    await interaction.deferReply({ ephemeral: true });
+    const result = validateKey(interaction.options.getString("key", true));
 
-        if (hash !== expectedHash) {
-            return interaction.editReply({ content: "❌ Key signature is invalid — this key was not generated by EmeraldHub." });
-        }
+    if (!result.ok) return interaction.editReply({ content: `❌ ${result.reason}` });
 
-        const expiry  = parseInt(expB36, 36);
-        const now     = Math.floor(Date.now() / 1000);
-        const remaining = expiry - now;
-
-        if (remaining <= 0) {
-            return interaction.editReply({
-                content: "⚠️ This key has **expired**. Run `/getkey` to get a fresh one.",
-            });
-        }
-
-        const hrs  = Math.floor(remaining / 3600);
-        const mins = Math.floor((remaining % 3600) / 60);
-
-        const embed = new EmbedBuilder()
+    return interaction.editReply({
+        embeds: [new EmbedBuilder()
             .setColor(0x10B981)
             .setTitle("✅  Key is Valid")
             .addFields(
-                { name: "⏳ Time Remaining", value: `${hrs}h ${mins}m`,                    inline: true },
-                { name: "📅 Expires At",     value: new Date(expiry * 1000).toUTCString(), inline: false },
+                { name: "⏳ Time Remaining", value: fmtTime(result.remaining),                       inline: true  },
+                { name: "📅 Expires At",     value: new Date(result.expiry * 1000).toUTCString(),    inline: false },
             )
-            .setFooter({ text: "EmeraldHub Key Checker" });
+            .setFooter({ text: "EmeraldHub Key Checker" })],
+    });
+}
 
-        return interaction.editReply({ embeds: [embed] });
-    }
-
-    // ── /hubinfo ─────────────────────────────────────────────────────────────
-    if (interaction.commandName === "hubinfo") {
-        const embed = new EmbedBuilder()
+// ─── /hubinfo ─────────────────────────────────────────────────────────────────
+async function handleHubInfo(interaction) {
+    return interaction.reply({
+        embeds: [new EmbedBuilder()
             .setColor(0x10B981)
             .setTitle("🟢  EmeraldHub")
-            .setDescription("A premium Roblox script hub with keyless universal scripts and 72-hour keyed game scripts.")
+            .setDescription("A Roblox script hub with keyless universal scripts and 72-hour keyed game scripts.")
             .addFields(
-                { name: "🌐 Universal Scripts", value: "Keyless — work in any game",        inline: true },
-                { name: "🔐 Main Game Scripts", value: "72-hour key via `/getkey`",         inline: true },
-                { name: "⏱️ Key Duration",      value: "72 hours per key",                  inline: true },
-                { name: "🤖 Get a Key",         value: "Run `/getkey` in this server",      inline: false },
-                { name: "✅ Check a Key",       value: "Run `/keyinfo` with your key",       inline: false },
+                { name: "🌐 Universal Scripts", value: "Keyless — any game",                inline: true  },
+                { name: "🔐 Game Scripts",       value: "72-hour key via `/getkey`",        inline: true  },
+                { name: "📋 Loadstring",         value: `\`\`\`lua\nloadstring(game:HttpGet("${LOADSTRING_URL}"))()\`\`\``, inline: false },
+                { name: "🤖 Get a Key",          value: "Run `/getkey` in this server",     inline: false },
             )
-            .setFooter({ text: "EmeraldHub • Keys are per-device" })
-            .setTimestamp();
+            .setFooter({ text: "EmeraldHub" })
+            .setTimestamp()],
+        ephemeral: true,
+    });
+}
 
-        return interaction.reply({ embeds: [embed], ephemeral: true });
+// ─── /keydrop ─────────────────────────────────────────────────────────────────
+async function handleKeyDrop(interaction) {
+    await interaction.deferReply({ ephemeral: true });
+    if (!isAdmin(interaction)) return interaction.editReply({ content: "❌ Admin only." });
+
+    const key = generateKey();
+    await interaction.channel.send({
+        embeds: [new EmbedBuilder()
+            .setColor(0xF59E0B)
+            .setTitle("🎁  FREE KEY DROP!")
+            .setDescription(`First to use it wins!\n\n\`\`\`\n${key}\n\`\`\``)
+            .addFields(
+                { name: "📋 Loadstring", value: `\`\`\`lua\nloadstring(game:HttpGet("${LOADSTRING_URL}"))()\`\`\``, inline: false },
+                { name: "⏳ Expires",    value: fmtExpiry(),                                                          inline: true  },
+            )
+            .setFooter({ text: "EmeraldHub • Keys are single-use within the cooldown window" })
+            .setTimestamp()],
+    });
+
+    await interaction.editReply({ content: "✅ Key dropped!" });
+    await logEvent(`🎁 Key drop in <#${interaction.channelId}> by **${interaction.user.tag}**`);
+}
+
+// ─── /killswitch ──────────────────────────────────────────────────────────────
+async function handleKillswitch(interaction) {
+    await interaction.deferReply({ ephemeral: true });
+    if (!isAdmin(interaction)) return interaction.editReply({ content: "❌ Admin only." });
+
+    const on  = interaction.options.getString("state") === "on";
+    const cfg = loadConfig();
+    cfg.killswitch = on;
+    saveConfig(cfg);
+
+    const label = on ? "🔴 ENABLED — hub is now offline." : "🟢 DISABLED — hub is back online.";
+    await interaction.editReply({ content: `✅ Killswitch ${label}` });
+    await logEvent(`${on ? "🔴" : "🟢"} Killswitch **${on ? "ENABLED" : "DISABLED"}** by **${interaction.user.tag}**`);
+
+    if (cfg.statusChannel) {
+        try {
+            const ch = await client.channels.fetch(cfg.statusChannel);
+            if (ch) await ch.send({ embeds: [buildStatusEmbed()] });
+        } catch {}
     }
-});
+}
+
+// ─── /resethwid ───────────────────────────────────────────────────────────────
+async function handleResetHwid(interaction) {
+    await interaction.deferReply({ ephemeral: true });
+    if (!isAdmin(interaction)) return interaction.editReply({ content: "❌ Admin only." });
+
+    const target = interaction.options.getUser("user", true);
+    resetCooldown(target.id);
+
+    await interaction.editReply({ content: `✅ HWID/cooldown reset for **${target.tag}** — they can now get a fresh key.` });
+    await logEvent(`🔄 HWID reset for **${target.tag}** (\`${target.id}\`) by **${interaction.user.tag}**`);
+}
+
+// ─── /blacklist ───────────────────────────────────────────────────────────────
+async function handleBlacklist(interaction) {
+    await interaction.deferReply({ ephemeral: true });
+    if (!isAdmin(interaction)) return interaction.editReply({ content: "❌ Admin only." });
+
+    const action = interaction.options.getString("action");
+    const type   = interaction.options.getString("type");   // "discord" | "roblox"
+    const id     = interaction.options.getString("id").trim();
+    const bl     = loadBlacklist();
+
+    if (action === "add") {
+        if (bl[type].includes(id)) return interaction.editReply({ content: `⚠️ \`${id}\` is already blacklisted.` });
+        bl[type].push(id);
+        saveBlacklist(bl);
+        await interaction.editReply({ content: `✅ \`${id}\` added to the **${type}** blacklist.` });
+        await logEvent(`🚫 **${type}** ID \`${id}\` blacklisted by **${interaction.user.tag}**`);
+    } else {
+        const idx = bl[type].indexOf(id);
+        if (idx === -1) return interaction.editReply({ content: `⚠️ \`${id}\` is not in the blacklist.` });
+        bl[type].splice(idx, 1);
+        saveBlacklist(bl);
+        await interaction.editReply({ content: `✅ \`${id}\` removed from the **${type}** blacklist.` });
+        await logEvent(`✅ **${type}** ID \`${id}\` un-blacklisted by **${interaction.user.tag}**`);
+    }
+}
+
+// ─── /whitelist ───────────────────────────────────────────────────────────────
+async function handleWhitelist(interaction) {
+    await interaction.deferReply({ ephemeral: true });
+    if (!isAdmin(interaction)) return interaction.editReply({ content: "❌ Admin only." });
+
+    const action = interaction.options.getString("action");
+    const target = interaction.options.getUser("user", true);
+    const wl     = loadWhitelist();
+
+    if (action === "add") {
+        if (wl.includes(target.id)) return interaction.editReply({ content: `⚠️ **${target.tag}** is already whitelisted.` });
+        wl.push(target.id);
+        saveWhitelist(wl);
+        await interaction.editReply({ content: `✅ **${target.tag}** whitelisted — cooldown bypassed forever.` });
+        await logEvent(`⭐ **${target.tag}** (\`${target.id}\`) whitelisted by **${interaction.user.tag}**`);
+    } else {
+        const idx = wl.indexOf(target.id);
+        if (idx === -1) return interaction.editReply({ content: `⚠️ **${target.tag}** is not whitelisted.` });
+        wl.splice(idx, 1);
+        saveWhitelist(wl);
+        await interaction.editReply({ content: `✅ **${target.tag}** removed from whitelist.` });
+        await logEvent(`❌ **${target.tag}** (\`${target.id}\`) un-whitelisted by **${interaction.user.tag}**`);
+    }
+}
+
+// ─── /testkey ─────────────────────────────────────────────────────────────────
+async function handleTestKey(interaction) {
+    await interaction.deferReply({ ephemeral: true });
+    if (!isAdmin(interaction)) return interaction.editReply({ content: "❌ Admin only." });
+
+    const result = validateKey(interaction.options.getString("key", true));
+
+    if (!result.ok) {
+        return interaction.editReply({
+            embeds: [new EmbedBuilder()
+                .setColor(0xEF4444)
+                .setTitle("❌  Invalid Key")
+                .setDescription(result.reason)
+                .setFooter({ text: "EmeraldHub Admin — Key Tester" })],
+        });
+    }
+
+    return interaction.editReply({
+        embeds: [new EmbedBuilder()
+            .setColor(0x10B981)
+            .setTitle("✅  Key is Valid")
+            .addFields(
+                { name: "🔑 Key",            value: `\`${interaction.options.getString("key", true).trim().toUpperCase()}\``, inline: false },
+                { name: "⏳ Time Remaining", value: fmtTime(result.remaining),                    inline: true  },
+                { name: "📅 Expires At",     value: new Date(result.expiry * 1000).toUTCString(), inline: false },
+            )
+            .setFooter({ text: "EmeraldHub Admin — Key Tester" })],
+    });
+}
+
+// ─── /setstatus ───────────────────────────────────────────────────────────────
+async function handleSetStatus(interaction) {
+    await interaction.deferReply({ ephemeral: true });
+    if (!isAdmin(interaction)) return interaction.editReply({ content: "❌ Admin only." });
+
+    const ch  = interaction.options.getChannel("channel", true);
+    const cfg = loadConfig();
+    cfg.statusChannel = ch.id;
+    saveConfig(cfg);
+
+    // Post an immediate status update
+    try { await ch.send({ embeds: [buildStatusEmbed()] }); } catch {}
+
+    await interaction.editReply({ content: `✅ Status updates will post to <#${ch.id}> every **6 hours**.` });
+    await logEvent(`📢 Status channel set to <#${ch.id}> by **${interaction.user.tag}**`);
+}
+
+// ─── /setupdatelogs ───────────────────────────────────────────────────────────
+async function handleSetUpdateLogs(interaction) {
+    await interaction.deferReply({ ephemeral: true });
+    if (!isAdmin(interaction)) return interaction.editReply({ content: "❌ Admin only." });
+
+    const ch  = interaction.options.getChannel("channel", true);
+    const cfg = loadConfig();
+    cfg.updateLogChannel = ch.id;
+    saveConfig(cfg);
+
+    await interaction.editReply({ content: `✅ Update logs will be posted to <#${ch.id}>.` });
+    try { await ch.send(`📋 **EmeraldHub update logs are now active in this channel.**`); } catch {}
+}
+
+// ─── /buypanel ────────────────────────────────────────────────────────────────
+async function handleBuyPanel(interaction) {
+    await interaction.deferReply({ ephemeral: true });
+    if (!isAdmin(interaction)) return interaction.editReply({ content: "❌ Admin only." });
+
+    const embed = new EmbedBuilder()
+        .setColor(0x10B981)
+        .setTitle("💎  EmeraldHub — Get Your Key")
+        .setDescription("Click **Get Free Key** to get your **72-hour key** instantly via DM.\nYour key and loadstring will be sent together.")
+        .addFields(
+            { name: "📋 Loadstring",      value: `\`\`\`lua\nloadstring(game:HttpGet("${LOADSTRING_URL}"))()\`\`\``, inline: false },
+            { name: "⏱️ Key Duration",   value: "72 hours — one key per user",                                        inline: true  },
+            { name: "🎮 Supported Games", value: "Murder Mystery 2, Speed/Keyboard Escape, Steal a Brainrot & more",  inline: false },
+        )
+        .setFooter({ text: "EmeraldHub • Free keys every 72 hours" })
+        .setTimestamp();
+
+    const row = new ActionRowBuilder().addComponents(
+        new ButtonBuilder()
+            .setCustomId("emerald_getkey")
+            .setLabel("🔑  Get Free Key")
+            .setStyle(ButtonStyle.Success),
+    );
+
+    await interaction.channel.send({ embeds: [embed], components: [row] });
+    await interaction.editReply({ content: "✅ Buy panel posted!" });
+}
 
 // ─── LOGIN ────────────────────────────────────────────────────────────────────
-
 client.login(TOKEN).catch(err => {
     console.error("[EmeraldBot] Login failed:", err.message);
     process.exit(1);
