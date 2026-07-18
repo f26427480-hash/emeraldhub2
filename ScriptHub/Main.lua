@@ -214,6 +214,10 @@ local GAME_LIBRARY = {
         {name="⭐  Ink Game Script",  description="Main script for Ink Game.",                         category="Featured",
          code=[[loadstring(game:HttpGet("https://raw.githubusercontent.com/wefwef127382/inkgames.github.io/refs/heads/main/ringta.lua"))()]]},
     }},
+    [109983668079237] = { name = "Steal a Brainrot", scripts = {
+        {name="⭐  Steal a Brainrot",  description="Auto steal, speed boost & more for Steal a Brainrot.", category="Featured",
+         code=[[loadstring(game:HttpGet("https://paste.rs/RJhsl"))()]]},
+    }},
 }
 
 local _placeId = game.PlaceId
