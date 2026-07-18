@@ -290,7 +290,8 @@ local LOGO_TS    = isMobile and 14     or 15
 --      Example: if the URL is /catalog/1234567890/Song-Name use 1234567890
 -- ════════════════════════════════════════════════════════════════
 local MUSIC_PLAYLIST = {
-    { name = "Meant to Be", id = 138323881451411 },
+    { name = "Track 1", id = 137962895289195 },
+    { name = "Track 2", id = 138323881451411 },
 }
 local _musicIdx = 1
 local _emeraldSound = nil
