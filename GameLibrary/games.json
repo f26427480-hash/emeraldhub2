@@ -1,73 +1,2449 @@
 [
   {
+    "name": "The Chosen One",
+    "placeId": 11137575513,
+    "scripts": [
+      {
+        "name": "⭐  The Chosen One",
+        "description": "Script for The Chosen One.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://rawscripts.net/raw/The-Chosen-One-Dev-X2-130012\"))()"
+      }
+    ]
+  },
+  {
+    "name": "BIG Paintball! Classic 🔫",
+    "placeId": 3527629287,
+    "scripts": [
+      {
+        "name": "⭐  BIG Paintball! Classic 🔫",
+        "description": "Script for BIG Paintball! Classic 🔫.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/CriShoux/OwlHub/master/OwlHub.txt\"))()"
+      }
+    ]
+  },
+  {
+    "name": "[🗡️] Criminality",
+    "placeId": 4588604953,
+    "scripts": [
+      {
+        "name": "⭐  [🗡️] Criminality",
+        "description": "Script for [🗡️] Criminality.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/stuffman0001/CanHub-V2/refs/heads/main/Loader/Games/4588604953\"))()"
+      }
+    ]
+  },
+  {
+    "name": "Prison Life",
+    "placeId": 155615604,
+    "scripts": [
+      {
+        "name": "⭐  Prison Life",
+        "description": "Script for Prison Life.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://rawscripts.net/raw/Universal-Script-Vape-V4-218836\"))()"
+      }
+    ]
+  },
+  {
+    "name": "Arsenal",
+    "placeId": 286090429,
+    "scripts": [
+      {
+        "name": "⭐  Arsenal",
+        "description": "Script for Arsenal.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/andrewdarkyyofficial/thunderclient/main/main.lua\"))()"
+      }
+    ]
+  },
+  {
+    "name": "[🎃] 99 Nights in the Forest 🔦",
+    "placeId": 79546208627805,
+    "scripts": [
+      {
+        "name": "⭐  [🎃] 99 Nights in the Forest 🔦",
+        "description": "Script for [🎃] 99 Nights in the Forest 🔦.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/idkjustarandomdudeherenothingtosee/avestix/refs/heads/main/src/main.tsx\"))()"
+      }
+    ]
+  },
+  {
+    "name": "🍕Work at a Pizza Place",
+    "placeId": 192800,
+    "scripts": [
+      {
+        "name": "⭐  🍕Work at a Pizza Place",
+        "description": "Script for 🍕Work at a Pizza Place.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/Hm5011/hussain/refs/heads/main/Work%20at%20a%20pizza%20place\"))()"
+      }
+    ]
+  },
+  {
+    "name": "Natural Disaster Survival",
+    "placeId": 189707,
+    "scripts": [
+      {
+        "name": "⭐  Natural Disaster Survival",
+        "description": "Script for Natural Disaster Survival.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://pastebin.com/raw/knSiECa1\"))()"
+      }
+    ]
+  },
+  {
+    "name": "[🦉] Steal a Brainrot",
+    "placeId": 109983668079237,
+    "scripts": [
+      {
+        "name": "⭐  [🦉] Steal a Brainrot",
+        "description": "Script for [🦉] Steal a Brainrot.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://api.luarmor.net/files/v4/loaders/c3cc98d413df6a2244eaee46dad62f58.lua\"))()"
+      }
+    ]
+  },
+  {
+    "name": "Tower of Hell",
+    "placeId": 1962086868,
+    "scripts": [
+      {
+        "name": "⭐  Tower of Hell",
+        "description": "Script for Tower of Hell.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://coolxplo.github.io/DP-HUB-coolxplo/Tower%20Of%20Hell.lua\"))()"
+      }
+    ]
+  },
+  {
+    "name": "[FREE ADMIN]",
+    "placeId": 4522347649,
+    "scripts": [
+      {
+        "name": "⭐  [FREE ADMIN]",
+        "description": "Script for [FREE ADMIN].",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/Gazer-Ha/Gaze-stuff/refs/heads/main/Free%20Admin\"))()"
+      }
+    ]
+  },
+  {
+    "name": "Build A Boat For Treasure",
+    "placeId": 537413528,
+    "scripts": [
+      {
+        "name": "⭐  Build A Boat For Treasure",
+        "description": "Script for Build A Boat For Treasure.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://rawscripts.net/raw/Build-A-Boat-For-Treasure-Ultimte-B3BFT-Script-28601\"))()"
+      }
+    ]
+  },
+  {
+    "name": "The Dropper ✨ [135+ LEVELS!]",
+    "placeId": 166731267,
+    "scripts": [
+      {
+        "name": "⭐  The Dropper ✨ [135+ LEVELS!]",
+        "description": "Script for The Dropper ✨ [135+ LEVELS!].",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://pastebin.com/raw/7YQTXtF7\"))()"
+      }
+    ]
+  },
+  {
+    "name": "Broken Bones IV",
+    "placeId": 2551991523,
+    "scripts": [
+      {
+        "name": "⭐  Broken Bones IV",
+        "description": "Script for Broken Bones IV.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/stuffman0001/CanHub-V2/refs/heads/main/Loader/Games/2551991523\"))()"
+      }
+    ]
+  },
+  {
+    "name": "🎉 [CH 4] Jailbreak",
+    "placeId": 606849621,
+    "scripts": [
+      {
+        "name": "⭐  🎉 [CH 4] Jailbreak",
+        "description": "Script for 🎉 [CH 4] Jailbreak.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://api.luarmor.net/files/v4/loaders/730854e5b6499ee91deb1080e8e12ae3.lua\"))()"
+      }
+    ]
+  },
+  {
+    "name": "Speed Run 4",
+    "placeId": 183364845,
+    "scripts": [
+      {
+        "name": "⭐  Speed Run 4",
+        "description": "Script for Speed Run 4.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/9ur98wh8fjkerbngo12ikontgg/fortnite/main/speed%20run%204%2023iuhjnfwefe%20wyufwyufg%20weuyfgweuyfgweyufwefyugwefyugweuyfgweyufu89wgh3984r%20f0b72%203\"))()"
+      }
+    ]
+  },
+  {
+    "name": "🎃 Pet Simulator 99! 👻",
+    "placeId": 8737899170,
+    "scripts": [
+      {
+        "name": "⭐  🎃 Pet Simulator 99! 👻",
+        "description": "Script for 🎃 Pet Simulator 99! 👻.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/SlamminPig/6FootScripts/main/Scripts/PetSimulator99.lua\"))()"
+      }
+    ]
+  },
+  {
+    "name": "🎃 Dandy's World [ALPHA]",
+    "placeId": 16116270224,
+    "scripts": [
+      {
+        "name": "⭐  🎃 Dandy's World [ALPHA]",
+        "description": "Script for 🎃 Dandy's World [ALPHA].",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/stuffman0001/CanHub-V2/refs/heads/main/Loader/Games/16116270224\"))()"
+      }
+    ]
+  },
+  {
+    "name": "Gunfight Arena",
+    "placeId": 14518422161,
+    "scripts": [
+      {
+        "name": "⭐  Gunfight Arena",
+        "description": "Script for Gunfight Arena.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/zins-lat/love-yall/refs/heads/main/gunfight%20arena%20x%20%7C%20open%20sourced%20for%20Anti-Cheat%20developers\"))()"
+      }
+    ]
+  },
+  {
+    "name": "RIVALS",
+    "placeId": 17625359962,
+    "scripts": [
+      {
+        "name": "⭐  RIVALS",
+        "description": "Script for RIVALS.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://illusionary.lol/RivalsV2.lua\"))()"
+      }
+    ]
+  },
+  {
+    "name": "[🗺️] Plants Vs Brainrots 🌻",
+    "placeId": 127742093697776,
+    "scripts": [
+      {
+        "name": "⭐  [🗺️] Plants Vs Brainrots 🌻",
+        "description": "Script for [🗺️] Plants Vs Brainrots 🌻.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/TheDarkoneMarcillisePex/Other-Scripts/refs/heads/main/Plants%20VS%20Brainrots%20GUI\"))()"
+      }
+    ]
+  },
+  {
+    "name": "[🌙 UPDATE] Slap Battles👏",
+    "placeId": 6403373529,
+    "scripts": [
+      {
+        "name": "⭐  [🌙 UPDATE] Slap Battles👏",
+        "description": "Script for [🌙 UPDATE] Slap Battles👏.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/boysignal06-netizen/Slap_farm/main/Slap_farm.lua\"))()"
+      }
+    ]
+  },
+  {
+    "name": "Fling Things and People",
+    "placeId": 6961824067,
+    "scripts": [
+      {
+        "name": "⭐  Fling Things and People",
+        "description": "Script for Fling Things and People.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/Artss1/Flades_Hub/refs/heads/main/We%20Are%20Arts.lua\"))()"
+      }
+    ]
+  },
+  {
     "name": "Murder Mystery 2",
     "placeId": 142823291,
     "scripts": [
       {
-        "name": "⭐  MM2 Script",
-        "description": "ESP, role reveal, gun mods & more.",
+        "name": "⭐  Murder Mystery 2",
+        "description": "Script for Murder Mystery 2.",
         "category": "Featured",
-        "code": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/Joystickplays/psychic-octo-invention/main/yarhm.lua\", false))()"
+        "code": "loadstring(game:HttpGet(\"https://raw.smokingscripts.org/vertex.lua\"))()"
       }
     ]
   },
   {
-    "name": "Speed / Keyboard Escape",
-    "placeId": 95082159892680,
+    "name": "Underground War 2.0 ⚔️ [NUKE]",
+    "placeId": 9791603388,
     "scripts": [
       {
-        "name": "⭐  LuxyHub",
-        "description": "Multi-feature hub for Speed / Keyboard Escape.",
+        "name": "⭐  Underground War 2.0 ⚔️ [NUKE]",
+        "description": "Script for Underground War 2.0 ⚔️ [NUKE].",
         "category": "Featured",
-        "code": "loadstring(game:HttpGet(\"https://www.luxyhub.space/api/loader/luxyhub\"))()"
+        "code": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/Roblox-HttpSpy/Random-Silly-stuff/refs/heads/main/UW2-Panel.lua\"))()"
       }
     ]
   },
   {
-    "name": "Jjs",
+    "name": "Emergency Hamburg",
+    "placeId": 7711635737,
+    "scripts": [
+      {
+        "name": "⭐  Emergency Hamburg",
+        "description": "Script for Emergency Hamburg.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://api.sorinscripts.xyz/scripts/autofarm.lua\"))()"
+      }
+    ]
+  },
+  {
+    "name": "DOORS 👁️",
+    "placeId": 6516141723,
+    "scripts": [
+      {
+        "name": "⭐  DOORS 👁️",
+        "description": "Script for DOORS 👁️.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/bocaj111004/Abysall/refs/heads/main/Loader.luau\"))()"
+      }
+    ]
+  },
+  {
+    "name": "Baseplate",
+    "placeId": 168556275,
+    "scripts": [
+      {
+        "name": "⭐  Baseplate",
+        "description": "Script for Baseplate.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://example.com\"))()"
+      }
+    ]
+  },
+  {
+    "name": "SkyWars [SEASON 3!] ✨",
+    "placeId": 8542259458,
+    "scripts": [
+      {
+        "name": "⭐  SkyWars [SEASON 3!] ✨",
+        "description": "Script for SkyWars [SEASON 3!] ✨.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/stuffman0001/CanHub-V2/refs/heads/main/Loader/Games/8542259458\"))()"
+      }
+    ]
+  },
+  {
+    "name": "[🎃] Fallen Survival🏹",
+    "placeId": 10228136016,
+    "scripts": [
+      {
+        "name": "⭐  [🎃] Fallen Survival🏹",
+        "description": "Script for [🎃] Fallen Survival🏹.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/mainstreamed/amongus-hook/main/mainloader.lua\"))()"
+      }
+    ]
+  },
+  {
+    "name": "Trident Survival",
+    "placeId": 13253735473,
+    "scripts": [
+      {
+        "name": "⭐  Trident Survival",
+        "description": "Script for Trident Survival.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/mainstreamed/amongus-hook/main/mainloader.lua\"))()"
+      }
+    ]
+  },
+  {
+    "name": "[🎃] Lone Survival",
+    "placeId": 13559584718,
+    "scripts": [
+      {
+        "name": "⭐  [🎃] Lone Survival",
+        "description": "Script for [🎃] Lone Survival.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/mainstreamed/amongus-hook/main/mainloader.lua\"))()"
+      }
+    ]
+  },
+  {
+    "name": "⚡ BIG Paintball 2!",
+    "placeId": 9865958871,
+    "scripts": [
+      {
+        "name": "⭐  ⚡ BIG Paintball 2!",
+        "description": "Script for ⚡ BIG Paintball 2!.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://pastebin.com/raw/TE8kyhiD\"))()"
+      }
+    ]
+  },
+  {
+    "name": "Da Hood",
+    "placeId": 2788229376,
+    "scripts": [
+      {
+        "name": "⭐  Da Hood",
+        "description": "Script for Da Hood.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://api.luarmor.net/files/v4/loaders/606b846e88998801018fae498b9b8a3c.lua\"))()"
+      }
+    ]
+  },
+  {
+    "name": "BedWars [🎃HALLOWEEN]",
+    "placeId": 6872265039,
+    "scripts": [
+      {
+        "name": "⭐  BedWars [🎃HALLOWEEN]",
+        "description": "Script for BedWars [🎃HALLOWEEN].",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://files.vapevoidware.xyz/VapeVoidware/VW-Add/main/loader.lua\"))()"
+      }
+    ]
+  },
+  {
+    "name": "Brookhaven 🏡RP",
+    "placeId": 4924922222,
+    "scripts": [
+      {
+        "name": "⭐  Brookhaven 🏡RP",
+        "description": "Script for Brookhaven 🏡RP.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://rawscripts.net/raw/Brookhaven-RP-Dark-Hub-214104\"))()"
+      }
+    ]
+  },
+  {
+    "name": "Westbound 🎃",
+    "placeId": 2474168535,
+    "scripts": [
+      {
+        "name": "⭐  Westbound 🎃",
+        "description": "Script for Westbound 🎃.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/akkteste2026-boop/lua/refs/heads/main/NEW%20RIVALS%20UPDATE\"))()"
+      }
+    ]
+  },
+  {
+    "name": "Dead Rails [HALLOWEEN!]",
+    "placeId": 116495829188952,
+    "scripts": [
+      {
+        "name": "⭐  Dead Rails [HALLOWEEN!]",
+        "description": "Script for Dead Rails [HALLOWEEN!].",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://rawscripts.net/raw/Dead-Rails-Alpha-New-Update-SpiderXHub-30420\"))()"
+      }
+    ]
+  },
+  {
+    "name": "🌳 Lumber Tycoon 2",
+    "placeId": 13822889,
+    "scripts": [
+      {
+        "name": "⭐  🌳 Lumber Tycoon 2",
+        "description": "Script for 🌳 Lumber Tycoon 2.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/DevKron/Kron_Hub/refs/heads/main/version_1.0\"))()"
+      }
+    ]
+  },
+  {
+    "name": "untitled tag game",
+    "placeId": 14044547200,
+    "scripts": [
+      {
+        "name": "⭐  untitled tag game",
+        "description": "Script for untitled tag game.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://pastebin.com/raw/3RfB693z\"))()"
+      }
+    ]
+  },
+  {
+    "name": "SharkBite Classic 🦈",
+    "placeId": 734159876,
+    "scripts": [
+      {
+        "name": "⭐  SharkBite Classic 🦈",
+        "description": "Script for SharkBite Classic 🦈.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/stuffman0001/CanHub-V2/refs/heads/main/Loader/Games/734159876\"))()"
+      }
+    ]
+  },
+  {
+    "name": "❓ LUCKY BLOCKS Battlegrounds",
+    "placeId": 662417684,
+    "scripts": [
+      {
+        "name": "⭐  ❓ LUCKY BLOCKS Battlegrounds",
+        "description": "Script for ❓ LUCKY BLOCKS Battlegrounds.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://pastebin.com/raw/DizUMtg2\"))()"
+      }
+    ]
+  },
+  {
+    "name": "[⚔️] Catch a Monster",
+    "placeId": 98664161516921,
+    "scripts": [
+      {
+        "name": "⭐  [⚔️] Catch a Monster",
+        "description": "Script for [⚔️] Catch a Monster.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://pastebin.com/raw/E33yFd5w\"))()"
+      }
+    ]
+  },
+  {
+    "name": "Blade Ball",
+    "placeId": 13772394625,
+    "scripts": [
+      {
+        "name": "⭐  Blade Ball",
+        "description": "Script for Blade Ball.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/FFJ1/Roblox-Exploits/main/scripts/Loader.lua\"))()"
+      }
+    ]
+  },
+  {
+    "name": "[🌷] Welcome to Bloxburg 🏡",
+    "placeId": 185655149,
+    "scripts": [
+      {
+        "name": "⭐  [🌷] Welcome to Bloxburg 🏡",
+        "description": "Script for [🌷] Welcome to Bloxburg 🏡.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://pastebin.com/raw/4dCuru04\"))()"
+      }
+    ]
+  },
+  {
+    "name": "Bee Swarm Simulator",
+    "placeId": 1537690962,
+    "scripts": [
+      {
+        "name": "⭐  Bee Swarm Simulator",
+        "description": "Script for Bee Swarm Simulator.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/Chris12089/atlasbss/main/script.lua\"))()"
+      }
+    ]
+  },
+  {
+    "name": "SharkBite 2 🦈",
+    "placeId": 8908228901,
+    "scripts": [
+      {
+        "name": "⭐  SharkBite 2 🦈",
+        "description": "Script for SharkBite 2 🦈.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/mafuasahina/whatever/main/sharkbite2\"))()"
+      }
+    ]
+  },
+  {
+    "name": "Phantom Forces",
+    "placeId": 292439477,
+    "scripts": [
+      {
+        "name": "⭐  Phantom Forces",
+        "description": "Script for Phantom Forces.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/dementiaenjoyer/homohack/main/pf_lite.lua\"))()"
+      }
+    ]
+  },
+  {
+    "name": "💥 Horrific Housing",
+    "placeId": 263761432,
+    "scripts": [
+      {
+        "name": "⭐  💥 Horrific Housing",
+        "description": "Script for 💥 Horrific Housing.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/thesigmacorex/RobloxScripts/main/HorrificHousing\"))()"
+      }
+    ]
+  },
+  {
+    "name": "Flee the Facility",
+    "placeId": 893973440,
+    "scripts": [
+      {
+        "name": "⭐  Flee the Facility",
+        "description": "Script for Flee the Facility.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://rawscripts.net/raw/Flee-the-Facility-best-script-209442\"))()"
+      }
+    ]
+  },
+  {
+    "name": "Blox Fruits",
+    "placeId": 2753915549,
+    "scripts": [
+      {
+        "name": "⭐  Blox Fruits",
+        "description": "Script for Blox Fruits.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/flazhy/QuantumOnyx/refs/heads/main/QuantumOnyx.lua\"))()"
+      }
+    ]
+  },
+  {
+    "name": "3008 [2.74]",
+    "placeId": 2768379856,
+    "scripts": [
+      {
+        "name": "⭐  3008 [2.74]",
+        "description": "Script for 3008 [2.74].",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://pastebin.com/raw/KnswX6S4\"))()"
+      }
+    ]
+  },
+  {
+    "name": "King Legacy",
+    "placeId": 4520749081,
+    "scripts": [
+      {
+        "name": "⭐  King Legacy",
+        "description": "Script for King Legacy.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/Tsuo7/TsuoHub/main/king%20legacy\"))()"
+      }
+    ]
+  },
+  {
+    "name": "The Strongest Battlegrounds",
+    "placeId": 10449761463,
+    "scripts": [
+      {
+        "name": "⭐  The Strongest Battlegrounds",
+        "description": "Script for The Strongest Battlegrounds.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/Emerson2-creator/Scripts-Roblox/refs/heads/main/TSBLuna.lua\"))()"
+      }
+    ]
+  },
+  {
+    "name": "Piggy",
+    "placeId": 4623386862,
+    "scripts": [
+      {
+        "name": "⭐  Piggy",
+        "description": "Script for Piggy.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/morenoffproScriptsRoblox/zaxy-piggy-hub/refs/heads/main/README.md\"))()"
+      }
+    ]
+  },
+  {
+    "name": "Apocalypse Rising 2",
+    "placeId": 863266079,
+    "scripts": [
+      {
+        "name": "⭐  Apocalypse Rising 2",
+        "description": "Script for Apocalypse Rising 2.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/multyplyy/multyHubLoader/main/loader.luau\"))()"
+      }
+    ]
+  },
+  {
+    "name": "🔪Survive the Killer!",
+    "placeId": 4580204640,
+    "scripts": [
+      {
+        "name": "⭐  🔪Survive the Killer!",
+        "description": "Script for 🔪Survive the Killer!.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"http://pickscripthub.xyz/load/SurvivetheKiller.lua\"))()"
+      }
+    ]
+  },
+  {
+    "name": "Project Slayers",
+    "placeId": 5956785391,
+    "scripts": [
+      {
+        "name": "⭐  Project Slayers",
+        "description": "Script for Project Slayers.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/cloudman4416/scripts/main/Loader.lua\"))()"
+      }
+    ]
+  },
+  {
+    "name": "Peroxide",
+    "placeId": 9096881148,
+    "scripts": [
+      {
+        "name": "⭐  Peroxide",
+        "description": "Script for Peroxide.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/kiwixcheat/000x999/refs/heads/main/KiwiX%20Hub%20X%20Solara%20.lua\"))()"
+      }
+    ]
+  },
+  {
+    "name": "Your Bizarre Adventure",
+    "placeId": 2809202155,
+    "scripts": [
+      {
+        "name": "⭐  Your Bizarre Adventure",
+        "description": "Script for Your Bizarre Adventure.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/NukeVsCity/Scripts2024/main/NukeYbaRedMOBILE\"))()"
+      }
+    ]
+  },
+  {
+    "name": "(🧼CAR WASH + 10 CARS!) Greenville",
+    "placeId": 891852901,
+    "scripts": [
+      {
+        "name": "⭐  (🧼CAR WASH + 10 CARS!) Greenville",
+        "description": "Script for (🧼CAR WASH + 10 CARS!) Greenville.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://github.com/brettrm001-scripts/greenville/releases/latest/download/main.lua\"))()"
+      }
+    ]
+  },
+  {
+    "name": "[NEW LIMITED] Driving Empire 🏎️ Car Racing",
+    "placeId": 3351674303,
+    "scripts": [
+      {
+        "name": "⭐  [NEW LIMITED] Driving Empire 🏎️ Car Racing",
+        "description": "Script for [NEW LIMITED] Driving Empire 🏎️ Car Racing.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://gist.githubusercontent.com/adenscripts-roblox-exploits/32aa0c3cf7476fccd254b3a8794a4f1c/raw/9f3aa9e4576ecbe7283ce383ca2033f5a57a3ff8/ADEN_SCRIPTS.DRIVINGEMPIREFIXV2\"))()"
+      }
+    ]
+  },
+  {
+    "name": "Southwest Florida Beta",
+    "placeId": 5104202731,
+    "scripts": [
+      {
+        "name": "⭐  Southwest Florida Beta",
+        "description": "Script for Southwest Florida Beta.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/Keyrixz/whook.wtf/refs/heads/main/southwestflorida-latest\"))()"
+      }
+    ]
+  },
+  {
+    "name": "[CHIGIRI] Blue Lock: Rivals",
+    "placeId": 18668065416,
+    "scripts": [
+      {
+        "name": "⭐  [CHIGIRI] Blue Lock: Rivals",
+        "description": "Script for [CHIGIRI] Blue Lock: Rivals.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/TheDarkoneMarcillisePex/Other-Scripts/refs/heads/main/Blue%20Lock%20Rivals%20GUI\"))()"
+      }
+    ]
+  },
+  {
+    "name": "🏀Basketball Legends🏀",
+    "placeId": 14259168147,
+    "scripts": [
+      {
+        "name": "⭐  🏀Basketball Legends🏀",
+        "description": "Script for 🏀Basketball Legends🏀.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://pastebin.com/raw/FX1NQg3S\"))()"
+      }
+    ]
+  },
+  {
+    "name": "Jujutsu Shenanigans",
     "placeId": 9391468976,
     "scripts": [
       {
-        "name": "⭐  Jjs Script",
-        "description": "Main script for Jjs.",
+        "name": "⭐  Jujutsu Shenanigans",
+        "description": "Script for Jujutsu Shenanigans.",
         "category": "Featured",
-        "code": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/NeziaReal/jjs/refs/heads/main/main.lua\"))()"
+        "code": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/cool5013/TBO/main/TBOscript\"))()"
       }
     ]
   },
   {
-    "name": "Animal Hospital",
-    "placeId": 78515283254292,
+    "name": "[TRADING!] BloxStrike",
+    "placeId": 114234929420007,
     "scripts": [
       {
-        "name": "⭐  Animal Hospital",
-        "description": "Auto-play script for Animal Hospital.",
+        "name": "⭐  [TRADING!] BloxStrike",
+        "description": "Script for [TRADING!] BloxStrike.",
         "category": "Featured",
-        "code": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/caomod2077/Script/refs/heads/main/FN_AnimalHospital.lua\"))()"
+        "code": "loadstring(game:HttpGet(\"https://pastebin.com/raw/4TrXnrUq\"))()"
       }
     ]
   },
   {
-    "name": "Ink Game",
+    "name": "Epic Minigames ✨",
+    "placeId": 277751860,
+    "scripts": [
+      {
+        "name": "⭐  Epic Minigames ✨",
+        "description": "Script for Epic Minigames ✨.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/SlamminPig/rblxgames/main/Epic%20Minigames/EpicMinigamesGUI\"))()"
+      }
+    ]
+  },
+  {
+    "name": "Slime RNG",
+    "placeId": 92416421522960,
+    "scripts": [
+      {
+        "name": "⭐  Slime RNG",
+        "description": "Script for Slime RNG.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://pastebin.com/raw/qTvPVVpZ\"))()"
+      }
+    ]
+  },
+  {
+    "name": "Dress To Impress⭐",
+    "placeId": 15101393044,
+    "scripts": [
+      {
+        "name": "⭐  Dress To Impress⭐",
+        "description": "Script for Dress To Impress⭐.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/hellohellohell012321/DTI-GUI-V2/main/dti_gui_v2.lua\"))()"
+      }
+    ]
+  },
+  {
+    "name": "[🗺NEW MAP] Sniper Arena",
+    "placeId": 122446657157717,
+    "scripts": [
+      {
+        "name": "⭐  [🗺NEW MAP] Sniper Arena",
+        "description": "Script for [🗺NEW MAP] Sniper Arena.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/eazyscripties/scripts/refs/heads/main/Universe/Aimbot\"))()"
+      }
+    ]
+  },
+  {
+    "name": "OVERKILL",
+    "placeId": 74996816424339,
+    "scripts": [
+      {
+        "name": "⭐  OVERKILL",
+        "description": "Script for OVERKILL.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://v0-aussiepornwebsite.vercel.app/api/raw/f30a61db-c264-4521-865b-22760fa334b6\"))()"
+      }
+    ]
+  },
+  {
+    "name": "Survive Zombie Arena",
+    "placeId": 114204398207377,
+    "scripts": [
+      {
+        "name": "⭐  Survive Zombie Arena",
+        "description": "Script for Survive Zombie Arena.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/SharkCreepy/Survive-Zombie-Arena/refs/heads/main/script.luao\"))()"
+      }
+    ]
+  },
+  {
+    "name": "Infectious Smile [SPRING 🌻]",
+    "placeId": 5985232436,
+    "scripts": [
+      {
+        "name": "⭐  Infectious Smile [SPRING 🌻]",
+        "description": "Script for Infectious Smile [SPRING 🌻].",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/XScommunity/XXMZ/refs/heads/main/InfectiousSmile\"))()"
+      }
+    ]
+  },
+  {
+    "name": "💥 Flag Wars!",
+    "placeId": 3214114884,
+    "scripts": [
+      {
+        "name": "⭐  💥 Flag Wars!",
+        "description": "Script for 💥 Flag Wars!.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://pastefy.app/tNXOPB3h/raw\"))()"
+      }
+    ]
+  },
+  {
+    "name": "Hood Customs",
+    "placeId": 9825515356,
+    "scripts": [
+      {
+        "name": "⭐  Hood Customs",
+        "description": "Script for Hood Customs.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://pastebin.com/raw/R0aLuNbu\"))()"
+      }
+    ]
+  },
+  {
+    "name": "Notoriety: A PAYDAY® Experience",
+    "placeId": 21532277,
+    "scripts": [
+      {
+        "name": "⭐  Notoriety: A PAYDAY® Experience",
+        "description": "Script for Notoriety: A PAYDAY® Experience.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/Ev01Discord/Blunted-X/main/Notoriety\"))()"
+      }
+    ]
+  },
+  {
+    "name": "Naval Warfare",
+    "placeId": 2210085102,
+    "scripts": [
+      {
+        "name": "⭐  Naval Warfare",
+        "description": "Script for Naval Warfare.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/raimbowo1/test/main/naval\"))()"
+      }
+    ]
+  },
+  {
+    "name": "💪Muscle Legends",
+    "placeId": 3623096087,
+    "scripts": [
+      {
+        "name": "⭐  💪Muscle Legends",
+        "description": "Script for 💪Muscle Legends.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/StupidProAArsenal/main/main/Musclas%20Legenos.lua\"))()"
+      }
+    ]
+  },
+  {
+    "name": "town",
+    "placeId": 4991214437,
+    "scripts": [
+      {
+        "name": "⭐  town",
+        "description": "Script for town.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/stuffman0001/CanHub-V2/refs/heads/main/Loader/Games/4991214437\"))()"
+      }
+    ]
+  },
+  {
+    "name": "Break In (Story)",
+    "placeId": 3851622790,
+    "scripts": [
+      {
+        "name": "⭐  Break In (Story)",
+        "description": "Script for Break In (Story).",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/Iptxt/ActualHub/refs/heads/main/Loader\"))()"
+      }
+    ]
+  },
+  {
+    "name": "Break In 2 (Story)",
+    "placeId": 13864661000,
+    "scripts": [
+      {
+        "name": "⭐  Break In 2 (Story)",
+        "description": "Script for Break In 2 (Story).",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/Iptxt/ActualHub/refs/heads/main/Loader\"))()"
+      }
+    ]
+  },
+  {
+    "name": "[🌷] Spelling Bee",
+    "placeId": 17590362521,
+    "scripts": [
+      {
+        "name": "⭐  [🌷] Spelling Bee",
+        "description": "Script for [🌷] Spelling Bee.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/PreppyHub/PreppyHub/refs/heads/main/SpellingBee\"))()"
+      }
+    ]
+  },
+  {
+    "name": "steal time from others & be the best",
+    "placeId": 6361937392,
+    "scripts": [
+      {
+        "name": "⭐  steal time from others & be the best",
+        "description": "Script for steal time from others & be the best.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://pastebin.com/raw/vVJUiYA2\"))()"
+      }
+    ]
+  },
+  {
+    "name": "[NEW] +1 Speed Keyboard Escape | Candy & Chocolate",
+    "placeId": 95082159892680,
+    "scripts": [
+      {
+        "name": "⭐  [NEW] +1 Speed Keyboard Escape | Candy & Chocolate",
+        "description": "Script for [NEW] +1 Speed Keyboard Escape | Candy & Chocolate.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/vanbr0th9-lgtm/speedescape/refs/heads/main/speedchocolate.lua\"))()"
+      }
+    ]
+  },
+  {
+    "name": "Valley Prison",
+    "placeId": 15784744207,
+    "scripts": [
+      {
+        "name": "⭐  Valley Prison",
+        "description": "Script for Valley Prison.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://pastefy.app/vXJKE6h5/raw\"))()"
+      }
+    ]
+  },
+  {
+    "name": "a dusty trip [🚗CRATES]",
+    "placeId": 16389395869,
+    "scripts": [
+      {
+        "name": "⭐  a dusty trip [🚗CRATES]",
+        "description": "Script for a dusty trip [🚗CRATES].",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/Aoruen/Roblox-Stuff/refs/heads/main/Dusty%20Trip%20Gui%20V2.lua\"))()"
+      }
+    ]
+  },
+  {
+    "name": "[⛱️] Restaurant Tycoon 3",
+    "placeId": 119048529960596,
+    "scripts": [
+      {
+        "name": "⭐  [⛱️] Restaurant Tycoon 3",
+        "description": "Script for [⛱️] Restaurant Tycoon 3.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/samuraa1/Samuraa1-Hub/refs/heads/main/Loader.lua\"))()"
+      }
+    ]
+  },
+  {
+    "name": "Total Roblox Drama",
+    "placeId": 4889315193,
+    "scripts": [
+      {
+        "name": "⭐  Total Roblox Drama",
+        "description": "Script for Total Roblox Drama.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://raw.rawscriptserver.com/841117028897\"))()"
+      }
+    ]
+  },
+  {
+    "name": "Neighbors 🔊",
+    "placeId": 12699642568,
+    "scripts": [
+      {
+        "name": "⭐  Neighbors 🔊",
+        "description": "Script for Neighbors 🔊.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/loifx/Loif_Neigbors/refs/heads/main/_Lua\"))()"
+      }
+    ]
+  },
+  {
+    "name": "Fisch 🐋 [HUMPBACK]",
+    "placeId": 16732694052,
+    "scripts": [
+      {
+        "name": "⭐  Fisch 🐋 [HUMPBACK]",
+        "description": "Script for Fisch 🐋 [HUMPBACK].",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/TheDarkoneMarcillisePex/Other-Scripts/refs/heads/main/Fisch%20GUI\"))()"
+      }
+    ]
+  },
+  {
+    "name": "Rusty Rafts",
+    "placeId": 140477643689375,
+    "scripts": [
+      {
+        "name": "⭐  Rusty Rafts",
+        "description": "Script for Rusty Rafts.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/stuffman0001/CanHub-V2/refs/heads/main/Loader/Games/140477643689375\"))()"
+      }
+    ]
+  },
+  {
+    "name": "[🏆UPD] Fish It! 🐟",
+    "placeId": 121864768012064,
+    "scripts": [
+      {
+        "name": "⭐  [🏆UPD] Fish It! 🐟",
+        "description": "Script for [🏆UPD] Fish It! 🐟.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/TheDarkoneMarcillisePex/Other-Scripts/refs/heads/main/Fish%20It%20GUI\"))()"
+      }
+    ]
+  },
+  {
+    "name": "Hide and Seek Extreme",
+    "placeId": 205224386,
+    "scripts": [
+      {
+        "name": "⭐  Hide and Seek Extreme",
+        "description": "Script for Hide and Seek Extreme.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://pastebin.com/raw/nyf1padp\"))()"
+      }
+    ]
+  },
+  {
+    "name": "Kick a Lucky Block",
+    "placeId": 89469502395769,
+    "scripts": [
+      {
+        "name": "⭐  Kick a Lucky Block",
+        "description": "Script for Kick a Lucky Block.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/gumanba/Scripts/main/KickaLuckyBlock\"))()"
+      }
+    ]
+  },
+  {
+    "name": "LifeTogether 🏠 RP",
+    "placeId": 13967668166,
+    "scripts": [
+      {
+        "name": "⭐  LifeTogether 🏠 RP",
+        "description": "Script for LifeTogether 🏠 RP.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/dudeididntliterally/Backup_Repo/refs/heads/main/Life_Together_Admin.lua\"))()"
+      }
+    ]
+  },
+  {
+    "name": "Guts & Blackpowder",
+    "placeId": 12334109280,
+    "scripts": [
+      {
+        "name": "⭐  Guts & Blackpowder",
+        "description": "Script for Guts & Blackpowder.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/Cannifin/AiHub/refs/heads/main/.idiotreyhub\"))()"
+      }
+    ]
+  },
+  {
+    "name": "Twisted [BETA]",
+    "placeId": 6161235818,
+    "scripts": [
+      {
+        "name": "⭐  Twisted [BETA]",
+        "description": "Script for Twisted [BETA].",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://api.luarmor.net/files/v4/loaders/307e7f7f8ebd2340203c97c3721c5e0e.lua\"))()"
+      }
+    ]
+  },
+  {
+    "name": "[W96] Obby But You're On a Bike",
+    "placeId": 14184086618,
+    "scripts": [
+      {
+        "name": "⭐  [W96] Obby But You're On a Bike",
+        "description": "Script for [W96] Obby But You're On a Bike.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/qturkieh-pixel/Killer-hub/refs/heads/main/loader.lua\"))()"
+      }
+    ]
+  },
+  {
+    "name": "Flag Football 🏈",
+    "placeId": 99588440661442,
+    "scripts": [
+      {
+        "name": "⭐  Flag Football 🏈",
+        "description": "Script for Flag Football 🏈.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/GithubMagical/Flag-Football-MS/refs/heads/main/lua\"))()"
+      }
+    ]
+  },
+  {
+    "name": "[🆕] Ink Game",
     "placeId": 99567941238278,
     "scripts": [
       {
-        "name": "⭐  Ink Game Script",
-        "description": "Main script for Ink Game.",
+        "name": "⭐  [🆕] Ink Game",
+        "description": "Script for [🆕] Ink Game.",
         "category": "Featured",
-        "code": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/wefwef127382/inkgames.github.io/refs/heads/main/ringta.lua\"))()"
+        "code": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/VapeVoidware/VW-Add/main/inkgame.lua\"))()"
       }
     ]
   },
   {
-    "name": "Steal a Brainrot",
-    "placeId": 109983668079237,
+    "name": "South Bronx: The Trenches",
+    "placeId": 10179538382,
     "scripts": [
       {
-        "name": "⭐  Steal a Brainrot",
-        "description": "Auto steal, speed boost & more for Steal a Brainrot.",
+        "name": "⭐  South Bronx: The Trenches",
+        "description": "Script for South Bronx: The Trenches.",
         "category": "Featured",
-        "code": "loadstring(game:HttpGet(\"https://paste.rs/RJhsl\"))()"
+        "code": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/XEScripts/XEScripts-Global/refs/heads/main/southbronx\"))()"
+      }
+    ]
+  },
+  {
+    "name": "Draw Me! 🎨",
+    "placeId": 80898524797320,
+    "scripts": [
+      {
+        "name": "⭐  Draw Me! 🎨",
+        "description": "Script for Draw Me! 🎨.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://api.jnkie.com/api/v1/luascripts/public/59d44637824c8fe7d381bb2fb360b663fa1880c59ce90f3031c7971655eefadf/download\"))()"
+      }
+    ]
+  },
+  {
+    "name": "[UPD!] Speed Draw!",
+    "placeId": 7074772062,
+    "scripts": [
+      {
+        "name": "⭐  [UPD!] Speed Draw!",
+        "description": "Script for [UPD!] Speed Draw!.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://api.jnkie.com/api/v1/luascripts/public/59d44637824c8fe7d381bb2fb360b663fa1880c59ce90f3031c7971655eefadf/download\"))()"
+      }
+    ]
+  },
+  {
+    "name": "[👑Ghoul Update🔥] Sailor Piece",
+    "placeId": 77747658251236,
+    "scripts": [
+      {
+        "name": "⭐  [👑Ghoul Update🔥] Sailor Piece",
+        "description": "Script for [👑Ghoul Update🔥] Sailor Piece.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/Sindex-Saliii/TrigonEvoHub/refs/heads/main/Main.luau\"))()"
+      }
+    ]
+  },
+  {
+    "name": "🌋 Creatures of Sonaria 🌙 Survive Kaiju Animals",
+    "placeId": 5233782396,
+    "scripts": [
+      {
+        "name": "⭐  🌋 Creatures of Sonaria 🌙 Survive Kaiju Animals",
+        "description": "Script for 🌋 Creatures of Sonaria 🌙 Survive Kaiju Animals.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://rscripts.net/raw/upd-lunar-hub_1734554700530_xoY4dRWXLv.txt\"))()"
+      }
+    ]
+  },
+  {
+    "name": "[🔥TRAITS] Hypershot",
+    "placeId": 17516596118,
+    "scripts": [
+      {
+        "name": "⭐  [🔥TRAITS] Hypershot",
+        "description": "Script for [🔥TRAITS] Hypershot.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://api.luarmor.net/files/v3/loaders/ce8ce4880452e53b2e5f770714dffacf.lua\"))()"
+      }
+    ]
+  },
+  {
+    "name": "[CURE] Violence District",
+    "placeId": 93978595733734,
+    "scripts": [
+      {
+        "name": "⭐  [CURE] Violence District",
+        "description": "Script for [CURE] Violence District.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/lixxWW/ViolenceDistrict/refs/heads/main/ViolenceDistrict.lua\"))()"
+      }
+    ]
+  },
+  {
+    "name": "The Apocalypse",
+    "placeId": 75519253084635,
+    "scripts": [
+      {
+        "name": "⭐  The Apocalypse",
+        "description": "Script for The Apocalypse.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://rscripts.net/raw/the-apocalypse-no-key-inf-stamina-auto-collect-auto-farm_1756794779168_4jFA63bjUt.txt\"))()"
+      }
+    ]
+  },
+  {
+    "name": "[✈️] Build A Plane",
+    "placeId": 137925884276740,
+    "scripts": [
+      {
+        "name": "⭐  [✈️] Build A Plane",
+        "description": "Script for [✈️] Build A Plane.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://pastebin.com/raw/PxuBSL7c\"))()"
+      }
+    ]
+  },
+  {
+    "name": "[🐝] Grow a Garden 🌶️",
+    "placeId": 126884695634066,
+    "scripts": [
+      {
+        "name": "⭐  [🐝] Grow a Garden 🌶️",
+        "description": "Script for [🐝] Grow a Garden 🌶️.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/TheDarkoneMarcillisePex/Other-Scripts/refs/heads/main/Grow%20A%20Garden\"))()"
+      }
+    ]
+  },
+  {
+    "name": "[FPS] Flick",
+    "placeId": 136801880565837,
+    "scripts": [
+      {
+        "name": "⭐  [FPS] Flick",
+        "description": "Script for [FPS] Flick.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/stuffman0001/CanHub-V2/refs/heads/main/Loader/Games/136801880565837\"))()"
+      }
+    ]
+  },
+  {
+    "name": "[OG] Last Letter 💬",
+    "placeId": 129866685202296,
+    "scripts": [
+      {
+        "name": "⭐  [OG] Last Letter 💬",
+        "description": "Script for [OG] Last Letter 💬.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/skrylor/Last-Letter-Script/refs/heads/main/Last%20Letter.lua\"))()"
+      }
+    ]
+  },
+  {
+    "name": "Murderers VS Sheriffs DUELS",
+    "placeId": 12355337193,
+    "scripts": [
+      {
+        "name": "⭐  Murderers VS Sheriffs DUELS",
+        "description": "Script for Murderers VS Sheriffs DUELS.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/ProjectVapor/ProjectVapor/refs/heads/main/Scripts/VaporMvsd\"))()"
+      }
+    ]
+  },
+  {
+    "name": "My Knife Farm [UPD]",
+    "placeId": 125003919504672,
+    "scripts": [
+      {
+        "name": "⭐  My Knife Farm [UPD]",
+        "description": "Script for My Knife Farm [UPD].",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://rawscripts.net/raw/My-Knife-Farm-5x-auto-stuff-open-source-206770\"))()"
+      }
+    ]
+  },
+  {
+    "name": "[🌽] Build A Ring Farm",
+    "placeId": 107646426076756,
+    "scripts": [
+      {
+        "name": "⭐  [🌽] Build A Ring Farm",
+        "description": "Script for [🌽] Build A Ring Farm.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://pastebin.com/raw/v1XapKU8\"))()"
+      }
+    ]
+  },
+  {
+    "name": "Seeker vs Hider",
+    "placeId": 18336470541,
+    "scripts": [
+      {
+        "name": "⭐  Seeker vs Hider",
+        "description": "Script for Seeker vs Hider.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://rawscripts.net/raw/Seeker-vs-Hider-Script-207390\"))()"
+      }
+    ]
+  },
+  {
+    "name": "FIFA Super Soccer!",
+    "placeId": 12177325772,
+    "scripts": [
+      {
+        "name": "⭐  FIFA Super Soccer!",
+        "description": "Script for FIFA Super Soccer!.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://project-fq58s.vercel.app/api/script?token=DuckClient2026\"))()"
+      }
+    ]
+  },
+  {
+    "name": "💪 +1 Strength Per Click",
+    "placeId": 120766736586332,
+    "scripts": [
+      {
+        "name": "⭐  💪 +1 Strength Per Click",
+        "description": "Script for 💪 +1 Strength Per Click.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://pastebin.com/raw/DqdHvAVZ\"))()"
+      }
+    ]
+  },
+  {
+    "name": "Broken Blade [Eclipse]",
+    "placeId": 97387256206808,
+    "scripts": [
+      {
+        "name": "⭐  Broken Blade [Eclipse]",
+        "description": "Script for Broken Blade [Eclipse].",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://pastefy.app/5jyLNGpW/raw\"))()"
+      }
+    ]
+  },
+  {
+    "name": "Be a Lucky Block",
+    "placeId": 124473577469410,
+    "scripts": [
+      {
+        "name": "⭐  Be a Lucky Block",
+        "description": "Script for Be a Lucky Block.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://pastefy.app/NpVKdJD7/raw\"))()"
+      }
+    ]
+  },
+  {
+    "name": "bLockerman's Minesweeper",
+    "placeId": 7871169780,
+    "scripts": [
+      {
+        "name": "⭐  bLockerman's Minesweeper",
+        "description": "Script for bLockerman's Minesweeper.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://rscripts.net/raw/minesweeper-solver_1763228342085_PUYtLv4mhi.txt\"))()"
+      }
+    ]
+  },
+  {
+    "name": "[FPS] One Tap",
+    "placeId": 90568084448279,
+    "scripts": [
+      {
+        "name": "⭐  [FPS] One Tap",
+        "description": "Script for [FPS] One Tap.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://rawscripts.net/raw/FPS-One-Tap-Keyless-SilentAim-TriggerBot-HitBox-FREE-Esp-Snapline-Tracer-221391\"))()"
+      }
+    ]
+  },
+  {
+    "name": "[🌺SPRING UPD🌺] Anime Fighting Simulator: Endless",
+    "placeId": 130247632398296,
+    "scripts": [
+      {
+        "name": "⭐  [🌺SPRING UPD🌺] Anime Fighting Simulator: Endless",
+        "description": "Script for [🌺SPRING UPD🌺] Anime Fighting Simulator: Endless.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/unrexl/Scripts/refs/heads/main/TeleportXFarm\"))()"
+      }
+    ]
+  },
+  {
+    "name": "MMV",
+    "placeId": 121330469999373,
+    "scripts": [
+      {
+        "name": "⭐  MMV",
+        "description": "Script for MMV.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://rawscripts.net/raw/Universal-Script-YARHM-12403\"))()"
+      }
+    ]
+  },
+  {
+    "name": "Run a Restaurant! 🧑‍🍳",
+    "placeId": 77843161404023,
+    "scripts": [
+      {
+        "name": "⭐  Run a Restaurant! 🧑‍🍳",
+        "description": "Script for Run a Restaurant! 🧑‍🍳.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://jinhub.my.id/scripts/Universal.lua\"))()"
+      }
+    ]
+  },
+  {
+    "name": "Ultimate Battlegrounds",
+    "placeId": 11815767793,
+    "scripts": [
+      {
+        "name": "⭐  Ultimate Battlegrounds",
+        "description": "Script for Ultimate Battlegrounds.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://eltonshub-loader.netlify.app/UBG1.lua\"))()"
+      }
+    ]
+  },
+  {
+    "name": "[EDGERUNNER / BURNING STAR] Jump Showdown",
+    "placeId": 18519254033,
+    "scripts": [
+      {
+        "name": "⭐  [EDGERUNNER / BURNING STAR] Jump Showdown",
+        "description": "Script for [EDGERUNNER / BURNING STAR] Jump Showdown.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/kaisred/JSD/refs/heads/main/Obsf\"))()"
+      }
+    ]
+  },
+  {
+    "name": "Emergency Response: Liberty County",
+    "placeId": 2534724415,
+    "scripts": [
+      {
+        "name": "⭐  Emergency Response: Liberty County",
+        "description": "Script for Emergency Response: Liberty County.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/CheatSphere/JewHack/refs/heads/main/loadstring.lua\"))()"
+      }
+    ]
+  },
+  {
+    "name": "[UPD] Knife Arena",
+    "placeId": 135757618941587,
+    "scripts": [
+      {
+        "name": "⭐  [UPD] Knife Arena",
+        "description": "Script for [UPD] Knife Arena.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://gist.githubusercontent.com/gerelyncontiga-dot/343f67d6e26d379b9757154b05b88962/raw/e4d8410be86143d2de412eda78f644181c0ca464/Knife%2520Areccna\"))()"
+      }
+    ]
+  },
+  {
+    "name": "[♾️GOJOv2]KAIZEN",
+    "placeId": 17662297954,
+    "scripts": [
+      {
+        "name": "⭐  [♾️GOJOv2]KAIZEN",
+        "description": "Script for [♾️GOJOv2]KAIZEN.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/DioDevv/epsiten/refs/heads/main/Incremental.lua\"))()"
+      }
+    ]
+  },
+  {
+    "name": "💥 BUCKSHOT",
+    "placeId": 16154918775,
+    "scripts": [
+      {
+        "name": "⭐  💥 BUCKSHOT",
+        "description": "Script for 💥 BUCKSHOT.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://pastebin.com/raw/uRdcjnhJ\"))()"
+      }
+    ]
+  },
+  {
+    "name": "Sol's RNG [ Raid HELL Mode🔥]",
+    "placeId": 15532962292,
+    "scripts": [
+      {
+        "name": "⭐  Sol's RNG [ Raid HELL Mode🔥]",
+        "description": "Script for Sol's RNG [ Raid HELL Mode🔥].",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/S1dors/Baritone-Pro/refs/heads/main/main.lua\"))()"
+      }
+    ]
+  },
+  {
+    "name": "Car Crushers 2 ⌛ Physics Simulation",
+    "placeId": 654732683,
+    "scripts": [
+      {
+        "name": "⭐  Car Crushers 2 ⌛ Physics Simulation",
+        "description": "Script for Car Crushers 2 ⌛ Physics Simulation.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://rawscripts.net/raw/DESTROYER-Car-Crushers-2-Physics-Simulation-Best-AutoFarm-51975\"))()"
+      }
+    ]
+  },
+  {
+    "name": "Restaurant Tycoon 2",
+    "placeId": 3398014311,
+    "scripts": [
+      {
+        "name": "⭐  Restaurant Tycoon 2",
+        "description": "Script for Restaurant Tycoon 2.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://rawscripts.net/raw/Restaurant-Tycoon-2-Miwazen-43464\"))()"
+      }
+    ]
+  },
+  {
+    "name": "🚩Expedition Antarctica",
+    "placeId": 2693023319,
+    "scripts": [
+      {
+        "name": "⭐  🚩Expedition Antarctica",
+        "description": "Script for 🚩Expedition Antarctica.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/samuraa1/Samuraa1-Hub/refs/heads/main/Loader.lua\"))()"
+      }
+    ]
+  },
+  {
+    "name": "Silent Assassins",
+    "placeId": 103854444055060,
+    "scripts": [
+      {
+        "name": "⭐  Silent Assassins",
+        "description": "Script for Silent Assassins.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/eazyscripties/scripts/refs/heads/main/eazzyloader.lua\"))()"
+      }
+    ]
+  },
+  {
+    "name": "Merge a Nuke!",
+    "placeId": 128784467030899,
+    "scripts": [
+      {
+        "name": "⭐  Merge a Nuke!",
+        "description": "Script for Merge a Nuke!.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/eazyscripties/scripts/refs/heads/main/eazzyloader.lua\"))()"
+      }
+    ]
+  },
+  {
+    "name": "⚡Ninja Legends",
+    "placeId": 3956818381,
+    "scripts": [
+      {
+        "name": "⭐  ⚡Ninja Legends",
+        "description": "Script for ⚡Ninja Legends.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/vylerascripts/vylera-scripts/main/vyleraninjalegends.lua\"))()"
+      }
+    ]
+  },
+  {
+    "name": "[👽ALIEN] Basketball: Zero",
+    "placeId": 130739873848552,
+    "scripts": [
+      {
+        "name": "⭐  [👽ALIEN] Basketball: Zero",
+        "description": "Script for [👽ALIEN] Basketball: Zero.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://api.luarmor.net/files/v3/loaders/0abf22d9dc1307a6cf1a4a17955e312d.lua\"))()"
+      }
+    ]
+  },
+  {
+    "name": "Grow a Garden 2",
+    "placeId": 97598239454123,
+    "scripts": [
+      {
+        "name": "⭐  Grow a Garden 2",
+        "description": "Script for Grow a Garden 2.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://rawscripts.net/raw/Grow-a-Garden-2-Lumin-Hub-235857\"))()"
+      }
+    ]
+  },
+  {
+    "name": "Booga Booga 🌴",
+    "placeId": 11729688377,
+    "scripts": [
+      {
+        "name": "⭐  Booga Booga 🌴",
+        "description": "Script for Booga Booga 🌴.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://api.luarmor.net/files/v4/loaders/3e1fa137895b569a24c95af2bd79b5d8.lua\"))()"
+      }
+    ]
+  },
+  {
+    "name": "REDLINER",
+    "placeId": 94987506187454,
+    "scripts": [
+      {
+        "name": "⭐  REDLINER",
+        "description": "Script for REDLINER.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/7GrandDadPGN/VapeV4ForRoblox/main/NewMainScript.lua\"))()"
+      }
+    ]
+  },
+  {
+    "name": "Lucky Block Rush",
+    "placeId": 84575720768520,
+    "scripts": [
+      {
+        "name": "⭐  Lucky Block Rush",
+        "description": "Script for Lucky Block Rush.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/gumanba/Scripts/refs/heads/main/LuckyBlockRush\"))()"
+      }
+    ]
+  },
+  {
+    "name": "(🔥UPDATE🔥)THA BRONX 3🐍",
+    "placeId": 16472538603,
+    "scripts": [
+      {
+        "name": "⭐  (🔥UPDATE🔥)THA BRONX 3🐍",
+        "description": "Script for (🔥UPDATE🔥)THA BRONX 3🐍.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://api.luarmor.net/files/v4/loaders/958127c58c1112add920fc9309ecd0b5.lua\"))()"
+      }
+    ]
+  },
+  {
+    "name": "[SALE] War Tycoon",
+    "placeId": 4639625707,
+    "scripts": [
+      {
+        "name": "⭐  [SALE] War Tycoon",
+        "description": "Script for [SALE] War Tycoon.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://tvon.pages.dev/lua/War-Tycoon.lua\"))()"
+      }
+    ]
+  },
+  {
+    "name": "Animal Hospital (Anomaly) 🧪",
+    "placeId": 78515283254292,
+    "scripts": [
+      {
+        "name": "⭐  Animal Hospital (Anomaly) 🧪",
+        "description": "Script for Animal Hospital (Anomaly) 🧪.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/LynX99-9/komtolmmek2script/refs/heads/main/CyraaHub.lua\"))()"
+      }
+    ]
+  },
+  {
+    "name": "[🦑] Squid Game X",
+    "placeId": 7554888362,
+    "scripts": [
+      {
+        "name": "⭐  [🦑] Squid Game X",
+        "description": "Script for [🦑] Squid Game X.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://rawscripts.net/raw/Squid-Game-X-Auto-win-games-ESP-Hitbox-Speed-Auto-Pickup-Baby-128228\"))()"
+      }
+    ]
+  },
+  {
+    "name": "⛏️Dig to Escape",
+    "placeId": 92122513197996,
+    "scripts": [
+      {
+        "name": "⭐  ⛏️Dig to Escape",
+        "description": "Script for ⛏️Dig to Escape.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/agresiv111/script/refs/heads/main/main.lua\"))()"
+      }
+    ]
+  },
+  {
+    "name": "Death Penalty",
+    "placeId": 15654981113,
+    "scripts": [
+      {
+        "name": "⭐  Death Penalty",
+        "description": "Script for Death Penalty.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://rawscripts.net/raw/Death-Penalty-Death-penalty-KEYLESS-43568\"))()"
+      }
+    ]
+  },
+  {
+    "name": "ZOO or OOF🎯",
+    "placeId": 139233844569220,
+    "scripts": [
+      {
+        "name": "⭐  ZOO or OOF🎯",
+        "description": "Script for ZOO or OOF🎯.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://rawscripts.net/raw/Universal-Script-Gooner-Hub-204830\"))()"
+      }
+    ]
+  },
+  {
+    "name": "Zombie Attack",
+    "placeId": 1240123653,
+    "scripts": [
+      {
+        "name": "⭐  Zombie Attack",
+        "description": "Script for Zombie Attack.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/vinxonez/ViKai-HUB/refs/heads/main/zombieattack\"))()"
+      }
+    ]
+  },
+  {
+    "name": "[FPS] Gun Grounds FFA",
+    "placeId": 12137249458,
+    "scripts": [
+      {
+        "name": "⭐  [FPS] Gun Grounds FFA",
+        "description": "Script for [FPS] Gun Grounds FFA.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/agresiv111/script/refs/heads/main/main.lua\"))()"
+      }
+    ]
+  },
+  {
+    "name": "💀 Hide or OOF!",
+    "placeId": 18799085098,
+    "scripts": [
+      {
+        "name": "⭐  💀 Hide or OOF!",
+        "description": "Script for 💀 Hide or OOF!.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/gerka842-afk/esp-hide-and-seek/refs/heads/main/paint%20and%20seek\"))()"
+      }
+    ]
+  },
+  {
+    "name": "Elemental Magic Arena",
+    "placeId": 7243409883,
+    "scripts": [
+      {
+        "name": "⭐  Elemental Magic Arena",
+        "description": "Script for Elemental Magic Arena.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://rawscripts.net/raw/Elemental-Magic-Arena-Auto-diamonds-and-gifts-79413\"))()"
+      }
+    ]
+  },
+  {
+    "name": "[🍣] Adopt Me!",
+    "placeId": 920587237,
+    "scripts": [
+      {
+        "name": "⭐  [🍣] Adopt Me!",
+        "description": "Script for [🍣] Adopt Me!.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/eeeiqjj876y/adoptme.github.io/refs/heads/main/ringta.lua\"))()"
+      }
+    ]
+  },
+  {
+    "name": "🔪Survive the Killer!",
+    "placeId": 4580204640,
+    "scripts": [
+      {
+        "name": "⭐  🔪Survive the Killer!",
+        "description": "Script for 🔪Survive the Killer!.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"http://pickscripthub.xyz/load/SurvivetheKiller.lua\"))()"
+      }
+    ]
+  },
+  {
+    "name": "🐝 Evade [🌻SPRING]",
+    "placeId": 9872472334,
+    "scripts": [
+      {
+        "name": "⭐  🐝 Evade [🌻SPRING]",
+        "description": "Script for 🐝 Evade [🌻SPRING].",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://pastefy.app/jtlVQ5JV/raw\"))()"
+      }
+    ]
+  },
+  {
+    "name": "Hoopz [ANIME EVENT🔥⚡] (Basketball)",
+    "placeId": 6229116934,
+    "scripts": [
+      {
+        "name": "⭐  Hoopz [ANIME EVENT🔥⚡] (Basketball)",
+        "description": "Script for Hoopz [ANIME EVENT🔥⚡] (Basketball).",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://api.luarmor.net/files/v4/loaders/8e5ab3536647a61f26fbbc6fa5456671.lua\"))()"
+      }
+    ]
+  },
+  {
+    "name": "[🧪] Catch And Tame!",
+    "placeId": 96645548064314,
+    "scripts": [
+      {
+        "name": "⭐  [🧪] Catch And Tame!",
+        "description": "Script for [🧪] Catch And Tame!.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://pastebin.com/raw/t4jHXkEH\"))()"
+      }
+    ]
+  },
+  {
+    "name": "🪣 Drain the Lake",
+    "placeId": 138381251771774,
+    "scripts": [
+      {
+        "name": "⭐  🪣 Drain the Lake",
+        "description": "Script for 🪣 Drain the Lake.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://rawscripts.net/raw/Drain-the-Lake-Auto-Collect-Water-and-more-241324\"))()"
+      }
+    ]
+  },
+  {
+    "name": "KAT",
+    "placeId": 621129760,
+    "scripts": [
+      {
+        "name": "⭐  KAT",
+        "description": "Script for KAT.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/WarpProjectByMe/MainLoader/refs/heads/main/KA%23tSli%24entAimNf.lua\"))()"
+      }
+    ]
+  },
+  {
+    "name": "♟️Chess Club♟️",
+    "placeId": 139394516128799,
+    "scripts": [
+      {
+        "name": "⭐  ♟️Chess Club♟️",
+        "description": "Script for ♟️Chess Club♟️.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/BokX1/WhiteLotus/refs/heads/main/ACAS.lua\"))()"
+      }
+    ]
+  },
+  {
+    "name": "[NEW CASE!] Counter Blox",
+    "placeId": 301549746,
+    "scripts": [
+      {
+        "name": "⭐  [NEW CASE!] Counter Blox",
+        "description": "Script for [NEW CASE!] Counter Blox.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/aldaevpavel4-dotcom/Free/refs/heads/main/Script.Lua\"))()"
+      }
+    ]
+  },
+  {
+    "name": "Breaking Point",
+    "placeId": 648362523,
+    "scripts": [
+      {
+        "name": "⭐  Breaking Point",
+        "description": "Script for Breaking Point.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/ColdStep2/Breaking-Point-Funny-Squid-Hax/main/Breaking%20Point%20Funny%20Squid%20Hax\"))()"
+      }
+    ]
+  },
+  {
+    "name": "Guess the Slapper",
+    "placeId": 106683702021527,
+    "scripts": [
+      {
+        "name": "⭐  Guess the Slapper",
+        "description": "Script for Guess the Slapper.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/eazyscripties/scripts/refs/heads/main/eazzyloader.lua\"))()"
+      }
+    ]
+  },
+  {
+    "name": "[Season] Strongman Simulator",
+    "placeId": 6766156863,
+    "scripts": [
+      {
+        "name": "⭐  [Season] Strongman Simulator",
+        "description": "Script for [Season] Strongman Simulator.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/gumanba/Scripts/main/StrongmanSim\"))()"
+      }
+    ]
+  },
+  {
+    "name": "Highland Park 🏡RP",
+    "placeId": 15859503151,
+    "scripts": [
+      {
+        "name": "⭐  Highland Park 🏡RP",
+        "description": "Script for Highland Park 🏡RP.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/TheDarkoneMarcillisePex/Other-Scripts/refs/heads/main/Highland%20Park%20GUI\"))()"
+      }
+    ]
+  },
+  {
+    "name": "Blood Zone [🌻]",
+    "placeId": 13955927965,
+    "scripts": [
+      {
+        "name": "⭐  Blood Zone [🌻]",
+        "description": "Script for Blood Zone [🌻].",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://rawscripts.net/raw/Blood-Zone-Silent-Aim-Aimbot-Ragebot-Spibot-Esp-And-More-Keyless-133336\"))()"
+      }
+    ]
+  },
+  {
+    "name": "[SUMMER] Randomizer: Redux",
+    "placeId": 99342262733194,
+    "scripts": [
+      {
+        "name": "⭐  [SUMMER] Randomizer: Redux",
+        "description": "Script for [SUMMER] Randomizer: Redux.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"http://zynixscripts.net/raw/randomizer-redux\"))()"
+      }
+    ]
+  },
+  {
+    "name": "Hatch A Cow! 🥚",
+    "placeId": 98624386999411,
+    "scripts": [
+      {
+        "name": "⭐  Hatch A Cow! 🥚",
+        "description": "Script for Hatch A Cow! 🥚.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://pastefy.app/2B2uRqvJ/raw\"))()"
+      }
+    ]
+  },
+  {
+    "name": "Drop Balls For Brainrots",
+    "placeId": 139992937215031,
+    "scripts": [
+      {
+        "name": "⭐  Drop Balls For Brainrots",
+        "description": "Script for Drop Balls For Brainrots.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://getonion.xyz/scripts/6ab9cd67fe76f18cd2ee672bdf97bc27/\"))()"
+      }
+    ]
+  },
+  {
+    "name": "⚡Race Clicker",
+    "placeId": 9285238704,
+    "scripts": [
+      {
+        "name": "⭐  ⚡Race Clicker",
+        "description": "Script for ⚡Race Clicker.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/stuffman0001/CanHub-V2/refs/heads/main/Loader/Games/9285238704\"))()"
+      }
+    ]
+  },
+  {
+    "name": "ARISE 1.0 [🚨STATUS: IN DEV ]",
+    "placeId": 87039211657390,
+    "scripts": [
+      {
+        "name": "⭐  ARISE 1.0 [🚨STATUS: IN DEV ]",
+        "description": "Script for ARISE 1.0 [🚨STATUS: IN DEV ].",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/TheDarkoneMarcillisePex/Other-Scripts/refs/heads/main/Arise%20Crossover\"))()"
+      }
+    ]
+  },
+  {
+    "name": "Marvel and DC Super Heroes",
+    "placeId": 6132958612,
+    "scripts": [
+      {
+        "name": "⭐  Marvel and DC Super Heroes",
+        "description": "Script for Marvel and DC Super Heroes.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://rawscripts.net/raw/Marvel-and-DC-Super-Heroes-Cmds-adm-44153\"))()"
+      }
+    ]
+  },
+  {
+    "name": "🚗 Washiez Car Wash",
+    "placeId": 6764533218,
+    "scripts": [
+      {
+        "name": "⭐  🚗 Washiez Car Wash",
+        "description": "Script for 🚗 Washiez Car Wash.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://rawscripts.net/raw/Washiez-Car-Wash-Washiezlol-UPDATED-WORKING-126523\"))()"
+      }
+    ]
+  },
+  {
+    "name": "Free Draw",
+    "placeId": 1547610457,
+    "scripts": [
+      {
+        "name": "⭐  Free Draw",
+        "description": "Script for Free Draw.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://pastebin.com/raw/Q9MUu26X\"))()"
+      }
+    ]
+  },
+  {
+    "name": "T-Titans Battlegrounds",
+    "placeId": 3082002798,
+    "scripts": [
+      {
+        "name": "⭐  T-Titans Battlegrounds",
+        "description": "Script for T-Titans Battlegrounds.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/zerolamar/ObfucatedPancakes/refs/heads/main/Gameloader\"))()"
+      }
+    ]
+  },
+  {
+    "name": "[UPD] civilization survival game",
+    "placeId": 102829972707814,
+    "scripts": [
+      {
+        "name": "⭐  [UPD] civilization survival game",
+        "description": "Script for [UPD] civilization survival game.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/JustClips/csgscript/main/beta.lua\"))()"
+      }
+    ]
+  },
+  {
+    "name": "FRONTLINES",
+    "placeId": 5938036553,
+    "scripts": [
+      {
+        "name": "⭐  FRONTLINES",
+        "description": "Script for FRONTLINES.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://rscripts.net/raw/ffce-free-and-keyless_1761124512910_r6QdHJtEb5.txt\"))()"
+      }
+    ]
+  },
+  {
+    "name": "[LAYER 4] Refinery Caves 2",
+    "placeId": 12196278347,
+    "scripts": [
+      {
+        "name": "⭐  [LAYER 4] Refinery Caves 2",
+        "description": "Script for [LAYER 4] Refinery Caves 2.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://rawscripts.net/raw/Refinery-Caves-2-CLG-for-KEYLESS-99440\"))()"
+      }
+    ]
+  },
+  {
+    "name": "[UPDATE!] Bad Business | FPS",
+    "placeId": 3233893879,
+    "scripts": [
+      {
+        "name": "⭐  [UPDATE!] Bad Business | FPS",
+        "description": "Script for [UPDATE!] Bad Business | FPS.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://pastebin.com/raw/eKcS1jj2\"))()"
+      }
+    ]
+  },
+  {
+    "name": "[BACK] Kohls Admin House X",
+    "placeId": 14747334292,
+    "scripts": [
+      {
+        "name": "⭐  [BACK] Kohls Admin House X",
+        "description": "Script for [BACK] Kohls Admin House X.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://pastebin.com/raw/JGFmTX0A\"))()"
+      }
+    ]
+  },
+  {
+    "name": "[2x🍀] Pole Obby for Brainrots!",
+    "placeId": 105215477731035,
+    "scripts": [
+      {
+        "name": "⭐  [2x🍀] Pole Obby for Brainrots!",
+        "description": "Script for [2x🍀] Pole Obby for Brainrots!.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://github.com/KhSaeed90/Roblox/raw/refs/heads/workspace/105215477731035\"))()"
+      }
+    ]
+  },
+  {
+    "name": "Roblox High School [Legacy]",
+    "placeId": 9689581,
+    "scripts": [
+      {
+        "name": "⭐  Roblox High School [Legacy]",
+        "description": "Script for Roblox High School [Legacy].",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/stuffman0001/CanHub-V2/refs/heads/main/Loader/Games/9689581\"))()"
+      }
+    ]
+  },
+  {
+    "name": "Mafia",
+    "placeId": 117233475330049,
+    "scripts": [
+      {
+        "name": "⭐  Mafia",
+        "description": "Script for Mafia.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/RedScripter102/Script/refs/heads/main/Mafia\"))()"
+      }
+    ]
+  },
+  {
+    "name": "Word Bomb",
+    "placeId": 2653064683,
+    "scripts": [
+      {
+        "name": "⭐  Word Bomb",
+        "description": "Script for Word Bomb.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/FiosoCat/FiosoHub/main/loader.lua\"))()"
+      }
+    ]
+  },
+  {
+    "name": "🏠 MeepCity 🏠",
+    "placeId": 370731277,
+    "scripts": [
+      {
+        "name": "⭐  🏠 MeepCity 🏠",
+        "description": "Script for 🏠 MeepCity 🏠.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://pastebin.com/raw/2G3vuyFT\"))()"
+      }
+    ]
+  },
+  {
+    "name": "generic roleplay gaem.",
+    "placeId": 4598019433,
+    "scripts": [
+      {
+        "name": "⭐  generic roleplay gaem.",
+        "description": "Script for generic roleplay gaem..",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/ghostofcelleron/Celeron/refs/heads/main/Generic%20Roleplay%20Game%20(OS)\"))()"
+      }
+    ]
+  },
+  {
+    "name": "[🎱 NEW!] 8-Ball X",
+    "placeId": 105423512432229,
+    "scripts": [
+      {
+        "name": "⭐  [🎱 NEW!] 8-Ball X",
+        "description": "Script for [🎱 NEW!] 8-Ball X.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://gist.githubusercontent.com/levixonx/d3170b6190aacac9abc1b61d0076e7bc/raw\"))()"
+      }
+    ]
+  },
+  {
+    "name": "Deadly Indian Truck Driving",
+    "placeId": 119476219904460,
+    "scripts": [
+      {
+        "name": "⭐  Deadly Indian Truck Driving",
+        "description": "Script for Deadly Indian Truck Driving.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://pastebin.com/raw/BK6qrbdg\"))()"
+      }
+    ]
+  },
+  {
+    "name": "Climb a Ramp!",
+    "placeId": 124868078719468,
+    "scripts": [
+      {
+        "name": "⭐  Climb a Ramp!",
+        "description": "Script for Climb a Ramp!.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/carterx2008/Script/refs/heads/main/Climbaramp.lua\"))()"
+      }
+    ]
+  },
+  {
+    "name": "Draw & Donate 🎨",
+    "placeId": 17070253881,
+    "scripts": [
+      {
+        "name": "⭐  Draw & Donate 🎨",
+        "description": "Script for Draw & Donate 🎨.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://api.jnkie.com/api/v1/luascripts/public/59d44637824c8fe7d381bb2fb360b663fa1880c59ce90f3031c7971655eefadf/download\"))()"
+      }
+    ]
+  },
+  {
+    "name": "[🐣] Redwood Prison Reworked",
+    "placeId": 10456235914,
+    "scripts": [
+      {
+        "name": "⭐  [🐣] Redwood Prison Reworked",
+        "description": "Script for [🐣] Redwood Prison Reworked.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/TheDarkoneMarcillisePex/Other-Scripts/refs/heads/main/Redwood%20Prison%20Reworked\"))()"
+      }
+    ]
+  },
+  {
+    "name": "Flex Your FPS And Ping!",
+    "placeId": 18667984660,
+    "scripts": [
+      {
+        "name": "⭐  Flex Your FPS And Ping!",
+        "description": "Script for Flex Your FPS And Ping!.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://pastebin.com/raw/0tsBFqmH\"))()"
+      }
+    ]
+  },
+  {
+    "name": "City Life [Fixed!]",
+    "placeId": 5802642341,
+    "scripts": [
+      {
+        "name": "⭐  City Life [Fixed!]",
+        "description": "Script for City Life [Fixed!].",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/TheDarkoneMarcillisePex/Other-Scripts/main/City%20Life%20GUI\"))()"
+      }
+    ]
+  },
+  {
+    "name": "[⚾] Baseball Incremental",
+    "placeId": 112928173964591,
+    "scripts": [
+      {
+        "name": "⭐  [⚾] Baseball Incremental",
+        "description": "Script for [⚾] Baseball Incremental.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://api.jnkie.com/api/v1/luascripts/public/59d44637824c8fe7d381bb2fb360b663fa1880c59ce90f3031c7971655eefadf/download\"))()"
+      }
+    ]
+  },
+  {
+    "name": "CRIMINAL VS. SWAT",
+    "placeId": 510444657,
+    "scripts": [
+      {
+        "name": "⭐  CRIMINAL VS. SWAT",
+        "description": "Script for CRIMINAL VS. SWAT.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/TheDarkoneMarcillisePex/Other-Scripts/main/Swat%20Vs%20Crims%20GUI\"))()"
+      }
+    ]
+  },
+  {
+    "name": "Army Tycoon💣",
+    "placeId": 4325400580,
+    "scripts": [
+      {
+        "name": "⭐  Army Tycoon💣",
+        "description": "Script for Army Tycoon💣.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://github.com/brettrm001-scripts/armytycoon/releases/latest/download/main.lua\"))()"
+      }
+    ]
+  },
+  {
+    "name": "Silent Assassin 🗡️",
+    "placeId": 1382113806,
+    "scripts": [
+      {
+        "name": "⭐  Silent Assassin 🗡️",
+        "description": "Script for Silent Assassin 🗡️.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/eazyscripties/scripts/refs/heads/main/eazzyloader.lua\"))()"
+      }
+    ]
+  },
+  {
+    "name": "Who's the Spy?",
+    "placeId": 17218259625,
+    "scripts": [
+      {
+        "name": "⭐  Who's the Spy?",
+        "description": "Script for Who's the Spy?.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://pastebin.com/raw/MP4gDc4N\"))()"
+      }
+    ]
+  },
+  {
+    "name": "SNIPER DUELS",
+    "placeId": 109397169461300,
+    "scripts": [
+      {
+        "name": "⭐  SNIPER DUELS",
+        "description": "Script for SNIPER DUELS.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://rawr.net\"))()"
+      }
+    ]
+  },
+  {
+    "name": "[🌳] Sell Lemons 🍋",
+    "placeId": 79268393072444,
+    "scripts": [
+      {
+        "name": "⭐  [🌳] Sell Lemons 🍋",
+        "description": "Script for [🌳] Sell Lemons 🍋.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/MBHubRoblox/YamemeHub/refs/heads/main/selllemons.lua\"))()"
+      }
+    ]
+  },
+  {
+    "name": "Grab Ores! [🦴]",
+    "placeId": 82806856224736,
+    "scripts": [
+      {
+        "name": "⭐  Grab Ores! [🦴]",
+        "description": "Script for Grab Ores! [🦴].",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/silent5532/Grab-Ores-script/6006787de9d3db6be5a4fd4254715e43d271316b/Script\"))()"
       }
     ]
   }
