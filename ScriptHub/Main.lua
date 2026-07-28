@@ -191,34 +191,24 @@ print("[EmeraldHub] Character hidden")
 }
 
 -- ════════════════════════════════════════════════════════════════
---  3.  GAME LIBRARY  (keyed — auto-detected from game.PlaceId)
+--  3.  GAME LIBRARY  (loaded from GameLibrary/games.json)
+--      To add/edit/remove games, edit that file — no Lua changes needed.
 -- ════════════════════════════════════════════════════════════════
-local GAME_LIBRARY = {
-    [142823291] = { name = "Murder Mystery 2", scripts = {
-        {name="⭐  MM2 Script",       description="ESP, role reveal, gun mods & more.",                category="Featured",
-         code=[[loadstring(game:HttpGet("https://raw.githubusercontent.com/Joystickplays/psychic-octo-invention/main/yarhm.lua", false))()]]},
-    }},
-    [95082159892680] = { name = "Speed / Keyboard Escape", scripts = {
-        {name="⭐  LuxyHub",          description="Multi-feature hub for Speed / Keyboard Escape.",    category="Featured",
-         code=[[loadstring(game:HttpGet("https://www.luxyhub.space/api/loader/luxyhub"))()]]},
-    }},
-    [9391468976] = { name = "Jjs", scripts = {
-        {name="⭐  Jjs Script",       description="Main script for Jjs.",                              category="Featured",
-         code=[[loadstring(game:HttpGet("https://raw.githubusercontent.com/NeziaReal/jjs/refs/heads/main/main.lua"))()]]},
-    }},
-    [78515283254292] = { name = "Animal Hospital", scripts = {
-        {name="⭐  Animal Hospital",  description="Auto-play script for Animal Hospital.",             category="Featured",
-         code=[[loadstring(game:HttpGet("https://raw.githubusercontent.com/caomod2077/Script/refs/heads/main/FN_AnimalHospital.lua"))()]]},
-    }},
-    [99567941238278] = { name = "Ink Game", scripts = {
-        {name="⭐  Ink Game Script",  description="Main script for Ink Game.",                         category="Featured",
-         code=[[loadstring(game:HttpGet("https://raw.githubusercontent.com/wefwef127382/inkgames.github.io/refs/heads/main/ringta.lua"))()]]},
-    }},
-    [109983668079237] = { name = "Steal a Brainrot", scripts = {
-        {name="⭐  Steal a Brainrot",  description="Auto steal, speed boost & more for Steal a Brainrot.", category="Featured",
-         code=[[loadstring(game:HttpGet("https://paste.rs/RJhsl"))()]]},
-    }},
-}
+local GAME_LIBRARY = {}
+local _GAMES_URL = "https://raw.githubusercontent.com/f26427480-hash/emeraldhub2/main/GameLibrary/games.json"
+local _gok, _gjson = pcall(function() return game:HttpGet(_GAMES_URL) end)
+if _gok and _gjson and _gjson ~= "" then
+    local _dok, _data = pcall(function()
+        return game:GetService("HttpService"):JSONDecode(_gjson)
+    end)
+    if _dok and type(_data) == "table" then
+        for _, g in ipairs(_data) do
+            if g.placeId and g.name and g.scripts then
+                GAME_LIBRARY[g.placeId] = { name = g.name, scripts = g.scripts }
+            end
+        end
+    end
+end
 
 local _placeId = game.PlaceId
 local _entry   = GAME_LIBRARY[_placeId]
@@ -483,7 +473,7 @@ local NAV = {
     {id="universal", label="🌐  Universal",  icon="🌐", short="Universal",  sub="No key required"},
 }
 if MainGame then
-    table.insert(NAV, {id="maingame", label="🔐  "..MainGame.GAME_NAME, icon="🔐", short=MainGame.GAME_NAME:sub(1,10), sub="72h key from Discord"})
+    table.insert(NAV, {id="maingame", label="🔐  "..MainGame.GAME_NAME, icon="🔐", short=MainGame.GAME_NAME:sub(1,10), sub="Lifetime key from Discord"})
 end
 table.insert(NAV, {id="settings", label="⚙️  Settings", icon="⚙️", short="Settings", sub="Key & hub config"})
 
@@ -1024,7 +1014,7 @@ local KSub = Instance.new("TextLabel")
 KSub.Size                = UDim2.new(1,-32,0,34)
 KSub.Position            = UDim2.new(0,16,0,52)
 KSub.BackgroundTransparency = 1
-KSub.Text                = "Run  /getkey  in the Discord server to get a\nfree 72-hour key, then paste it below."
+KSub.Text                = "Run  /getkey  in the Discord server to get a\nfree Lifetime key, then paste it below."
 KSub.TextColor3          = C.SUBTEXT
 KSub.Font                = FONT_BODY
 KSub.TextSize            = 12
@@ -1117,7 +1107,9 @@ local function unlock(remaining)
     keyUnlocked = true
     local hrs  = math.floor(remaining / 3600)
     local mins = math.floor((remaining % 3600) / 60)
-    ExpiryLabel.Text = string.format("Key expires in %dh %dm — run /getkey in Discord to renew.", hrs, mins)
+    ExpiryLabel.Text = (remaining > 365*24*3600)
+        and "✅  Lifetime Key — never expires."
+        or  string.format("Key expires in %dh %dm — run /getkey in Discord to renew.", hrs, mins)
 
     TweenService:Create(KeyGate,TweenInfo.new(0.35,Enum.EasingStyle.Quad),{BackgroundTransparency=1}):Play()
     task.wait(0.1)
@@ -1257,7 +1249,7 @@ end
 
 sectHeader(12,  "ℹ  HUB INFO")
 settRow(36,  "Version",         "2.1")
-settRow(84,  "Key Type",        "72-hour self-signing",  C.WARNING)
+settRow(84,  "Key Type",        "Lifetime self-signing",  C.WARNING)
 settRow(132, "Target Game",     MainGame and MainGame.GAME_NAME or "Not supported", MainGame and C.ACCENT or C.SUBTEXT)
 settRow(180, "Keyless Scripts", tostring(#Universal.Scripts).." scripts",  C.SUCCESS)
 settRow(228, "Keyed Scripts",   MainGame and tostring(#MainGame.Scripts).." scripts" or "N/A — unsupported game", MainGame and C.SUCCESS or C.SUBTEXT)
@@ -1288,7 +1280,7 @@ local howTo = Instance.new("TextLabel")
 howTo.Size             = UDim2.new(1,-32,0,60)
 howTo.Position         = UDim2.new(0,16,0,settY0 + 434)
 howTo.BackgroundTransparency = 1
-howTo.Text             = "1. Join the Discord server\n2. Run  /getkey  in the key channel\n3. The bot DMs you a key  (valid 72 hours)\n4. Paste it in the Main Game tab → Unlock"
+howTo.Text             = "1. Join the Discord server\n2. Run  /getkey  in the key channel\n3. The bot DMs you a Lifetime key  (never expires)\n4. Paste it in the Main Game tab → Unlock"
 howTo.TextColor3       = C.SUBTEXT
 howTo.Font             = FONT_BODY
 howTo.TextSize         = 12

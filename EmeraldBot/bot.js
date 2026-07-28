@@ -16,7 +16,7 @@ const {
 const TOKEN             = process.env.DISCORD_TOKEN;
 const HUB_SECRET        = process.env.HUB_SECRET || "CHANGE_THIS_TO_YOUR_OWN_SECRET";
 const GUILD_ID          = process.env.GUILD_ID   || null;
-const KEY_DURATION_SECS = 72 * 60 * 60;
+const KEY_DURATION_SECS = 100 * 365 * 24 * 60 * 60; // ~100 years = lifetime
 const LOADSTRING_URL    =
     "https://raw.githubusercontent.com/f26427480-hash/emeraldhub2/main/ScriptHub/Main.lua";
 
@@ -78,10 +78,9 @@ function validateKey(raw) {
     return { ok: true, remaining, expiry };
 }
 
-function fmtExpiry(offsetSecs = KEY_DURATION_SECS) {
-    return new Date((Math.floor(Date.now() / 1000) + offsetSecs) * 1000).toUTCString();
-}
+function fmtExpiry() { return "Never — Lifetime Key"; }
 function fmtTime(secs) {
+    if (secs > 365 * 24 * 3600) return "Lifetime";
     return `${Math.floor(secs / 3600)}h ${Math.floor((secs % 3600) / 60)}m`;
 }
 
@@ -230,7 +229,7 @@ function buildStatusEmbed() {
             { name: "🔑 Active Keys",    value: String(active),                         inline: true },
             { name: "🚫 Blacklisted",    value: `${bl.discord.length + bl.roblox.length} IDs`, inline: true },
             { name: "⭐ Whitelisted",    value: `${wl.length} users`,                   inline: true },
-            { name: "⏱️ Key Duration",  value: "72 hours",                             inline: true },
+            { name: "⏱️ Key Duration",  value: "Lifetime",                             inline: true },
             { name: "🔒 Killswitch",     value: cfg.killswitch ? "ON 🔴" : "OFF 🟢",   inline: true },
         )
         .setFooter({ text: "EmeraldHub Status • Auto-updated every 6h" })
@@ -244,12 +243,12 @@ async function sendKeyDM(user, key) {
         .setTitle("🔑  Your EmeraldHub Key")
         .setDescription(`\`\`\`\n${key}\n\`\`\``)
         .addFields(
-            { name: "⏳ Expires",       value: fmtExpiry(),                  inline: false },
-            { name: "⏱️ Valid for",    value: "72 hours",                   inline: true  },
+            { name: "⏳ Expires",       value: "Never — Lifetime Key",       inline: false },
+            { name: "⏱️ Valid for",    value: "Lifetime",                   inline: true  },
             { name: "📋 Loadstring",   value: `\`\`\`lua\nloadstring(game:HttpGet("${LOADSTRING_URL}"))()\`\`\``, inline: false },
             { name: "🎮 How to use",   value: "1. Run the loadstring above in your executor.\n2. Go to the **Main Game** tab → paste your key → click **Unlock**.", inline: false },
         )
-        .setFooter({ text: "EmeraldHub • Do not share your key — one per 72 hours" })
+        .setFooter({ text: "EmeraldHub • Do not share your key — Lifetime keys never expire" })
         .setTimestamp();
     await user.send({ embeds: [embed] });
 }
@@ -329,8 +328,8 @@ async function handleGetKey(interaction) {
                 embeds: [new EmbedBuilder()
                     .setColor(0xEF4444)
                     .setTitle("⏳  You already have an active key")
-                    .setDescription("You can only get one key every **72 hours**.\nYour current key is still valid — paste it into EmeraldHub.")
-                    .addFields({ name: "⏱️ Next key available in", value: `**${hrs}h ${mins}m ${secs}s**` })
+                    .setDescription("You already have a **Lifetime key** — it never expires.\nPaste it into EmeraldHub to use it.")
+                    .addFields({ name: "⏱️ Time left", value: `**${hrs}h ${mins}m ${secs}s**` })
                     .setFooter({ text: "EmeraldHub • Run /keyinfo to check your key" })
                     .setTimestamp()],
             });
@@ -343,10 +342,10 @@ async function handleGetKey(interaction) {
         if (!whitelisted) recordCooldown(userId);
 
         await interaction.editReply({
-            content: `✅ **Key sent via DM!** Check your DMs — valid for **72 hours**.${whitelisted ? "\n⭐ *Whitelisted — cooldown bypassed.*" : ""}`,
+            content: `✅ **Lifetime key sent via DM!** Check your DMs — your key never expires.${whitelisted ? "\n⭐ *Whitelisted — cooldown bypassed.*" : ""}`,
         });
 
-        await logEvent(`🔑 Key issued to **${interaction.user.tag}** (\`${userId}\`) — expires ${fmtExpiry()}`);
+        await logEvent(`🔑 Lifetime key issued to **${interaction.user.tag}** (\`${userId}\`)`);
         console.log(`[EmeraldBot] Key issued to ${interaction.user.tag} (${userId})`);
     } catch {
         await interaction.editReply({ content: "❌ Couldn't DM you — please enable DMs from server members and try again." });
@@ -404,9 +403,9 @@ async function handleKeyDrop(interaction) {
             .setDescription(`First to use it wins!\n\n\`\`\`\n${key}\n\`\`\``)
             .addFields(
                 { name: "📋 Loadstring", value: `\`\`\`lua\nloadstring(game:HttpGet("${LOADSTRING_URL}"))()\`\`\``, inline: false },
-                { name: "⏳ Expires",    value: fmtExpiry(),                                                          inline: true  },
+                { name: "⏳ Expires",    value: "Never — Lifetime Key",                                               inline: true  },
             )
-            .setFooter({ text: "EmeraldHub • Keys are single-use within the cooldown window" })
+            .setFooter({ text: "EmeraldHub • Lifetime keys — never expire" })
             .setTimestamp()],
     });
 
@@ -571,10 +570,10 @@ async function handleBuyPanel(interaction) {
         .setDescription("Click **Get Free Key** to get your **72-hour key** instantly via DM.\nYour key and loadstring will be sent together.")
         .addFields(
             { name: "📋 Loadstring",      value: `\`\`\`lua\nloadstring(game:HttpGet("${LOADSTRING_URL}"))()\`\`\``, inline: false },
-            { name: "⏱️ Key Duration",   value: "72 hours — one key per user",                                        inline: true  },
+            { name: "⏱️ Key Duration",   value: "Lifetime — never expires",                                           inline: true  },
             { name: "🎮 Supported Games", value: "Murder Mystery 2, Speed/Keyboard Escape, Steal a Brainrot & more",  inline: false },
         )
-        .setFooter({ text: "EmeraldHub • Free keys every 72 hours" })
+        .setFooter({ text: "EmeraldHub • Free lifetime keys — never expire" })
         .setTimestamp();
 
     const row = new ActionRowBuilder().addComponents(

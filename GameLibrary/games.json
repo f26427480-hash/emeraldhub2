@@ -1,0 +1,74 @@
+[
+  {
+    "name": "Murder Mystery 2",
+    "placeId": 142823291,
+    "scripts": [
+      {
+        "name": "⭐  MM2 Script",
+        "description": "ESP, role reveal, gun mods & more.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/Joystickplays/psychic-octo-invention/main/yarhm.lua\", false))()"
+      }
+    ]
+  },
+  {
+    "name": "Speed / Keyboard Escape",
+    "placeId": 95082159892680,
+    "scripts": [
+      {
+        "name": "⭐  LuxyHub",
+        "description": "Multi-feature hub for Speed / Keyboard Escape.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://www.luxyhub.space/api/loader/luxyhub\"))()"
+      }
+    ]
+  },
+  {
+    "name": "Jjs",
+    "placeId": 9391468976,
+    "scripts": [
+      {
+        "name": "⭐  Jjs Script",
+        "description": "Main script for Jjs.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/NeziaReal/jjs/refs/heads/main/main.lua\"))()"
+      }
+    ]
+  },
+  {
+    "name": "Animal Hospital",
+    "placeId": 78515283254292,
+    "scripts": [
+      {
+        "name": "⭐  Animal Hospital",
+        "description": "Auto-play script for Animal Hospital.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/caomod2077/Script/refs/heads/main/FN_AnimalHospital.lua\"))()"
+      }
+    ]
+  },
+  {
+    "name": "Ink Game",
+    "placeId": 99567941238278,
+    "scripts": [
+      {
+        "name": "⭐  Ink Game Script",
+        "description": "Main script for Ink Game.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/wefwef127382/inkgames.github.io/refs/heads/main/ringta.lua\"))()"
+      }
+    ]
+  },
+  {
+    "name": "Steal a Brainrot",
+    "placeId": 109983668079237,
+    "scripts": [
+      {
+        "name": "⭐  Steal a Brainrot",
+        "description": "Auto steal, speed boost & more for Steal a Brainrot.",
+        "category": "Featured",
+        "code": "loadstring(game:HttpGet(\"https://paste.rs/RJhsl\"))()"
+      }
+    ]
+  }
+]
