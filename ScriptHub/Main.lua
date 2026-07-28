@@ -281,7 +281,8 @@ local BOTTOM_H   = isMobile and 54     or 0    -- bottom nav on mobile
 local CARD_H     = isMobile and 82     or 72   -- taller touch targets
 local BTN_H      = isMobile and 34     or 26
 local BTN_TS     = isMobile and 14     or 12
-local LOGO_TS    = isMobile and 14     or 15
+local LOGO_TS         = isMobile and 14     or 15
+local MOBILE_HEADER_H = isMobile and 48     or 0   -- top header bar on mobile
 
 -- ════════════════════════════════════════════════════════════════
 --  5c. MUSIC SYSTEM
@@ -670,32 +671,66 @@ Content.ClipsDescendants = true
 Content.Parent           = Window
 
 if isMobile then
-    -- Full width, but leave BOTTOM_H for the nav bar
-    Content.Size     = UDim2.new(1, 0, 1, -BOTTOM_H)
-    Content.Position = UDim2.new(0, 0, 0, 0)
+    -- Full width; leave MOBILE_HEADER_H at top and BOTTOM_H at bottom
+    Content.Size     = UDim2.new(1, 0, 1, -BOTTOM_H - MOBILE_HEADER_H)
+    Content.Position = UDim2.new(0, 0, 0, MOBILE_HEADER_H)
 else
     -- Leave left SIDEBAR_W for sidebar
     Content.Size     = UDim2.new(1, -SIDEBAR_W, 1, 0)
     Content.Position = UDim2.new(0, SIDEBAR_W, 0, 0)
 end
 
--- Mobile close button (top-right X) 
+-- Mobile header bar (logo + close button)
 if isMobile then
+    local MHeader = Instance.new("Frame")
+    MHeader.Name              = "MobileHeader"
+    MHeader.Size              = UDim2.new(1, 0, 0, MOBILE_HEADER_H)
+    MHeader.Position          = UDim2.new(0, 0, 0, 0)
+    MHeader.BackgroundColor3  = C.SIDEBAR
+    MHeader.BorderSizePixel   = 0
+    MHeader.ZIndex            = 6
+    MHeader.Parent            = Window
+
+    -- Bottom divider line
+    local HDivider = Instance.new("Frame")
+    HDivider.Size             = UDim2.new(1, 0, 0, 1)
+    HDivider.Position         = UDim2.new(0, 0, 1, -1)
+    HDivider.BackgroundColor3 = C.ACCENT
+    HDivider.BackgroundTransparency = 0.6
+    HDivider.BorderSizePixel  = 0
+    HDivider.ZIndex           = 7
+    HDivider.Parent           = MHeader
+
+    -- Logo text
+    local HLogo = Instance.new("TextLabel")
+    HLogo.Size               = UDim2.new(1, -60, 1, 0)
+    HLogo.Position           = UDim2.new(0, 14, 0, 0)
+    HLogo.BackgroundTransparency = 1
+    HLogo.Text               = "💎  EMERALD HUB"
+    HLogo.TextColor3         = C.ACCENT
+    HLogo.Font               = FONT
+    HLogo.TextSize           = 16
+    HLogo.TextXAlignment     = Enum.TextXAlignment.Left
+    HLogo.ZIndex             = 7
+    HLogo.Parent             = MHeader
+
+    -- Close button
     local MCloseBtn = Instance.new("TextButton")
-    MCloseBtn.Size            = UDim2.new(0, 44, 0, 44)
-    MCloseBtn.Position        = UDim2.new(1, -48, 0, 4)
+    MCloseBtn.Size            = UDim2.new(0, 38, 0, 38)
+    MCloseBtn.Position        = UDim2.new(1, -43, 0, 5)
     MCloseBtn.BackgroundColor3= Color3.fromRGB(22, 10, 10)
     MCloseBtn.BorderSizePixel = 0
     MCloseBtn.Text            = "✕"
     MCloseBtn.TextColor3      = C.DANGER
     MCloseBtn.Font            = FONT
-    MCloseBtn.TextSize        = 18
+    MCloseBtn.TextSize        = 16
     MCloseBtn.AutoButtonColor = false
-    MCloseBtn.ZIndex          = 5
-    MCloseBtn.Parent          = Content
-    Instance.new("UICorner", MCloseBtn).CornerRadius = UDim.new(0, 10)
+    MCloseBtn.ZIndex          = 7
+    MCloseBtn.Parent          = MHeader
+    Instance.new("UICorner", MCloseBtn).CornerRadius = UDim.new(0, 8)
     MCloseBtn.MouseButton1Click:Connect(function()
-        TweenService:Create(ScreenGui,TweenInfo.new(0.2,Enum.EasingStyle.Quad),{}):Play()
+        TweenService:Create(ScreenGui, TweenInfo.new(0.2, Enum.EasingStyle.Quad), {}):Play()
+        task.wait(0.22)
         ScreenGui:Destroy()
     end)
 end
@@ -786,10 +821,31 @@ local function makeCard(script, parent, locked)
     stripe.Parent           = card
     Instance.new("UICorner", stripe).CornerRadius = UDim.new(0, 3)
 
+    -- X dismiss button (top-right of every card)
+    local xBtn = Instance.new("TextButton")
+    xBtn.Size             = UDim2.new(0, 22, 0, 22)
+    xBtn.Position         = UDim2.new(1, -28, 0, 8)
+    xBtn.BackgroundColor3 = Color3.fromRGB(30, 14, 14)
+    xBtn.BorderSizePixel  = 0
+    xBtn.Text             = "✕"
+    xBtn.TextColor3       = C.DANGER
+    xBtn.Font             = FONT_SEMI
+    xBtn.TextSize         = 11
+    xBtn.AutoButtonColor  = false
+    xBtn.ZIndex           = 3
+    xBtn.Parent           = card
+    Instance.new("UICorner", xBtn).CornerRadius = UDim.new(0, 6)
+    xBtn.MouseButton1Click:Connect(function()
+        TweenService:Create(card, TweenInfo.new(0.18, Enum.EasingStyle.Quad), {BackgroundTransparency = 1}):Play()
+        TweenService:Create(card, TweenInfo.new(0.18, Enum.EasingStyle.Quad), {Size = UDim2.new(1, 0, 0, 0)}):Play()
+        task.wait(0.2)
+        card:Destroy()
+    end)
+
     -- Category badge
     local badge = Instance.new("TextLabel")
     badge.Size             = UDim2.new(0, 76, 0, 18)
-    badge.Position         = UDim2.new(1, -88, 0, 10)
+    badge.Position         = UDim2.new(1, -116, 0, 10)
     badge.BackgroundColor3 = C.BADGE_BG
     badge.BorderSizePixel  = 0
     badge.Text             = script.category
@@ -801,7 +857,7 @@ local function makeCard(script, parent, locked)
 
     -- Name
     local nameL = Instance.new("TextLabel")
-    nameL.Size            = UDim2.new(1, -106, 0, 22)
+    nameL.Size            = UDim2.new(1, -130, 0, 22)
     nameL.Position        = UDim2.new(0, 16, 0, 10)
     nameL.BackgroundTransparency = 1
     nameL.Text            = script.name
