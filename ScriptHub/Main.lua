@@ -32,7 +32,7 @@ local HUB_SECRET = "69acbf5c&hGA"
 -- ════════════════════════════════════════════════════════════════
 local KeySystem = (function()
     local M = {}
-    M.KEY_FILE = "EmeraldHub_Key.txt"
+    M.KEY_FILE = "FluxHub_Key.txt"
 
     local MOD = 1000000007
     local function hubHash(s)
@@ -61,7 +61,7 @@ local KeySystem = (function()
         local expB36, hash = key:match("^EMERALD%-([A-Z0-9]+)%-(%d%d%d%d%d%d%d)$")
         if not expB36 then return false, "Invalid format. Keys look like:\nEMERALD-XXXXX-0000000", nil end
         local expected = hubHash(expB36 .. HUB_SECRET)
-        if hash ~= expected then return false, "Invalid key — not issued by EmeraldHub.", nil end
+        if hash ~= expected then return false, "Invalid key — not issued by FluxHub.", nil end
         local expiry = b36decode(expB36)
         local remaining = expiry - os.time()
         if remaining <= 0 then return false, "Key expired. Run /getkey in Discord for a new one.", nil end
@@ -220,7 +220,7 @@ end
 -- ════════════════════════════════════════════════════════════════
 --  4.  CLEANUP — destroy stale hub if re-executed
 -- ════════════════════════════════════════════════════════════════
-for _, name in ipairs({"EmeraldHub_GUI", "ScriptHub_GUI"}) do
+for _, name in ipairs({"FluxHub_GUI", "EmeraldHub_GUI", "ScriptHub_GUI"}) do
     local old = game:GetService("CoreGui"):FindFirstChild(name)
     if old then old:Destroy() end
     local pg  = game:GetService("Players").LocalPlayer:FindFirstChild("PlayerGui")
@@ -264,8 +264,8 @@ local isMobile  = PLATFORM == Enum.Platform.IOS
 -- Layout constants — adapt per platform
 local CAM        = workspace.CurrentCamera
 local VPS        = CAM.ViewportSize
-local WIN_W      = isMobile and VPS.X  or 820
-local WIN_H      = isMobile and VPS.Y  or 520
+local WIN_W      = isMobile and VPS.X  or 680
+local WIN_H      = isMobile and VPS.Y  or 440
 local SIDEBAR_W  = isMobile and 0      or 176  -- sidebar hidden on mobile
 local BOTTOM_H   = isMobile and 54     or 0    -- bottom nav on mobile
 local CARD_H     = isMobile and 82     or 72   -- taller touch targets
@@ -299,10 +299,10 @@ end
 -- Set up the Sound object now; playback starts after the loading screen.
 task.spawn(function()
     local SS  = game:GetService("SoundService")
-    local old = SS:FindFirstChild("EmeraldHub_Music")
+    local old = SS:FindFirstChild("FluxHub_Music")
     if old then old:Destroy() end
     local snd = Instance.new("Sound")
-    snd.Name   = "EmeraldHub_Music"
+    snd.Name   = "FluxHub_Music"
     snd.Volume = 0.35
     snd.RollOffMaxDistance = 1e6
     snd.Parent = SS
@@ -319,7 +319,7 @@ local function guiParent()
 end
 
 local ScreenGui = Instance.new("ScreenGui")
-ScreenGui.Name           = "EmeraldHub_GUI"
+ScreenGui.Name           = "FluxHub_GUI"
 ScreenGui.ResetOnSpawn   = false
 ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 ScreenGui.DisplayOrder   = 99
@@ -394,7 +394,7 @@ local LLogo = Instance.new("TextLabel")
 LLogo.Size                  = UDim2.new(0.8, 0, 0, 44)
 LLogo.Position              = UDim2.new(0.1, 0, 0.38, 0)
 LLogo.BackgroundTransparency = 1
-LLogo.Text                  = "💎  EMERALD HUB"
+LLogo.Text                  = "⚡  FLUX HUB"
 LLogo.TextColor3            = C.ACCENT
 LLogo.Font                  = FONT
 LLogo.TextSize              = isMobile and 30 or 26
@@ -569,7 +569,7 @@ else
     LogoLabel.Size           = UDim2.new(1, -16, 0, 26)
     LogoLabel.Position       = UDim2.new(0, 10, 0, 16)
     LogoLabel.BackgroundTransparency = 1
-    LogoLabel.Text           = "💎  EMERALD HUB"
+    LogoLabel.Text           = "⚡  FLUX HUB"
     LogoLabel.TextColor3     = C.ACCENT
     LogoLabel.Font           = FONT
     LogoLabel.TextSize       = LOGO_TS
@@ -631,16 +631,40 @@ else
         tabBtns[tab.id] = {btn=btn, lbl=lbl, sub=sub}
     end
 
+    -- Shared kill function
+    local function killHub()
+        local sndKill = game:GetService("SoundService"):FindFirstChild("FluxHub_Music")
+        if sndKill then sndKill:Destroy() end
+        TweenService:Create(Window,TweenInfo.new(0.25,Enum.EasingStyle.Quad),{Size=UDim2.new(0,WIN_W,0,0)}):Play()
+        task.wait(0.3) ScreenGui:Destroy()
+    end
+
+    -- Turn Off Script button (desktop only)
+    local KillBtn = Instance.new("TextButton")
+    KillBtn.Size            = UDim2.new(1, -14, 0, 30)
+    KillBtn.Position        = UDim2.new(0, 7, 1, -86)
+    KillBtn.BackgroundColor3= Color3.fromRGB(120, 20, 20)
+    KillBtn.BorderSizePixel = 0
+    KillBtn.Text            = "🛑  Turn Off Script"
+    KillBtn.TextColor3      = Color3.fromRGB(255, 255, 255)
+    KillBtn.Font            = FONT_SEMI
+    KillBtn.TextSize        = 11
+    KillBtn.AutoButtonColor = false
+    KillBtn.Parent          = Sidebar
+    Instance.new("UICorner", KillBtn).CornerRadius = UDim.new(0, 8)
+    local kpd = Instance.new("UIPadding") kpd.PaddingLeft=UDim.new(0,12) kpd.Parent=KillBtn
+    KillBtn.MouseButton1Click:Connect(killHub)
+
     -- Close button (desktop only)
     local CloseBtn = Instance.new("TextButton")
-    CloseBtn.Size            = UDim2.new(1, -14, 0, 36)
+    CloseBtn.Size            = UDim2.new(1, -14, 0, 30)
     CloseBtn.Position        = UDim2.new(0, 7, 1, -48)
     CloseBtn.BackgroundColor3= Color3.fromRGB(30,14,14)
     CloseBtn.BorderSizePixel = 0
     CloseBtn.Text            = "✕  Close Hub"
     CloseBtn.TextColor3      = C.DANGER
     CloseBtn.Font            = FONT_SEMI
-    CloseBtn.TextSize        = 12
+    CloseBtn.TextSize        = 11
     CloseBtn.AutoButtonColor = false
     CloseBtn.Parent          = Sidebar
     Instance.new("UICorner", CloseBtn).CornerRadius = UDim.new(0, 8)
@@ -696,7 +720,7 @@ if isMobile then
     HLogo.Size               = UDim2.new(1, -60, 1, 0)
     HLogo.Position           = UDim2.new(0, 14, 0, 0)
     HLogo.BackgroundTransparency = 1
-    HLogo.Text               = "💎  EMERALD HUB"
+    HLogo.Text               = "⚡  FLUX HUB"
     HLogo.TextColor3         = C.ACCENT
     HLogo.Font               = FONT
     HLogo.TextSize           = 16
@@ -704,7 +728,27 @@ if isMobile then
     HLogo.ZIndex             = 7
     HLogo.Parent             = MHeader
 
-    -- Close button
+    -- Turn Off Script button (mobile)
+    local MKillBtn = Instance.new("TextButton")
+    MKillBtn.Size            = UDim2.new(0, 38, 0, 38)
+    MKillBtn.Position        = UDim2.new(1, -86, 0, 5)
+    MKillBtn.BackgroundColor3= Color3.fromRGB(120, 20, 20)
+    MKillBtn.BorderSizePixel = 0
+    MKillBtn.Text            = "🛑"
+    MKillBtn.TextColor3      = Color3.fromRGB(255,255,255)
+    MKillBtn.Font            = FONT
+    MKillBtn.TextSize        = 16
+    MKillBtn.AutoButtonColor = false
+    MKillBtn.ZIndex          = 7
+    MKillBtn.Parent          = MHeader
+    Instance.new("UICorner", MKillBtn).CornerRadius = UDim.new(0, 8)
+    MKillBtn.MouseButton1Click:Connect(function()
+        local sndKill = game:GetService("SoundService"):FindFirstChild("FluxHub_Music")
+        if sndKill then sndKill:Destroy() end
+        task.wait(0.1) ScreenGui:Destroy()
+    end)
+
+    -- Close button (mobile)
     local MCloseBtn = Instance.new("TextButton")
     MCloseBtn.Size            = UDim2.new(0, 38, 0, 38)
     MCloseBtn.Position        = UDim2.new(1, -43, 0, 5)

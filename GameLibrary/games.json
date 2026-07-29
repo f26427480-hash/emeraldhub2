@@ -235,7 +235,7 @@
         "name": "⭐  RIVALS",
         "description": "Script for RIVALS.",
         "category": "Featured",
-        "code": "loadstring(game:HttpGet(\"https://illusionary.lol/RivalsV2.lua\"))()"
+        "code": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/akkteste2026-boop/lua/refs/heads/main/NEW%20RIVALS%20UPDATE\"))()"
       }
     ]
   },
