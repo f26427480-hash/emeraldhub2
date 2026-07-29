@@ -915,8 +915,9 @@ local function makeCard(script, parent, locked)
     descL.Parent          = card
 
     -- Execute button
+    local execBtnW = isMobile and 100 or 88
     local execBtn = Instance.new("TextButton")
-    execBtn.Size            = UDim2.new(0, isMobile and 100 or 88, 0, BTN_H)
+    execBtn.Size            = UDim2.new(0, execBtnW, 0, BTN_H)
     execBtn.Position        = UDim2.new(0, 16, 1, -(BTN_H + 10))
     execBtn.BackgroundColor3= locked and Color3.fromRGB(36,28,6) or C.ACCENT
     execBtn.BorderSizePixel = 0
@@ -928,6 +929,21 @@ local function makeCard(script, parent, locked)
     execBtn.Parent          = card
     Instance.new("UICorner", execBtn).CornerRadius = UDim.new(0, 7)
 
+    -- Stop button (hidden until a script is running)
+    local stopBtn = Instance.new("TextButton")
+    stopBtn.Size            = UDim2.new(0, isMobile and 82 or 70, 0, BTN_H)
+    stopBtn.Position        = UDim2.new(0, 16 + execBtnW + 8, 1, -(BTN_H + 10))
+    stopBtn.BackgroundColor3= Color3.fromRGB(120, 20, 20)
+    stopBtn.BorderSizePixel = 0
+    stopBtn.Text            = "⏹  Stop"
+    stopBtn.TextColor3      = Color3.fromRGB(255, 255, 255)
+    stopBtn.Font            = FONT_SEMI
+    stopBtn.TextSize        = BTN_TS
+    stopBtn.AutoButtonColor = false
+    stopBtn.Visible         = false
+    stopBtn.Parent          = card
+    Instance.new("UICorner", stopBtn).CornerRadius = UDim.new(0, 7)
+
     if not isMobile then
         card.MouseEnter:Connect(function() card.BackgroundColor3 = C.CARDH end)
         card.MouseLeave:Connect(function() card.BackgroundColor3 = C.CARD  end)
@@ -935,12 +951,20 @@ local function makeCard(script, parent, locked)
 
     if not locked then
         if not isMobile then
-            execBtn.MouseEnter:Connect(function() TweenService:Create(execBtn,TweenInfo.new(0.12),{BackgroundColor3=C.ACCENT2}):Play() end)
-            execBtn.MouseLeave:Connect(function() TweenService:Create(execBtn,TweenInfo.new(0.12),{BackgroundColor3=C.ACCENT}):Play() end)
+            execBtn.MouseEnter:Connect(function()
+                if execBtn.Text == "▶  Execute" then
+                    TweenService:Create(execBtn,TweenInfo.new(0.12),{BackgroundColor3=C.ACCENT2}):Play()
+                end
+            end)
+            execBtn.MouseLeave:Connect(function()
+                if execBtn.Text == "▶  Execute" then
+                    TweenService:Create(execBtn,TweenInfo.new(0.12),{BackgroundColor3=C.ACCENT}):Play()
+                end
+            end)
         end
     end
 
-    return card, execBtn
+    return card, execBtn, stopBtn
 end
 
 -- ════════════════════════════════════════════════════════════════
@@ -972,14 +996,35 @@ if isMobile then
 end
 
 for i, s in ipairs(Universal.Scripts) do
-    local card, execBtn = makeCard(s, uScroll, false)
+    local card, execBtn, stopBtn = makeCard(s, uScroll, false)
     card.LayoutOrder = i
+    local scriptThread = nil
     execBtn.MouseButton1Click:Connect(function()
-        local ok, err = pcall(loadstring(s.code))
-        task.spawn(function()
-            showToast(ok and ("✔  "..s.name.." executed.") or ("✘  "..tostring(err):sub(1,55)),
-                      ok and C.SUCCESS or C.DANGER, ok and 2 or 4)
+        if scriptThread and coroutine.status(scriptThread) ~= "dead" then return end
+        execBtn.Text            = "● Running"
+        execBtn.BackgroundColor3= Color3.fromRGB(20, 65, 20)
+        stopBtn.Visible         = true
+        scriptThread = task.spawn(function()
+            local ok, err = pcall(loadstring(s.code))
+            execBtn.Text            = "▶  Execute"
+            execBtn.BackgroundColor3= C.ACCENT
+            stopBtn.Visible         = false
+            scriptThread            = nil
+            task.spawn(function()
+                showToast(ok and ("✔  "..s.name.." executed.") or ("✘  "..tostring(err):sub(1,55)),
+                          ok and C.SUCCESS or C.DANGER, ok and 2 or 4)
+            end)
         end)
+    end)
+    stopBtn.MouseButton1Click:Connect(function()
+        if scriptThread and coroutine.status(scriptThread) ~= "dead" then
+            task.cancel(scriptThread)
+        end
+        scriptThread            = nil
+        execBtn.Text            = "▶  Execute"
+        execBtn.BackgroundColor3= C.ACCENT
+        stopBtn.Visible         = false
+        task.spawn(function() showToast("⏹  "..s.name.." stopped.", C.WARNING, 2) end)
     end)
 end
 
@@ -1142,9 +1187,9 @@ end
 
 local mgCards = {}
 for i, s in ipairs(MainGame.Scripts) do
-    local card, execBtn = makeCard(s, mgScroll, true)
+    local card, execBtn, stopBtn = makeCard(s, mgScroll, true)
     card.LayoutOrder = i
-    table.insert(mgCards, {script=s, card=card, execBtn=execBtn})
+    table.insert(mgCards, {script=s, card=card, execBtn=execBtn, stopBtn=stopBtn})
 end
 
 local function unlock(remaining)
@@ -1163,20 +1208,39 @@ local function unlock(remaining)
     mgScroll.Visible = true
 
     for _, entry in ipairs(mgCards) do
-        entry.execBtn.BackgroundColor3 = C.ACCENT
-        entry.execBtn.Text             = "▶  Execute"
-        entry.execBtn.TextColor3       = Color3.fromRGB(255,255,255)
-        if not isMobile then
-            entry.execBtn.MouseEnter:Connect(function() TweenService:Create(entry.execBtn,TweenInfo.new(0.12),{BackgroundColor3=C.ACCENT2}):Play() end)
-            entry.execBtn.MouseLeave:Connect(function() TweenService:Create(entry.execBtn,TweenInfo.new(0.12),{BackgroundColor3=C.ACCENT}):Play() end)
-        end
-        entry.execBtn.MouseButton1Click:Connect(function()
-            local s = entry.script
-            local ok, err = pcall(loadstring(s.code))
-            task.spawn(function()
-                showToast(ok and ("✔  "..s.name.." executed.") or ("✘  "..tostring(err):sub(1,55)),
-                          ok and C.SUCCESS or C.DANGER, ok and 2 or 4)
+        local s       = entry.script
+        local execBtn = entry.execBtn
+        local stopBtn = entry.stopBtn
+        execBtn.BackgroundColor3 = C.ACCENT
+        execBtn.Text             = "▶  Execute"
+        execBtn.TextColor3       = Color3.fromRGB(255,255,255)
+        local scriptThread = nil
+        execBtn.MouseButton1Click:Connect(function()
+            if scriptThread and coroutine.status(scriptThread) ~= "dead" then return end
+            execBtn.Text            = "● Running"
+            execBtn.BackgroundColor3= Color3.fromRGB(20, 65, 20)
+            stopBtn.Visible         = true
+            scriptThread = task.spawn(function()
+                local ok, err = pcall(loadstring(s.code))
+                execBtn.Text            = "▶  Execute"
+                execBtn.BackgroundColor3= C.ACCENT
+                stopBtn.Visible         = false
+                scriptThread            = nil
+                task.spawn(function()
+                    showToast(ok and ("✔  "..s.name.." executed.") or ("✘  "..tostring(err):sub(1,55)),
+                              ok and C.SUCCESS or C.DANGER, ok and 2 or 4)
+                end)
             end)
+        end)
+        stopBtn.MouseButton1Click:Connect(function()
+            if scriptThread and coroutine.status(scriptThread) ~= "dead" then
+                task.cancel(scriptThread)
+            end
+            scriptThread            = nil
+            execBtn.Text            = "▶  Execute"
+            execBtn.BackgroundColor3= C.ACCENT
+            stopBtn.Visible         = false
+            task.spawn(function() showToast("⏹  "..s.name.." stopped.", C.WARNING, 2) end)
         end)
     end
     showToast("💎  "..MainGame.GAME_NAME.." unlocked!", C.SUCCESS, 3)
