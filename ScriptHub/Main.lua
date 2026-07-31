@@ -1189,7 +1189,8 @@ local mgCards = {}
 for i, s in ipairs(MainGame.Scripts) do
     local card, execBtn, stopBtn = makeCard(s, mgScroll, true)
     card.LayoutOrder = i
-    table.insert(mgCards, {script=s, card=card, execBtn=execBtn, stopBtn=stopBtn})
+    stopBtn:Destroy()  -- no individual stop on main game cards
+    table.insert(mgCards, {script=s, card=card, execBtn=execBtn})
 end
 
 local function unlock(remaining)
@@ -1210,37 +1211,19 @@ local function unlock(remaining)
     for _, entry in ipairs(mgCards) do
         local s       = entry.script
         local execBtn = entry.execBtn
-        local stopBtn = entry.stopBtn
         execBtn.BackgroundColor3 = C.ACCENT
         execBtn.Text             = "▶  Execute"
         execBtn.TextColor3       = Color3.fromRGB(255,255,255)
-        local scriptThread = nil
+        if not isMobile then
+            execBtn.MouseEnter:Connect(function() TweenService:Create(execBtn,TweenInfo.new(0.12),{BackgroundColor3=C.ACCENT2}):Play() end)
+            execBtn.MouseLeave:Connect(function() TweenService:Create(execBtn,TweenInfo.new(0.12),{BackgroundColor3=C.ACCENT}):Play() end)
+        end
         execBtn.MouseButton1Click:Connect(function()
-            if scriptThread and coroutine.status(scriptThread) ~= "dead" then return end
-            execBtn.Text            = "● Running"
-            execBtn.BackgroundColor3= Color3.fromRGB(20, 65, 20)
-            stopBtn.Visible         = true
-            scriptThread = task.spawn(function()
-                local ok, err = pcall(loadstring(s.code))
-                execBtn.Text            = "▶  Execute"
-                execBtn.BackgroundColor3= C.ACCENT
-                stopBtn.Visible         = false
-                scriptThread            = nil
-                task.spawn(function()
-                    showToast(ok and ("✔  "..s.name.." executed.") or ("✘  "..tostring(err):sub(1,55)),
-                              ok and C.SUCCESS or C.DANGER, ok and 2 or 4)
-                end)
+            local ok, err = pcall(loadstring(s.code))
+            task.spawn(function()
+                showToast(ok and ("✔  "..s.name.." executed.") or ("✘  "..tostring(err):sub(1,55)),
+                          ok and C.SUCCESS or C.DANGER, ok and 2 or 4)
             end)
-        end)
-        stopBtn.MouseButton1Click:Connect(function()
-            if scriptThread and coroutine.status(scriptThread) ~= "dead" then
-                task.cancel(scriptThread)
-            end
-            scriptThread            = nil
-            execBtn.Text            = "▶  Execute"
-            execBtn.BackgroundColor3= C.ACCENT
-            stopBtn.Visible         = false
-            task.spawn(function() showToast("⏹  "..s.name.." stopped.", C.WARNING, 2) end)
         end)
     end
     showToast("💎  "..MainGame.GAME_NAME.." unlocked!", C.SUCCESS, 3)
