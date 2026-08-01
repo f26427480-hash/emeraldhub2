@@ -63,15 +63,15 @@ function hubHash(s) {
 function generateKey() {
     const expiry = Math.floor(Date.now() / 1000) + KEY_DURATION_SECS;
     const expB36 = expiry.toString(36).toUpperCase();
-    return `EMERALD-${expB36}-${hubHash(expB36 + HUB_SECRET)}`;
+    return `FLUX-${expB36}-${hubHash(expB36 + HUB_SECRET)}`;
 }
 
 function validateKey(raw) {
     const key   = raw.trim().toUpperCase();
     const match = key.match(/^EMERALD-([A-Z0-9]+)-(\d{7})$/);
-    if (!match) return { ok: false, reason: "Invalid format. Keys look like: `EMERALD-XXXXX-0000000`" };
+    if (!match) return { ok: false, reason: "Invalid format. Keys look like: `FLUX-XXXXX-0000000`" };
     const [, expB36, hash] = match;
-    if (hash !== hubHash(expB36 + HUB_SECRET)) return { ok: false, reason: "Invalid signature — key not issued by EmeraldHub." };
+    if (hash !== hubHash(expB36 + HUB_SECRET)) return { ok: false, reason: "Invalid signature — key not issued by FluxHub." };
     const expiry    = parseInt(expB36, 36);
     const remaining = expiry - Math.floor(Date.now() / 1000);
     if (remaining <= 0) return { ok: false, reason: "Key has expired. Run `/getkey` for a fresh one." };
@@ -114,17 +114,17 @@ async function registerCommands() {
         // ── User commands ──────────────────────────────────────────────────────
         new SlashCommandBuilder()
             .setName("getkey")
-            .setDescription("Get a free 72-hour EmeraldHub key (sent via DM)."),
+            .setDescription("Get a free lifetime FluxHub key (sent via DM)."),
 
         new SlashCommandBuilder()
             .setName("keyinfo")
             .setDescription("Check how long a key is valid.")
             .addStringOption(o =>
-                o.setName("key").setDescription("Your EMERALD-... key").setRequired(true)),
+                o.setName("key").setDescription("Your FluxHub... key").setRequired(true)),
 
         new SlashCommandBuilder()
             .setName("hubinfo")
-            .setDescription("Show EmeraldHub info and links."),
+            .setDescription("Show FluxHub info and links."),
 
         // ── Admin commands ─────────────────────────────────────────────────────
         new SlashCommandBuilder()
@@ -167,7 +167,7 @@ async function registerCommands() {
 
         new SlashCommandBuilder()
             .setName("testkey")
-            .setDescription("[Admin] Validate and inspect any EmeraldHub key.")
+            .setDescription("[Admin] Validate and inspect any FluxHub key.")
             .addStringOption(o =>
                 o.setName("key").setDescription("Key to test").setRequired(true)),
 
@@ -187,7 +187,7 @@ async function registerCommands() {
 
         new SlashCommandBuilder()
             .setName("buypanel")
-            .setDescription("[Admin] Post the EmeraldHub key panel in this channel."),
+            .setDescription("[Admin] Post the FluxHub key panel in this channel."),
     ].map(c => c.toJSON());
 
     const rest = new REST({ version: "10" }).setToken(TOKEN);
@@ -221,7 +221,7 @@ function buildStatusEmbed() {
 
     return new EmbedBuilder()
         .setColor(cfg.killswitch ? 0xEF4444 : 0x10B981)
-        .setTitle(cfg.killswitch ? "🔴  EmeraldHub — OFFLINE" : "🟢  EmeraldHub — ONLINE")
+        .setTitle(cfg.killswitch ? "🔴  EmeraldHub — OFFLINE" : "🟢  FluxHub — ONLINE")
         .setDescription(cfg.killswitch
             ? "The hub has been disabled by an administrator."
             : "The hub is online and accepting keys.")
@@ -232,7 +232,7 @@ function buildStatusEmbed() {
             { name: "⏱️ Key Duration",  value: "Lifetime",                             inline: true },
             { name: "🔒 Killswitch",     value: cfg.killswitch ? "ON 🔴" : "OFF 🟢",   inline: true },
         )
-        .setFooter({ text: "EmeraldHub Status • Auto-updated every 6h" })
+        .setFooter({ text: "FluxHub Status • Auto-updated every 6h" })
         .setTimestamp();
 }
 
@@ -240,7 +240,7 @@ function buildStatusEmbed() {
 async function sendKeyDM(user, key) {
     const embed = new EmbedBuilder()
         .setColor(0x10B981)
-        .setTitle("🔑  Your EmeraldHub Key")
+        .setTitle("🔑  Your FluxHub Key")
         .setDescription(`\`\`\`\n${key}\n\`\`\``)
         .addFields(
             { name: "⏳ Expires",       value: "Never — Lifetime Key",       inline: false },
@@ -248,7 +248,7 @@ async function sendKeyDM(user, key) {
             { name: "📋 Loadstring",   value: `\`\`\`lua\nloadstring(game:HttpGet("${LOADSTRING_URL}"))()\`\`\``, inline: false },
             { name: "🎮 How to use",   value: "1. Run the loadstring above in your executor.\n2. Go to the **Main Game** tab → paste your key → click **Unlock**.", inline: false },
         )
-        .setFooter({ text: "EmeraldHub • Do not share your key — Lifetime keys never expire" })
+        .setFooter({ text: "FluxHub • Do not share your key — Lifetime keys never expire" })
         .setTimestamp();
     await user.send({ embeds: [embed] });
 }
@@ -256,7 +256,7 @@ async function sendKeyDM(user, key) {
 // ─── READY ────────────────────────────────────────────────────────────────────
 client.once("ready", async () => {
     console.log(`[EmeraldBot] Logged in as ${client.user.tag}`);
-    client.user.setActivity("🟢 EmeraldHub | /getkey", { type: 3 });
+    client.user.setActivity("🟢 FluxHub | /getkey", { type: 3 });
     await registerCommands();
 
     // 6-hour status update loop
@@ -308,12 +308,12 @@ async function handleGetKey(interaction) {
     const cfg    = loadConfig();
 
     if (cfg.killswitch) {
-        return interaction.editReply({ content: "🔴 **EmeraldHub is currently offline.** Check back later." });
+        return interaction.editReply({ content: "🔴 **FluxHub is currently offline.** Check back later." });
     }
 
     const bl = loadBlacklist();
     if (bl.discord.includes(userId)) {
-        return interaction.editReply({ content: "🚫 You are blacklisted from EmeraldHub." });
+        return interaction.editReply({ content: "🚫 You are blacklisted from FluxHub." });
     }
 
     const whitelisted = loadWhitelist().includes(userId);
@@ -328,9 +328,9 @@ async function handleGetKey(interaction) {
                 embeds: [new EmbedBuilder()
                     .setColor(0xEF4444)
                     .setTitle("⏳  You already have an active key")
-                    .setDescription("You already have a **Lifetime key** — it never expires.\nPaste it into EmeraldHub to use it.")
+                    .setDescription("You already have a **Lifetime key** — it never expires.\nPaste it into FluxHub to use it.")
                     .addFields({ name: "⏱️ Time left", value: `**${hrs}h ${mins}m ${secs}s**` })
-                    .setFooter({ text: "EmeraldHub • Run /keyinfo to check your key" })
+                    .setFooter({ text: "FluxHub • Run /keyinfo to check your key" })
                     .setTimestamp()],
             });
         }
@@ -367,7 +367,7 @@ async function handleKeyInfo(interaction) {
                 { name: "⏳ Time Remaining", value: fmtTime(result.remaining),                       inline: true  },
                 { name: "📅 Expires At",     value: new Date(result.expiry * 1000).toUTCString(),    inline: false },
             )
-            .setFooter({ text: "EmeraldHub Key Checker" })],
+            .setFooter({ text: "FluxHub Key Checker" })],
     });
 }
 
@@ -376,7 +376,7 @@ async function handleHubInfo(interaction) {
     return interaction.reply({
         embeds: [new EmbedBuilder()
             .setColor(0x10B981)
-            .setTitle("🟢  EmeraldHub")
+            .setTitle("🟢  FluxHub")
             .setDescription("A Roblox script hub with keyless universal scripts and 72-hour keyed game scripts.")
             .addFields(
                 { name: "🌐 Universal Scripts", value: "Keyless — any game",                inline: true  },
@@ -405,7 +405,7 @@ async function handleKeyDrop(interaction) {
                 { name: "📋 Loadstring", value: `\`\`\`lua\nloadstring(game:HttpGet("${LOADSTRING_URL}"))()\`\`\``, inline: false },
                 { name: "⏳ Expires",    value: "Never — Lifetime Key",                                               inline: true  },
             )
-            .setFooter({ text: "EmeraldHub • Lifetime keys — never expire" })
+            .setFooter({ text: "FluxHub • Lifetime keys — never expire" })
             .setTimestamp()],
     });
 
